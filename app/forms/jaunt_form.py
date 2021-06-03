@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, BooleanField
+from wtforms import StringField, IntegerField, BooleanField, DateField
 from wtforms.validators import DataRequired
 
 
@@ -8,5 +8,5 @@ class JauntForm(FlaskForm):
     review = StringField("review")
     rating = IntegerField("rating")
     blurb = StringField("blurb")
-    startDate = StringField("startDate", validators=[DataRequired()])
-    endDate = StringField("endDate", validators=[DataRequired()])
+    startDate = DateField("startDate", validators=[DataRequired()])
+    endDate = DateField("endDate", validators=[DataRequired()])
