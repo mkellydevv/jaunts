@@ -33,10 +33,8 @@ class Trail(db.Model):
     default_rating = db.Column(db.Integer, nullable=False)
     default_weighting = db.Column(db.Integer, nullable=False)
 
-    user = db.relationship(
-        "User",
-        back_populates="trails"
-    )
+    jaunts = db.relationship("Jaunt", back_populates="trail")
+    user = db.relationship("User", back_populates="trails")
 
     def to_dict(self, joins={}):
         dct = {
