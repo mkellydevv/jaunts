@@ -11,7 +11,7 @@ bp = Blueprint('jaunts', __name__)
 @bp.route('')
 def get_jaunts():
     jaunts = Jaunt.query.all()
-    return jaunts
+    return {"jaunts": [jaunt.to_dict() for jaunt in jaunts] }
 
 
 @bp.route('', methods=['POST'])
