@@ -38,7 +38,7 @@ class Trail(db.Model):
         back_populates="trails"
     )
 
-    def to_dict(self, joins):
+    def to_dict(self, joins={}):
         dct = {
             "id": self.id,
             "user_id": self.user_id,
@@ -57,7 +57,7 @@ class Trail(db.Model):
             "default_weighting": self.default_weighting,
         }
 
-        if joins["user"]:
+        if "user" in joins:
             dct["user"] = self.user.to_dict()
 
         return dct

@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.models import Trail, User, db
+from app.models import Trail, db
 from app.forms import TrailForm
 from .utils import validation_errors_to_error_messages
 from flask_login import current_user, login_required
@@ -11,10 +11,8 @@ bp = Blueprint('trails', __name__)
 # GET all trails
 @bp.route('', methods=['GET'])
 def get_trails():
-    trails = Trail.query.join(User).all()
-    joins = {
-        "user": True
-    }
+    trails = Trail.query.all()
+    joins = { "user" }
     return { "trails": [trail.to_dict(joins) for trail in trails] }
 
 
@@ -22,7 +20,8 @@ def get_trails():
 @bp.route('/<int:id>', methods=['GET'])
 def get_trail(id):
     trail = Trail.query.get(id)
-    return trail.to_dict()
+    joins = { "user" }
+    return trail.to_dict(joins)
 
 
 # POST a trail
@@ -68,7 +67,6 @@ def patch_trail(id):
         return trail.to_dict()
     else:
         return {"errors": "Unauthorized"}
-
 
 
 # DELETE a trail
