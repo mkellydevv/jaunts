@@ -11,7 +11,7 @@ bp = Blueprint('lists', __name__)
 @bp.route('', methods=['GET'])
 def get_lists():
     lists = List.query.all()
-    return [lst.to_dict() for lst in lists]
+    return {"lists": [lst.to_dict() for lst in lists] }
 
 
 @bp.route('/<int:id>', methods=['GET'])
@@ -35,4 +35,4 @@ def post_list():
         db.session.add(lst)
         db.session.commit()
         return lst.to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+    return {"errors": validation_errors_to_error_messages(form.errors)}, 401

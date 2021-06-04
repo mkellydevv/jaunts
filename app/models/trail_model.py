@@ -18,9 +18,11 @@ class Trail(db.Model):
     __tablename__ = "trails"
 
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     name = db.Column(db.String, nullable=False)
     region = db.Column(db.String, nullable=False)
     curated = db.Column(db.Boolean, nullable=False)
+    overview = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
     difficulty = db.Column(db.Enum(DifficultyEnum), nullable=False)
     length = db.Column(db.Float, nullable=False)
@@ -31,21 +33,31 @@ class Trail(db.Model):
     default_rating = db.Column(db.Integer, nullable=False)
     default_weighting = db.Column(db.Integer, nullable=False)
 
-    def to_dict(self):
+    user = db.relationship(
+        "User",
+        back_populates="trails"
+    )
+
+    def to_dict(self, joins):
         dct = {
             "id": self.id,
+            "user_id": self.user_id,
             "name": self.name,
             "region": self.region,
             "curated": self.curated,
+            "overview": self.overview,
             "description": self.description,
-            "difficulty": self.difficulty,
+            "difficulty": self.difficulty.value,
             "length": self.length,
             "elevation_gain": self.elevation_gain,
-            "route_type": self.route_type,
+            "route_type": self.route_type.value,
             "duration_hours": self.duration_hours,
             "duration_minutes": self.duration_minutes,
             "default_rating": self.default_rating,
-            "default_weighting": self.default_weighting
+            "default_weighting": self.default_weighting,
         }
+
+        if joins["user"]:
+            dct["user"] = self.user.to_dict()
 
         return dct
