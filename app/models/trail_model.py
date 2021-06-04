@@ -1,4 +1,5 @@
 from .db import db
+from .tag_trail_model import tags_trails
 import enum
 
 
@@ -36,6 +37,12 @@ class Trail(db.Model):
     jaunts = db.relationship("Jaunt", back_populates="trail")
     user = db.relationship("User", back_populates="trails")
 
+    tags = db.relationship(
+        "Tag",
+        secondary=tags_trails,
+        back_populates="trails"
+    )
+
     def to_dict(self, joins={}):
         dct = {
             "id": self.id,
@@ -54,6 +61,12 @@ class Trail(db.Model):
             "default_rating": self.default_rating,
             "default_weighting": self.default_weighting,
         }
+
+        if "jaunts" in joins:
+            dct["jaunts"] = [jaunt.to_dict() for jaunt in self.jaunts]
+
+        if "tags" in joins:
+            dct["tags"] = [tag.to_dict() for tag in self.tags]
 
         if "user" in joins:
             dct["user"] = self.user.to_dict()
