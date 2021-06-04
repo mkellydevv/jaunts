@@ -12,7 +12,7 @@ bp = Blueprint('trails', __name__)
 @bp.route('', methods=['GET'])
 def get_trails():
     trails = Trail.query.all()
-    joins = { "user" }
+    joins = { "user", "tags" }
     return { "trails": [trail.to_dict(joins) for trail in trails] }
 
 
