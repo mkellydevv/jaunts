@@ -32,12 +32,12 @@ options.add_argument("incognito")
 options.add_argument(f"user-agent={userAgent}")
 options.add_argument("window-size=1280,1440")
 
-# driver = wd.Chrome(
-#     executable_path='/usr/bin/chromedriver',
-#     options=options
-# )
+driver = wd.Chrome(
+    executable_path='/usr/bin/chromedriver',
+    options=options
+)
 
-# driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
 
 # Loads trail info from a state's info.txt file into a dict
 def load_trail_info(state="virginia"):
@@ -47,7 +47,7 @@ def load_trail_info(state="virginia"):
         for line in lines:
             # Read lines from file and chop off \n char
             data = eval(line[:len(line)-1])
-            dct[data["name"]] = data
+            dct[data["link"]] = data
         return dct
 
 # Load links from a state's links.txt file
@@ -84,18 +84,28 @@ def scrape_trail_links(driver, state="virginia", amount=9):
     with open(f'./states/{state}/links.txt', 'w') as file:
         file.writelines(lst)
 
-
-def scrape_trail_info(driver, state="virginia", start_index=0, limit=3):
+# Saves trail info from a list of trail links to a text file
+def scrape_trail_info(driver, state="virginia", start_index=0, limit=1):
+    # Load trail data from files
     links = load_trail_links(state)
     info = load_trail_info(state)
 
-    lst = []
-    count = 0
-    for link in links:
+    i = start_index
+    end = min(start_index + limit, len(links))
+    while i < end:
+        link = links[i]
+        # Skip to next unscraped trail
+        if link in info:
+            print("skipped", info[link]["name"])
+            i += 1
+            end = min(end + 1, len(links))
+            continue
+
+        # Navigate to link and wait for safety
         driver.get(link)
         time.sleep(10)
 
-        # Clean data
+        # Clean data before inserting into txt file
         length = driver.find_element(By.XPATH, '//*[@id="main"]/div[2]/div[1]/article/section[2]/div/span[1]/span[2]').text
         length = float(length.split(' ')[0])
 
@@ -104,6 +114,11 @@ def scrape_trail_info(driver, state="virginia", start_index=0, limit=3):
 
         duration = calculate_duration(length, elevation_gain)
 
+        tags = driver.find_elements_by_class_name('big.rounded.active')
+        for j in range(len(tags)):
+            tags[j] = tags[j].text
+
+        # Package data into an object
         data = {
             "link": link,
             "name": driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/h1').text,
@@ -118,20 +133,22 @@ def scrape_trail_info(driver, state="virginia", start_index=0, limit=3):
             "duration_minutes": duration[1],
             "default_rating": driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/div/span[2]/meta[1]').get_attribute("content"),
             "default_weighting": driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/div/span[2]/meta[4]').get_attribute("content"),
-            "tags": None
+            "tags": tags
         }
-        lst.append(str(data) + "\n")
-        count += 1
-        if count > limit:
-            break
+        info[link] = data
+        print("    scraped", data["name"])
+        i += 1
 
+    # Insert packaged info data into txt file
     with open(f'./states/{state}/info.txt', 'w') as file:
-        file.writelines(lst)
+        for trail in info:
+            file.write(str(info[trail]) + "\n")
 
-
+# Calculates expected amount of time to complete a trail using "Naismith's rule"
 def calculate_duration(length, elevation_gain):
     total_min = int((length / 3 + elevation_gain / 2000) * 60)
     return (total_min // 60, total_min % 60)
 
 # scrape_trail_links(driver, STATES["va"])
 scrape_trail_info(driver, STATES["va"])
+# pp.pprint(load_trail_info())
