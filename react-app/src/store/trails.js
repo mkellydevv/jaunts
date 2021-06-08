@@ -1,23 +1,22 @@
 
 const GET_TRAILS = "trails/GET_TRAILS"
 
-const _getTrails = payload => ({
+const _getTrails = (payload, stateKey='default') => ({
     type: GET_TRAILS,
-    payload
+    payload,
+    stateKey
 })
 
-export const getTrails = (query={}) => async (dispatch) => {
+export const getTrails = (query={}, stateKey) => async (dispatch) => {
     let url = `/api/trails?`;
 
-    for (let key in query) {
+    for (let key in query)
         url += `${key}=${query[key]}&`
-    }
 
     const res = await fetch(url);
     if (res.ok) {
         const data = await res.json();
-
-        dispatch(_getTrails(data));
+        dispatch(_getTrails(data, stateKey));
     }
 }
 
@@ -26,10 +25,12 @@ const initialState = {}
 export default function reducer(state=initialState, action) {
     switch (action.type) {
         case GET_TRAILS:
-            const obj = {}
+            const newState = { ...state };
+            if (newState[action.stateKey] === undefined)
+                newState[action.stateKey] = {};
             for (let trail of action.payload["trails"])
-                obj[trail.id] = trail
-            return obj;
+                newState[action.stateKey][trail.id] = trail;
+            return newState;
         default:
             return state;
     }

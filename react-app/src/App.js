@@ -7,10 +7,12 @@ import { getTrails } from "./store/trails";
 
 import LoginForm from "./components/auth/LoginForm";
 import SignUpForm from "./components/auth/SignUpForm";
-import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import UsersList from "./components/UsersList";
-import User from "./components/User";
+import UsersList from "./components/user/UsersList";
+import User from "./components/user/User";
+
+import NavBar from "./components/nav/NavBar";
+import SplashPage from "./components/splash/SplashPage"
 
 function App() {
   const user = useSelector(state => state.session.user)
@@ -25,7 +27,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    dispatch(getTrails())
+    // dispatch(getTrails())
   }, [dispatch])
 
   if (!loaded) {
@@ -36,6 +38,9 @@ function App() {
     <BrowserRouter>
       <NavBar />
       <Switch>
+        <Route path="/" exact={true} >
+          <SplashPage />
+        </Route>
         <Route path="/login" exact={true}>
           <LoginForm />
         </Route>
@@ -47,9 +52,6 @@ function App() {
         </ProtectedRoute>
         <ProtectedRoute path="/users/:userId" exact={true} >
           <User />
-        </ProtectedRoute>
-        <ProtectedRoute path="/" exact={true} >
-          <h1>My Home Page</h1>
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>

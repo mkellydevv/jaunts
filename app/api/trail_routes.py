@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.models import Trail, db
+from app.models import db, Trail, tags_trails, Tag
 from app.forms import TrailForm
 from .utils import validation_errors_to_error_messages
 from flask_login import current_user, login_required
@@ -11,8 +11,23 @@ bp = Blueprint('trails', __name__)
 # GET all trails
 @bp.route('', methods=['GET'])
 def get_trails():
-    trails = Trail.query.all()
-    joins = { "user", "tags" }
+    args = request.args
+
+    searchTags = args['searchTags'].split(",") if args['searchTags'] else []
+
+    # Optionally add joined tables to returned trails
+    joins = set()
+    if args["getUser"]: joins.add("user")
+    if args["getTags"]: joins.add("tags")
+
+    # Query db with filters
+    trails = Trail.query.join(tags_trails).join(Tag)
+    trails = trails.filter(Trail.name.ilike(f"%{args['searchTerm']}%"))
+    for tag in searchTags:
+        trails = trails.filter(Trail.tags.any(Tag.name.ilike(f"{tag}")))
+    trails = trails.limit(args["limit"])
+    trails = trails.all()
+
     return { "trails": [trail.to_dict(joins) for trail in trails] }
 
 

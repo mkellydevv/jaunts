@@ -1,0 +1,15 @@
+
+#navbar {
+    width: 100%;
+    font-family: Proxima Nova, Arial, sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+    background-color: #fff;
+    height: 60px;
+    margin: 0;
+    padding: 0 10px 0 0;
+}
