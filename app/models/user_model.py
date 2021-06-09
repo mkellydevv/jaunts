@@ -11,6 +11,7 @@ class User(db.Model, UserMixin):
   hashed_password = db.Column(db.String(255), nullable = False)
 
   lists = db.relationship("List", back_populates="user")
+  photos = db.relationship("Photo", back_populates="user")
   trails = db.relationship("Trail", back_populates="user")
 
   @property

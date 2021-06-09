@@ -28,7 +28,7 @@ export default function TrailCard({ trail }) {
                     </span>
                 </div>
                 <div>
-                    <span>Length: {trail.distance} mi</span>
+                    <span>Length: {trail.length} mi</span>
                     <span> &#8226; </span>
                     <span>Est. {trail.duration_hours} h {trail.duration_minutes} m</span>
                 </div>
