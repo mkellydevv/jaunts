@@ -16,5 +16,5 @@ class TrailForm(FlaskForm):
     route_type = SelectField("route_type", choices=["loop", "out", "point"], validators=[DataRequired()])
     duration_hours = IntegerField("duration_hour", validators=[DataRequired()])
     duration_minutes = IntegerField("duration_minutes", validators=[DataRequired()])
-    default_rating = IntegerField("default_rating", validators=[DataRequired()])
+    default_rating = FloatField("default_rating", validators=[DataRequired()])
     default_weighting = IntegerField("default_weighting", validators=[DataRequired()])

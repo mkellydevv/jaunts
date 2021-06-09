@@ -16,7 +16,7 @@ export default function SplashPage() {
     useEffect(() => {
         const searchInterval = setInterval(() => {
             if (currSearch.current.length && prevSearch.current !== currSearch.current) {
-                const query = trailQuery({ searchTerm: currSearch.current });
+                const query = trailQuery({ searchTerm: currSearch.current, limit: 10 });
                 dispatch(getTrails(query, "search"));
             }
             prevSearch.current = currSearch.current;
@@ -35,8 +35,8 @@ export default function SplashPage() {
                     currSearch.current = e.target.value;
                 }}
             />
-            <TrailCardQuad tag={"views"} />
-            <TrailCardQuad tag={"river"} />
+            <TrailCardQuad tag={"camping"} />
+            <TrailCardQuad tag={"waterfall"} />
             <TrailCardQuad tag={"rocky"} />
         </div>
     )

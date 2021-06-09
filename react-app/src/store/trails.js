@@ -20,13 +20,13 @@ export const getTrails = (query={}, stateKey) => async (dispatch) => {
     }
 }
 
-const initialState = {}
+const initialState = {};
 
 export default function reducer(state=initialState, action) {
     switch (action.type) {
         case GET_TRAILS:
             const newState = { ...state };
-            if (newState[action.stateKey] === undefined)
+            if (newState[action.stateKey] === undefined || action.stateKey === "search")
                 newState[action.stateKey] = {};
             for (let trail of action.payload["trails"])
                 newState[action.stateKey][trail.id] = trail;

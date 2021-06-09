@@ -31,7 +31,7 @@ class Trail(db.Model):
     route_type = db.Column(db.Enum(RouteEnum), nullable=False)
     duration_hours = db.Column(db.Integer, nullable=False)
     duration_minutes = db.Column(db.Integer, nullable=False)
-    default_rating = db.Column(db.Integer, nullable=False)
+    default_rating = db.Column(db.Float, nullable=False)
     default_weighting = db.Column(db.Integer, nullable=False)
 
     jaunts = db.relationship("Jaunt", back_populates="trail")

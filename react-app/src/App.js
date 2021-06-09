@@ -20,10 +20,11 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    (async() => {
+    const load = async () => {
       await dispatch(authenticate());
       setLoaded(true);
-    })();
+    };
+    load();
   }, []);
 
   useEffect(() => {
