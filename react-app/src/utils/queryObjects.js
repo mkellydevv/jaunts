@@ -2,6 +2,7 @@ export function trailQuery(args={}) {
     const query = {
         searchTerm: "",
         searchTags: [],
+        offset: 0,
         limit: 10,
         getUser: "",
         getTags: "",

@@ -21,12 +21,14 @@ def get_trails():
     if args["getTags"]: joins.add("tags")
 
     # Query db with filters
-    trails = Trail.query.join(tags_trails).join(Tag)
-    trails = trails.filter(Trail.name.ilike(f"%{args['searchTerm']}%"))
+    query = Trail.query
+    query = query.filter(Trail.name.ilike(f"%{args['searchTerm']}%"))
     for tag in searchTags:
-        trails = trails.filter(Trail.tags.any(Tag.name.ilike(f"{tag}")))
-    trails = trails.limit(args["limit"])
-    trails = trails.all()
+        query = query.filter(Trail.tags.any(Tag.name.ilike(f"{tag}")))
+    query = query.offset(int(args['offset']) * int(args['limit']))
+    query = query.limit(int(args['limit']))
+
+    trails = query.all()
 
     return { "trails": [trail.to_dict(joins) for trail in trails] }
 

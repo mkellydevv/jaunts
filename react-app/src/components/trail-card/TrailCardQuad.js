@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getTrails } from "../../store/trails";
 import { trailQuery } from "../../utils/queryObjects";
-import TrailCard from "../TrailCard";
+import TrailCard from "./TrailCard";
+
+import "./TrailCardQuad.css";
 
 export default function TrailCardQuad({ tag }) {
     const dispatch = useDispatch();
@@ -14,14 +16,16 @@ export default function TrailCardQuad({ tag }) {
     }, [dispatch]);
 
     return (
-        <>
-            <div>{tag} Quad</div>
-            {trails && Object.keys(trails).map(key => {
-                return (
-                    <TrailCard trail={trails[key]} key={`TrailCard__${tag}-${key}`}/>
-                )
-            })}
-        </>
+        <div className="quad">
+            <h2>{tag} Quad</h2>
+            <div className="quad__card-container">
+                {trails && Object.keys(trails).map(key => {
+                    return (
+                        <TrailCard trail={trails[key]} key={`TrailCard__${tag}-${key}`}/>
+                    )
+                })}
+            </div>
+        </div>
     )
 }
 

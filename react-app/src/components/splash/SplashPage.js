@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTrails } from "../../store/trails";
 import { trailQuery } from "../../utils/queryObjects";
 
-import TrailCardQuad from "./TrailCardQuad";
+import TrailCardQuad from "../trail-card/TrailCardQuad";
 
+import "./SplashPage.css"
 
 export default function SplashPage() {
     const currSearch = useRef("")
@@ -27,7 +28,7 @@ export default function SplashPage() {
     }, [dispatch]);
 
     return (
-        <>
+        <div className="splash-page">
             <input
                 placeholder="Search by region, state, or trail name"
                 onChange={e => {
@@ -37,6 +38,6 @@ export default function SplashPage() {
             <TrailCardQuad tag={"views"} />
             <TrailCardQuad tag={"river"} />
             <TrailCardQuad tag={"rocky"} />
-        </>
+        </div>
     )
 }

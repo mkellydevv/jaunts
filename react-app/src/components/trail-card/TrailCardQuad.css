@@ -1,0 +1,9 @@
+
+.quad {
+    width:100%;
+}
+
+.quad__card-container {
+    display: grid;
+    grid-template-columns: repeat(4,25%);
+}
