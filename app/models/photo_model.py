@@ -7,7 +7,7 @@ class Photo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     trail_id = db.Column(db.Integer, db.ForeignKey("trails.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    url = db.Column(db.String, nullable=False, unique=True)
+    url = db.Column(db.String, nullable=False)
 
     trail = db.relationship("Trail", back_populates="photos")
     user = db.relationship("User", back_populates="photos")

@@ -4,8 +4,10 @@ export function trailQuery(args={}) {
         searchTags: [],
         offset: 0,
         limit: 10,
-        getUser: "",
+        getJaunts: "",
+        getPhotos: "",
         getTags: "",
+        getUser: "",
     }
     for (let key in args)
         query[key] = args[key]

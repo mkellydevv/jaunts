@@ -12,7 +12,9 @@ export default function TrailCard({ trail }) {
 
     return (
         <div className="trail-card">
-            <div>Trail Card</div>
+            <div className="trail-card__img-container">
+                <img className="trail-card__img" src={trail.photos[0].url.replace("extra_", "")} />
+            </div>
             <div className="trail-card__content">
                 <div className="trail-card__name trail-card__font">{trail.name}</div>
                 <div className=".trail-card__font">{trail.region}</div>

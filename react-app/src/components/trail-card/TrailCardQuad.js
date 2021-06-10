@@ -12,7 +12,7 @@ export default function TrailCardQuad({ tag }) {
     const trails = useSelector(state => state["trails"][tag]);
 
     useEffect(() => {
-        dispatch((getTrails(trailQuery({searchTags: [tag], limit: 4}), tag)));
+        dispatch((getTrails(trailQuery({searchTags: [tag], limit: 4, getPhotos: true}), tag)));
     }, [dispatch]);
 
     return (

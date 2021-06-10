@@ -17,8 +17,9 @@ def get_trails():
 
     # Optionally add joined tables to returned trails
     joins = set()
-    if args["getUser"]: joins.add("user")
+    if args["getPhotos"]: joins.add("photos")
     if args["getTags"]: joins.add("tags")
+    if args["getUser"]: joins.add("user")
 
     # Query db with filters
     query = Trail.query
