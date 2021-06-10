@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
+import { authenticate } from "./store/session";
+import { getTrails } from "./store/trails";
+
 import LoginForm from "./components/auth/LoginForm";
 import SignUpForm from "./components/auth/SignUpForm";
-import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import UsersList from "./components/UsersList";
-import User from "./components/User";
-import { authenticate } from "./store/session";
+import UsersList from "./components/user/UsersList";
+import User from "./components/user/User";
+
+import NavBar from "./components/nav/NavBar";
+import SplashPage from "./components/splash/SplashPage"
 
 function App() {
   const user = useSelector(state => state.session.user)
@@ -15,11 +20,16 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    (async() => {
+    const load = async () => {
       await dispatch(authenticate());
       setLoaded(true);
-    })();
+    };
+    load();
   }, []);
+
+  useEffect(() => {
+    // dispatch(getTrails())
+  }, [dispatch])
 
   if (!loaded) {
     return null;
@@ -29,6 +39,9 @@ function App() {
     <BrowserRouter>
       <NavBar />
       <Switch>
+        <Route path="/" exact={true} >
+          <SplashPage />
+        </Route>
         <Route path="/login" exact={true}>
           <LoginForm />
         </Route>
@@ -40,9 +53,6 @@ function App() {
         </ProtectedRoute>
         <ProtectedRoute path="/users/:userId" exact={true} >
           <User />
-        </ProtectedRoute>
-        <ProtectedRoute path="/" exact={true} >
-          <h1>My Home Page</h1>
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>

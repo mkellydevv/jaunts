@@ -1,6 +1,6 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
-from .trail_seed import seed_trails, undo_trails
+from .tags_trails_seed import seed_tags_trails, undo_tags_trails
 
 # Creates a seed group to hold our commands
 # So we can type `flask seed --help`
@@ -10,12 +10,10 @@ seed_commands = AppGroup('seed')
 @seed_commands.command('all')
 def seed():
     seed_users()
-    seed_trails()
-    # Add other seed functions here
+    seed_tags_trails()
 
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')
 def undo():
     undo_users()
-    undo_trails()
-    # Add other undo functions here
+    undo_tags_trails()
