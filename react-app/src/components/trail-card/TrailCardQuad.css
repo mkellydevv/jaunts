@@ -1,9 +1,11 @@
 
-.quad {
-    width:100%;
+.card-quad {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 16px;
 }
 
-.quad__card-container {
+.card-quad__container {
     display: grid;
     grid-template-columns: repeat(4,25%);
 }

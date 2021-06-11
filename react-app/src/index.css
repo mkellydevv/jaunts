@@ -2,4 +2,6 @@
 
 body {
     background-color: rgb(242, 242, 242);
+    margin: 0px;
+    box-sizing: border-box;
 }

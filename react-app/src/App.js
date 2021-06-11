@@ -12,7 +12,9 @@ import UsersList from "./components/user/UsersList";
 import User from "./components/user/User";
 
 import NavBar from "./components/nav/NavBar";
-import SplashPage from "./components/splash/SplashPage"
+import SplashPage from "./components/splash/SplashPage";
+import TrailPage from "./components/trail/TrailPage";
+
 
 function App() {
   const user = useSelector(state => state.session.user)
@@ -47,6 +49,9 @@ function App() {
         </Route>
         <Route path="/sign-up" exact={true}>
           <SignUpForm />
+        </Route>
+        <Route path="/trails/:id" exact={true}>
+          <TrailPage />
         </Route>
         <ProtectedRoute path="/users" exact={true} >
           <UsersList/>
