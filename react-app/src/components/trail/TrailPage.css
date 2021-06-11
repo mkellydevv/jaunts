@@ -1,0 +1,10 @@
+
+.trail-page__content {
+    display: grid;
+    grid-template-columns: 75% 25%;
+}
+
+.trail-page__details {
+    display: flex;
+    justify-content: space-evenly;
+}

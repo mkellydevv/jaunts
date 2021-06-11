@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from sqlalchemy import or_
 from app.models import db, Trail, tags_trails, Tag
 from app.forms import TrailForm
 from .utils import validation_errors_to_error_messages
@@ -13,16 +14,24 @@ bp = Blueprint('trails', __name__)
 def get_trails():
     args = request.args
 
+    searchCats = args['searchCategories'].split(",") if args['searchCategories'] else []
     searchTags = args['searchTags'].split(",") if args['searchTags'] else []
 
     # Optionally add joined tables to returned trails
     joins = set()
-    if args["getUser"]: joins.add("user")
+    if args["getJaunts"]: joins.add("jaunts")
+    if args["getPhotos"]: joins.add("photos")
     if args["getTags"]: joins.add("tags")
+    if args["getUser"]: joins.add("user")
 
     # Query db with filters
     query = Trail.query
-    query = query.filter(Trail.name.ilike(f"%{args['searchTerm']}%"))
+    query = query.filter(
+        or_(
+            Trail.name.ilike(f"%{args['searchTerm']}%"),
+            Trail.region.ilike(f"%{args['searchTerm']}%") if "region" in searchCats else False
+        )
+    )
     for tag in searchTags:
         query = query.filter(Trail.tags.any(Tag.name.ilike(f"{tag}")))
     query = query.offset(int(args['offset']) * int(args['limit']))
@@ -36,8 +45,17 @@ def get_trails():
 # GET a trail
 @bp.route('/<int:id>', methods=['GET'])
 def get_trail(id):
+    args = request.args
+
+    # Optionally add joined tables to returned trails
+    joins = set()
+    if args["getJaunts"]: joins.add("jaunts")
+    if args["getPhotos"]: joins.add("photos")
+    if args["getTags"]: joins.add("tags")
+    if args["getUser"]: joins.add("user")
+
     trail = Trail.query.get(id)
-    joins = { "user" }
+
     return trail.to_dict(joins)
 
 

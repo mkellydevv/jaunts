@@ -6,28 +6,29 @@ import { trailQuery } from "../../utils/queryObjects";
 
 import TrailCard from "./TrailCard";
 
-import "./TrailCardQuad.css";
+import "./TrailCardList.css";
 
-export default function TrailCardQuad({ tag }) {
+export default function TrailCardList({ trail }) {
     const dispatch = useDispatch();
-    const trails = useSelector(state => state["trails"][tag]);
+    const trails = useSelector(state => state["trails"]["nearby"])
 
     useEffect(() => {
         const query = trailQuery({
-            searchTags: [tag],
-            limit: 4,
+            searchTerm: trail.region,
+            searchCategories: ["region"],
+            limit: 10,
             getPhotos: true,
         });
-        dispatch(getTrails(trailQuery(query), tag));
+        dispatch(getTrails(query, "nearby"));
     }, [dispatch]);
 
     return (
-        <div className="card-quad">
-            <h2>{tag} Quad</h2>
-            <div className="card-quad__container">
+        <div className="card-list">
+            <h2>Trail List</h2>
+            <div className="card-list__container">
                 {trails && Object.keys(trails).map(key => {
                     return (
-                        <TrailCard trail={trails[key]} key={`TrailCard__${tag}-${key}`}/>
+                        <TrailCard trail={trails[key]} key={`TrailCard__nearby-${key}`}/>
                     )
                 })}
             </div>

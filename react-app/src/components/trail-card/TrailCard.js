@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 import "./TrailCard.css";
 
@@ -9,10 +10,15 @@ const map = {
 }
 
 export default function TrailCard({ trail }) {
+    const history = useHistory();
 
     return (
-        <div className="trail-card">
-            <div>Trail Card</div>
+        <div className="trail-card" onClick={() => {
+            history.push(`/trails/${trail.id}`);
+        }}>
+            <div className="trail-card__img-container">
+                <img className="trail-card__img" src={trail.photos[0].url.replace("extra_", "")} />
+            </div>
             <div className="trail-card__content">
                 <div className="trail-card__name trail-card__font">{trail.name}</div>
                 <div className=".trail-card__font">{trail.region}</div>
@@ -24,7 +30,7 @@ export default function TrailCard({ trail }) {
                         {trail.default_rating}
                     </span>
                     <span className="trail-card__count">
-                        {trail.default_weighting}
+                        {`\(${trail.default_weighting}\)`}
                     </span>
                 </div>
                 <div>

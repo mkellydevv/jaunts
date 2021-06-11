@@ -45,9 +45,10 @@ driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () =>
 
 # Login to gain access to map data
 def login(driver):
-    if len(sys.argv) < 2:
-        print("Login requires email and password as command line args")
-        return
+    if len(sys.argv) < 3:
+        print("Error: Login requires email and password as command line args")
+        driver.close()
+        exit()
 
     # Navigate to main page and wait
     driver.get(URL)
@@ -58,8 +59,8 @@ def login(driver):
     time.sleep(5)
 
     # Enter login info and submit
-    driver.find_element(By.NAME, 'userEmail').send_keys(sys.argv[0])
-    driver.find_element(By.NAME, 'userPassword').send_keys(sys.argv[1])
+    driver.find_element(By.NAME, 'userEmail').send_keys(sys.argv[1])
+    driver.find_element(By.NAME, 'userPassword').send_keys(sys.argv[2])
     driver.find_element(By.XPATH, '//*[@id="login-form"]/div/div/div[2]/form/input').click()
     time.sleep(10)
 
@@ -81,6 +82,15 @@ def load_trail_info(state="virginia"):
 def load_trail_links(state="virginia"):
     # Read lines from file and chop off \n char
     with open(f"./states/{state}/links.txt", 'r') as file:
+        lines = file.readlines()
+        for i, line in enumerate(lines):
+            lines[i] = line[:len(line)-1]
+        return lines
+
+# Load img links from a state's img_links.txt file
+def load_trail_img_links(state="virginia"):
+    # Read lines from file and chop off \n char
+    with open(f"./states/{state}/img_links.txt", 'r') as file:
         lines = file.readlines()
         for i, line in enumerate(lines):
             lines[i] = line[:len(line)-1]
@@ -175,7 +185,6 @@ def scrape_trail_info(driver, state="virginia", start_index=0, limit=1):
         for trail in info:
             file.write(str(info[trail]) + "\n")
 
-
 def scrape_trail_track_data(driver):
     el = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[2]/ul/div')
     ActionChains(driver).move_to_element(el).perform()
@@ -187,7 +196,6 @@ def scrape_trail_track_data(driver):
     time.sleep(5)
     driver.find_element(By.XPATH, '//*[@id="map-download-modal"]/div/div[3]/div/button[2]').click()
     time.sleep(5)
-
 
 def scrape_trail_images(driver, state, data, limit=3):
     name = data["name"]
@@ -204,6 +212,35 @@ def scrape_trail_images(driver, state, data, limit=3):
         url = photos[j].get_attribute("href")
         urllib.request.urlretrieve(url, f"./states/{state}/img/{name}/{j}.jpg")
 
+# Scrape just img links from all trails in links.txt
+def scrape_trail_img_links(driver, state, start_index=0, limit=1, img_limit=10):
+    links = load_trail_links(state)
+    img_links = load_trail_img_links(state)
+
+    time.sleep(5)
+
+    i = start_index
+    end = min(start_index + limit, len(links))
+    while i < end:
+        link = links[i]
+
+        driver.get(link.replace("?ref=result-card", "/photos"))
+        time.sleep(8)
+
+        urls = []
+        photos = driver.find_elements_by_class_name("photo-item.gallery.sm")
+        for j in range(img_limit):
+            urls.append(photos[j].get_attribute("href"))
+
+        img_links.append(urls)
+
+        print("    scraped", i, link)
+        i += 1
+
+    # Insert packaged info data into txt file
+    with open(f'./states/{state}/img_links.txt', 'w') as file:
+        for lst in img_links:
+            file.write(str(lst) + "\n")
 
 # Calculates expected amount of time to complete a trail using "Naismith's rule"
 def calculate_duration(length, elevation_gain):
@@ -212,6 +249,7 @@ def calculate_duration(length, elevation_gain):
 
 # scrape_trail_links(driver, STATES["va"])
 
-login(driver)
-scrape_trail_info(driver, STATES["va"], 90, 10)
+# login(driver)
+scrape_trail_img_links(driver, STATES["va"], 80, 20, 10)
+# scrape_trail_info(driver, STATES["va"], 90, 10)
 # pp.pprint(load_trail_info())

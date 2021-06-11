@@ -7,8 +7,6 @@ dct = {
 }
 
 def seed_tags_trails():
-    undo_tags_trails()
-
     with open('selenium/states/virginia/info.txt') as f:
         lines = f.readlines()
         tag_dict = {}

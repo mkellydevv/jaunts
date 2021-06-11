@@ -66,6 +66,9 @@ class Trail(db.Model):
         if "jaunts" in joins:
             dct["jaunts"] = [jaunt.to_dict() for jaunt in self.jaunts]
 
+        if "photos" in joins:
+            dct["photos"] = [photo.to_dict() for photo in self.photos]
+
         if "tags" in joins:
             dct["tags"] = [tag.to_dict() for tag in self.tags]
 
