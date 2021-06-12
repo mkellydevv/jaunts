@@ -1,11 +1,34 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
 
 import StarRating from "../random/StarRating";
+import { createJaunt } from "../../store/jaunts";
 
 import "./ReviewModal.css"
 
-export default function ReviewModal({ trail }) {
-    const [rating, setRating] = useState(3);
+export default function ReviewModal({ trail, close }) {
+    const dispatch = useDispatch();
+    const [rating, setRating] = useState(0);
+    const [date, setDate] = useState("");
+    const [errors, setErrors] = useState("");
+
+    const handleSubmit = async (e) => {
+        const jaunt = {
+            trail_id: trail.id,
+            list_id: 1,
+            completed: true,
+            review: "bungus",
+            rating,
+            start_date:date
+        }
+        const data = await dispatch(createJaunt(jaunt));
+        if (data.errors) {
+            setErrors(data.errors);
+            console.log("Errors:", data.errors)
+        }
+        else
+            close();
+    }
 
     return (
         <>
@@ -25,10 +48,16 @@ export default function ReviewModal({ trail }) {
                 <input
                     type="date"
                     placeholder="Start Date"
+                    onChange={e => setDate(e.target.value)}
                 />
             </div>
             <div>
-                <button className="review-modal__submit">Submit</button>
+                <button
+                    className="review-modal__submit"
+                    onClick={handleSubmit}
+                >
+                    Submit
+                </button>
             </div>
         </>
     )

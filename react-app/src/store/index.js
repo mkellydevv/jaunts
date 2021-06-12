@@ -2,12 +2,13 @@ import {createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import session from "./session";
 import trails from "./trails";
+import jaunts from "./jaunts";
 
 const rootReducer = combineReducers({
     session,
-    trails
+    trails,
+    jaunts
 });
-
 
 let enhancer;
 

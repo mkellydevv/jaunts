@@ -82,7 +82,7 @@ export default function SplashPage() {
         </div>
         {showReview && trail &&
             <Modal close={()=>setShowReview(false)}>
-                <ReviewModal trail={trail}/>
+                <ReviewModal trail={trail} close={()=>setShowReview(false)} />
             </Modal>
         }
     </>
