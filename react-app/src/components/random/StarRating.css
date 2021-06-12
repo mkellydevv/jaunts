@@ -1,0 +1,19 @@
+
+.star-rating, .star-rating__star {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.star-rating i {
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.star-rating__star i.highlight {
+    color: #ffb400;
+}
+
+.star-rating__star input {
+    display: none;
+}
