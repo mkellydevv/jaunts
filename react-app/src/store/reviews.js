@@ -1,13 +1,13 @@
 
-const ADD_JAUNT = "jaunts/ADD_JAUNT";
+const ADD_REVIEW = "reviews/ADD_REVIEW";
 
-const _addJaunt = payload => ({
-    type: ADD_JAUNT,
+const _addReview = payload => ({
+    type: ADD_REVIEW,
     payload
 })
 
-export const createJaunt = payload => async (dispatch) => {
-    const res = await fetch(`/api/jaunts`, {
+export const createReview = payload => async (dispatch) => {
+    const res = await fetch(`/api/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -16,7 +16,7 @@ export const createJaunt = payload => async (dispatch) => {
     });
     const data = await res.json();
     if (res.ok)
-        dispatch(_addJaunt(data));
+        dispatch(_addReview(data));
     return data;
 }
 
@@ -25,7 +25,7 @@ const initialState = {};
 export default function reducer(state=initialState, action) {
     const newState = { ...state };
     switch (action.type) {
-        case ADD_JAUNT:
+        case ADD_REVIEW:
             newState[action.payload.id] = action.payload;
             return newState;
         default:

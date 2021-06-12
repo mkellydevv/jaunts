@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTrailById, clearTrails } from "../../store/trails";
 import { trailQuery } from "../../utils/queryObjects";
 
+import ReviewList from "../review/ReviewList";
 import TrailCardList from "../trail-card/TrailCardList";
 import Modal from "../Modal";
 import ReviewModal from "./ReviewModal";
@@ -26,7 +27,7 @@ export default function SplashPage() {
 
     useEffect(() => {
         dispatch(getTrailById(id, trailQuery({
-            getJaunts: true,
+            getReviews: true,
             getPhotos: true,
             getTags: true,
         })))
@@ -70,13 +71,13 @@ export default function SplashPage() {
                         </span>
                     </div>
                     <div className="trail-page__reviews">
-                        Reviews
+                        {trail && <ReviewList trail={trail} />}
                     </div>
                 </div>
 
                 <div className="trail-page__extra">
                     <h2>Nearby Trails</h2>
-                    {trail && <TrailCardList trail={trail}/>}
+                    {trail && <TrailCardList trail={trail} />}
                 </div>
             </div>
         </div>

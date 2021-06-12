@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 
 import StarRating from "../random/StarRating";
-import { createJaunt } from "../../store/jaunts";
+import { createReview } from "../../store/reviews";
 
 import "./ReviewModal.css"
 
@@ -13,15 +13,14 @@ export default function ReviewModal({ trail, close }) {
     const [errors, setErrors] = useState("");
 
     const handleSubmit = async (e) => {
-        const jaunt = {
+        const review = {
             trail_id: trail.id,
-            list_id: 1,
-            completed: true,
-            review: "bungus",
+            user_id: 1,
             rating,
-            start_date:date
+            blurb: "bungus",
+            date
         }
-        const data = await dispatch(createJaunt(jaunt));
+        const data = await dispatch(createReview(review));
         if (data.errors) {
             setErrors(data.errors);
             console.log("Errors:", data.errors)
@@ -38,7 +37,7 @@ export default function ReviewModal({ trail, close }) {
             </div>
             <div>
                 <input
-                    className="review-modal__review"
+                    className="review-modal__blurb"
                     type="textarea"
                     placeholder="Share your thoughts about the trail so others know what to expect."
                 />
