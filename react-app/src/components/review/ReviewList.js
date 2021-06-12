@@ -1,27 +1,27 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { clearReviews, getReviewsByTrailId } from "../../store/reviews";
+import { reviewQuery } from "../../utils/queryObjects";
 import Review from "./Review";
 
 import "./ReviewList.css";
 
 export default function ReviewList({ trail }) {
     const dispatch = useDispatch();
-    const reviews = useSelector(state => state["jaunts"]);
+    const reviews = useSelector(state => state["reviews"]);
 
-    // useEffect(() => {
-    //     const query = trailQuery({
-    //         searchTerm: trail.region,
-    //         searchCategories: ["region"],
-    //         limit: 10,
-    //         getPhotos: true,
-    //     });
-    //     dispatch(getTrails(query, "nearby"));
+    useEffect(() => {
+        const query = reviewQuery({
+            fromTrailId: trail.id,
+            getUser: true
+        });
+        dispatch(getReviewsByTrailId(query));
 
-    //     return () => {
-    //         dispatch(clearTrails("nearby"))
-    //     }
-    // }, [dispatch]);
+        return () => {
+            dispatch(clearReviews());
+        }
+    }, [dispatch]);
 
     return (
         <div className="review-list">

@@ -11,8 +11,20 @@ bp = Blueprint('reviews', __name__)
 # GET all reviews
 @bp.route('', methods=['GET'])
 def get_reviews():
-    reviews = Review.query.all()
-    joins = { "trail", "list" }
+    args = request.args
+
+    # Optionally add joined tables to returned trails
+    joins = set()
+    if args["getUser"]: joins.add("user")
+
+    # Query db with filters
+    query = Review.query
+    query = query.filter(Review.trail_id == args["fromTrailId"])
+    query = query.offset(int(args['offset']) * int(args['limit']))
+    query = query.limit(int(args['limit']))
+
+    reviews = query.all()
+
     return {"reviews": [review.to_dict(joins) for review in reviews] }
 
 

@@ -8,7 +8,7 @@ import { trailQuery } from "../../utils/queryObjects";
 import ReviewList from "../review/ReviewList";
 import TrailCardList from "../trail-card/TrailCardList";
 import Modal from "../Modal";
-import ReviewModal from "./ReviewModal";
+import ReviewModal from "../review/ReviewModal";
 
 import "./TrailPage.css"
 
@@ -27,7 +27,6 @@ export default function SplashPage() {
 
     useEffect(() => {
         dispatch(getTrailById(id, trailQuery({
-            getReviews: true,
             getPhotos: true,
             getTags: true,
         })))
