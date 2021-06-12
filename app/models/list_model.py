@@ -9,7 +9,6 @@ class List(db.Model):
     name = db.Column(db.String, nullable=False)
     blurb = db.Column(db.Text)
 
-    jaunts = db.relationship("Jaunt", back_populates="_list")
     user = db.relationship("User", back_populates="lists")
 
     def to_dict(self, joins={}):
@@ -19,9 +18,6 @@ class List(db.Model):
             "name": self.name,
             "blurb": self.blurb
         }
-
-        if "jaunts" in joins:
-            dct["user"] = self.user.to_dict()
 
         if "user" in joins:
             dct["user"] = self.user.to_dict()

@@ -12,6 +12,7 @@ class User(db.Model, UserMixin):
 
   lists = db.relationship("List", back_populates="user")
   photos = db.relationship("Photo", back_populates="user")
+  reviews = db.relationship("Review", back_populates="user")
   trails = db.relationship("Trail", back_populates="user")
 
   @property

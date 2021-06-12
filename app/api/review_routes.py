@@ -1,79 +1,76 @@
 from flask import Blueprint, request
-from app.models import Jaunt, List, db
-from app.forms import JauntForm
+from app.models import Review, List, db
+from app.forms import ReviewForm
 from .utils import validation_errors_to_error_messages
 from flask_login import login_required
 
 
-bp = Blueprint('jaunts', __name__)
+bp = Blueprint('reviews', __name__)
 
 
-# GET all jaunts
+# GET all reviews
 @bp.route('', methods=['GET'])
-def get_jaunts():
-    jaunts = Jaunt.query.all()
+def get_reviews():
+    reviews = Review.query.all()
     joins = { "trail", "list" }
-    return {"jaunts": [jaunt.to_dict(joins) for jaunt in jaunts] }
+    return {"reviews": [review.to_dict(joins) for review in reviews] }
 
 
-# GET a jaunt
+# GET a review
 @bp.route('/<int:id>', methods=['GET'])
-def get_jaunt(id):
-    jaunt = Jaunt.query.get(id)
+def get_review(id):
+    review = Review.query.get(id)
     joins = { "trail", "list" }
-    return jaunt.to_dict(joins)
+    return review.to_dict(joins)
 
 
-# POST a jaunt
+# POST a review
 @bp.route('', methods=['POST'])
 # @login_required
-def post_jaunt():
-    form = JauntForm()
+def post_review():
+    form = ReviewForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
-        jaunt = Jaunt(
+        review = Review(
             trail_id=data["trail_id"],
-            list_id=data["list_id"],
-            completed=data["completed"],
-            review=data["review"],
+            user_id=data["user_id"],
             rating=data["rating"],
             blurb=data["blurb"],
-            start_date=data["start_date"],
-            end_date=data["end_date"]
+            date=data["date"]
         )
-        db.session.add(jaunt)
+        db.session.add(review)
         db.session.commit()
-        return jaunt.to_dict()
+        return review.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
 
-# PATCH a jaunt
+# PATCH a review
 @bp.route('/<int:id>', methods=['PATCH'])
 # @login_required
-def patch_jaunt(id):
-    jaunt = Jaunt.query.get(id)
-    lst = List.query.get(jaunt.list_id)
+def patch_review(id):
+    review = Review.query.get(id)
+    lst = List.query.get(review.list_id)
     if current_user.id == lst.user_id:
         data = request.json
         for key in data:
-            setattr(jaunt, key, data[key])
+            setattr(review, key, data[key])
         db.session.commit()
-        return jaunt.to_dict()
+        return review.to_dict()
     else:
         return {"errors": "Unauthorized"}
 
 
-# DELETE a jaunt
+# DELETE a review
 @bp.route('/<int:id>', methods=['DELETE'])
 # @login_required
-def delete_jaunt(id):
-    jaunt = Jaunt.query.get(id)
-    lst = List.query.get(jaunt.list_id)
+def delete_review(id):
+    review = Review.query.get(id)
+    lst = List.query.get(review.list_id)
     if current_user.id == lst.user_id:
-        db.session.delete(jaunt)
+        db.session.delete(review)
         db.session.commit()
-        return jaunt.to_dict()
+        return review.to_dict()
     else:
         return {"errors": "Unauthorized"}

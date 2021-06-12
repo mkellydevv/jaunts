@@ -5,7 +5,7 @@ export function trailQuery(args={}) {
         searchTags: [],
         offset: 0,
         limit: 10,
-        getJaunts: "",
+        getReviews: "",
         getPhotos: "",
         getTags: "",
         getUser: "",

@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getTrailById } from "../../store/trails";
+import { getTrailById, clearTrails } from "../../store/trails";
 import { trailQuery } from "../../utils/queryObjects";
 
+import ReviewList from "../review/ReviewList";
 import TrailCardList from "../trail-card/TrailCardList";
 import Modal from "../Modal";
 import ReviewModal from "./ReviewModal";
@@ -26,10 +27,14 @@ export default function SplashPage() {
 
     useEffect(() => {
         dispatch(getTrailById(id, trailQuery({
-            getJaunts: true,
+            getReviews: true,
             getPhotos: true,
             getTags: true,
         })))
+
+        return () => {
+            dispatch(clearTrails("current"));
+        }
       }, [dispatch])
 
     return (
@@ -66,19 +71,19 @@ export default function SplashPage() {
                         </span>
                     </div>
                     <div className="trail-page__reviews">
-                        Reviews
+                        {trail && <ReviewList trail={trail} />}
                     </div>
                 </div>
 
                 <div className="trail-page__extra">
                     <h2>Nearby Trails</h2>
-                    {trail && <TrailCardList trail={trail}/>}
+                    {trail && <TrailCardList trail={trail} />}
                 </div>
             </div>
         </div>
         {showReview && trail &&
             <Modal close={()=>setShowReview(false)}>
-                <ReviewModal trail={trail}/>
+                <ReviewModal trail={trail} close={()=>setShowReview(false)} />
             </Modal>
         }
     </>

@@ -34,7 +34,7 @@ class Trail(db.Model):
     default_rating = db.Column(db.Float, nullable=False)
     default_weighting = db.Column(db.Integer, nullable=False)
 
-    jaunts = db.relationship("Jaunt", back_populates="trail")
+    reviews = db.relationship("Review", back_populates="trail")
     photos = db.relationship("Photo", back_populates="trail")
     user = db.relationship("User", back_populates="trails")
 
@@ -63,8 +63,8 @@ class Trail(db.Model):
             "default_weighting": self.default_weighting,
         }
 
-        if "jaunts" in joins:
-            dct["jaunts"] = [jaunt.to_dict() for jaunt in self.jaunts]
+        if "reviews" in joins:
+            dct["reviews"] = [review.to_dict() for review in self.reviews]
 
         if "photos" in joins:
             dct["photos"] = [photo.to_dict() for photo in self.photos]

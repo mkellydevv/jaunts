@@ -41,8 +41,8 @@ export default function SplashPage() {
     return (
         <div className="splash-page">
             <HeroCarousel />
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
+            <div className="search-bar">
+                <i className="fas fa-search" />
                 <input
                     className="search-bar__input"
                     placeholder="Search by region, state, or trail name"
@@ -55,7 +55,7 @@ export default function SplashPage() {
                     }}
                 />
                 <button className="search-bar__submit" onClick={submit}>
-                    <i class="fas fa-arrow-right"></i>
+                    <i className="fas fa-arrow-right" />
                 </button>
             </div>
             <TrailCardQuad tag={"camping"} />

@@ -15,7 +15,7 @@
     max-height: 72px;
 }
 
-.review-modal__review {
+.review-modal__blurb {
     border-radius: 8px;
     border: 1px solid #e6e6e6;
     box-sizing: border-box;
@@ -30,7 +30,7 @@
 }
 
 
-.review-modal__next {
+.review-modal__submit {
     background-color: #428a13;
     color: #fff;
     font-weight: 700;

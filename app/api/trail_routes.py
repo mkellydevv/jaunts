@@ -19,7 +19,7 @@ def get_trails():
 
     # Optionally add joined tables to returned trails
     joins = set()
-    if args["getJaunts"]: joins.add("jaunts")
+    if args["getReviews"]: joins.add("reviews")
     if args["getPhotos"]: joins.add("photos")
     if args["getTags"]: joins.add("tags")
     if args["getUser"]: joins.add("user")
@@ -49,7 +49,7 @@ def get_trail(id):
 
     # Optionally add joined tables to returned trails
     joins = set()
-    if args["getJaunts"]: joins.add("jaunts")
+    if args["getReviews"]: joins.add("reviews")
     if args["getPhotos"]: joins.add("photos")
     if args["getTags"]: joins.add("tags")
     if args["getUser"]: joins.add("user")
