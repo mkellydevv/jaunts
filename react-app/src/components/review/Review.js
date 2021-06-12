@@ -1,9 +1,25 @@
-import React from 'react'
-import StarRating from '../random/StarRating'
+import React, { useState} from "react"
+import { useSelector, useDispatch } from "react-redux";
+
+import StarRating from "../random/StarRating";
+import { removeReview } from "../../store/reviews";
 
 import "./Review.css"
 
 export default function Review({ review, open }) {
+    const { user } = useSelector(state => state.session);
+    const dispatch = useDispatch();
+    const [errors, setErrors] = useState("");
+
+    const handleDelete = async (e) => {
+        const data = await dispatch(removeReview(review.id));
+
+        if (data.errors) {
+            setErrors(data.errors);
+            console.log("Errors:", data.errors)
+        }
+    }
+
     return (
         <div className="review">
             <div className="review__user-container">
@@ -21,10 +37,10 @@ export default function Review({ review, open }) {
             <div>
                 {review.blurb}
             </div>
-            <div>
+            {user && user.id === review.user_id && <div>
                 <button onClick={() => open(review)}>Edit</button>
-                <button>Delete</button>
-            </div>
+                <button onClick={handleDelete}>Delete</button>
+            </div>}
         </div>
     )
 }

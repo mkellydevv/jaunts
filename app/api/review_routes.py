@@ -85,7 +85,7 @@ def patch_review(id):
 
         return review.to_dict(joins)
     else:
-        return {"errors": "Unauthorized"}
+        return {"errors": "Unauthorized"}, 401
 
 
 # DELETE a review
@@ -93,10 +93,9 @@ def patch_review(id):
 # @login_required
 def delete_review(id):
     review = Review.query.get(id)
-    lst = List.query.get(review.list_id)
-    if current_user.id == lst.user_id:
+    if current_user.id == review.user_id:
         db.session.delete(review)
         db.session.commit()
-        return review.to_dict()
+        return {}
     else:
-        return {"errors": "Unauthorized"}
+        return {"errors": "Unauthorized"}, 401

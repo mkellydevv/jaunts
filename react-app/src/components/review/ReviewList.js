@@ -27,7 +27,7 @@ export default function ReviewList({ trail, open }) {
         <div className="review-list">
             <h2>Review List</h2>
             <div className="review-list__container">
-                {reviews && Object.keys(reviews).map(key => {
+                {reviews && Object.keys(reviews).reverse().map(key => {
                     return (
                         <Review review={reviews[key]} open={open} key={`Review-${key}`}/>
                     )

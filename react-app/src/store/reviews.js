@@ -2,6 +2,7 @@
 const ADD_REVIEW = "reviews/ADD_REVIEW";
 const ADD_REVIEWS = "reviews/ADD_REVIEWS";
 const CLEAR_REVIEWS = "trails/CLEAR_REVIEWS";
+const REMOVE_REVIEW = "trails/REMOVE_REVIEW";
 
 const _addReview = payload => ({
     type: ADD_REVIEW,
@@ -16,6 +17,24 @@ const _addReviews = payload => ({
 const _clearReviews = () => ({
     type: CLEAR_REVIEWS
 })
+
+const _removeReview = payload => ({
+    type: REMOVE_REVIEW,
+    payload
+})
+
+export const getReviewsByTrailId = query => async (dispatch) => {
+    let url = `/api/reviews?`;
+
+    for (let key in query)
+        url += `${key}=${query[key]}&`;
+
+    const res = await fetch(url);
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(_addReviews(data));
+    }
+}
 
 export const createReview = (query, payload) => async (dispatch) => {
     let url = `/api/reviews?`;
@@ -55,18 +74,16 @@ export const updateReview = (id, query, payload) => async (dispatch) => {
     return data;
 }
 
-export const getReviewsByTrailId = query => async (dispatch) => {
-    let url = `/api/reviews?`;
+export const removeReview = (id) => async (dispatch) => {
+    const res = await fetch(`/api/reviews/${id}`, { method: 'DELETE' });
 
-    for (let key in query)
-        url += `${key}=${query[key]}&`;
+    const data = await res.json();
 
-    const res = await fetch(url);
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(_addReviews(data));
-    }
+    if (res.ok)
+        dispatch(_removeReview(id));
+    return data;
 }
+
 
 export const clearReviews = () => async (dispatch) => {
     dispatch(_clearReviews());
@@ -86,6 +103,9 @@ export default function reducer(state=initialState, action) {
             return newState;
         case CLEAR_REVIEWS:
             return initialState;
+        case REMOVE_REVIEW:
+            delete newState[action.payload];
+            return newState;
         default:
             return state;
     }
