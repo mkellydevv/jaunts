@@ -13,7 +13,6 @@ export default function HeroCarousel() {
             if (idx.current > 4)
                 idx.current = 1;
             setHeroUrl(url + idx.current + `.jpg`)
-            console.log(heroUrl)
         }, 10*1000)
 
         return (() => {

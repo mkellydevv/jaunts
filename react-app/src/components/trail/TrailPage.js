@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getTrailById } from "../../store/trails";
+import { getTrailById, clearTrails } from "../../store/trails";
 import { trailQuery } from "../../utils/queryObjects";
 
 import TrailCardList from "../trail-card/TrailCardList";
@@ -30,6 +30,10 @@ export default function SplashPage() {
             getPhotos: true,
             getTags: true,
         })))
+
+        return () => {
+            dispatch(clearTrails("current"));
+        }
       }, [dispatch])
 
     return (

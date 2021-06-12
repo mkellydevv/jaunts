@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getTrails } from "../../store/trails";
+import { getTrails, clearTrails } from "../../store/trails";
 import { trailQuery } from "../../utils/queryObjects";
 
 import TrailCard from "./TrailCard";
@@ -20,6 +20,10 @@ export default function TrailCardList({ trail }) {
             getPhotos: true,
         });
         dispatch(getTrails(query, "nearby"));
+
+        return () => {
+            dispatch(clearTrails("nearby"))
+        }
     }, [dispatch]);
 
     return (
