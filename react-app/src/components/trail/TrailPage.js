@@ -22,8 +22,19 @@ export default function SplashPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const { id } = useParams();
-    const trail = useSelector(state => state["trails"]["current"]);
-    const [showReview, setShowReview] = useState(false);
+    const trail = useSelector(state => state.trails.current);
+    const [review, setReview] = useState(null);
+    const [showReviewModal, setShowReviewModal] = useState(false);
+
+    const openReviewModel = (review=null) => {
+        setReview(review);
+        setShowReviewModal(true);
+    }
+
+    const closeReviewModal = () => {
+        setReview(null);
+        setShowReviewModal(false);
+    }
 
     useEffect(() => {
         dispatch(getTrailById(id, trailQuery({
@@ -64,13 +75,13 @@ export default function SplashPage() {
                             {trail && `\(${trail.default_weighting}\)`}
                         </span>
                         <span>
-                            {trail && <button onClick={() => setShowReview(true)}>
+                            {trail && <button onClick={() => openReviewModel()}>
                                 Write Review
                             </button>}
                         </span>
                     </div>
                     <div className="trail-page__reviews">
-                        {trail && <ReviewList trail={trail} />}
+                        {trail && <ReviewList trail={trail} open={openReviewModel} />}
                     </div>
                 </div>
 
@@ -80,9 +91,9 @@ export default function SplashPage() {
                 </div>
             </div>
         </div>
-        {showReview && trail &&
-            <Modal close={()=>setShowReview(false)}>
-                <ReviewModal trail={trail} close={()=>setShowReview(false)} />
+        {showReviewModal && trail &&
+            <Modal close={closeReviewModal}>
+                <ReviewModal trail={trail} review={review} close={closeReviewModal} />
             </Modal>
         }
     </>

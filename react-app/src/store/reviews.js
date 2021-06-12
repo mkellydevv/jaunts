@@ -17,8 +17,13 @@ const _clearReviews = () => ({
     type: CLEAR_REVIEWS
 })
 
-export const createReview = payload => async (dispatch) => {
-    const res = await fetch(`/api/reviews`, {
+export const createReview = (query, payload) => async (dispatch) => {
+    let url = `/api/reviews?`;
+
+    for (let key in query)
+        url += `${key}=${query[key]}&`;
+
+    const res = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -27,7 +32,26 @@ export const createReview = payload => async (dispatch) => {
     });
     const data = await res.json();
     if (res.ok)
-    dispatch(_addReview(data));
+        dispatch(_addReview(data));
+    return data;
+}
+
+export const updateReview = (id, query, payload) => async (dispatch) => {
+    let url = `/api/reviews/${id}?`;
+
+    for (let key in query)
+        url += `${key}=${query[key]}&`;
+
+    const res = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (res.ok)
+        dispatch(_addReview(data));
     return data;
 }
 

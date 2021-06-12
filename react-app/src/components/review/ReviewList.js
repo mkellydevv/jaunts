@@ -7,7 +7,7 @@ import Review from "./Review";
 
 import "./ReviewList.css";
 
-export default function ReviewList({ trail }) {
+export default function ReviewList({ trail, open }) {
     const dispatch = useDispatch();
     const reviews = useSelector(state => state["reviews"]);
 
@@ -29,7 +29,7 @@ export default function ReviewList({ trail }) {
             <div className="review-list__container">
                 {reviews && Object.keys(reviews).map(key => {
                     return (
-                        <Review review={reviews[key]} key={`Review-${key}`}/>
+                        <Review review={reviews[key]} open={open} key={`Review-${key}`}/>
                     )
                 })}
             </div>

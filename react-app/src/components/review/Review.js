@@ -3,8 +3,7 @@ import StarRating from '../random/StarRating'
 
 import "./Review.css"
 
-export default function Review({ review }) {
-
+export default function Review({ review, open }) {
     return (
         <div className="review">
             <div className="review__user-container">
@@ -22,7 +21,10 @@ export default function Review({ review }) {
             <div>
                 {review.blurb}
             </div>
-            <div>Edit | Delete</div>
+            <div>
+                <button onClick={() => open(review)}>Edit</button>
+                <button>Delete</button>
+            </div>
         </div>
     )
 }
