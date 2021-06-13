@@ -25,7 +25,19 @@ export default function ReviewList({ trail, open }) {
 
     return (
         <div className="review-list">
-            <h2>Review List</h2>
+            <div>
+                <span className="review-list__rating">
+                    {trail && trail.default_rating}
+                </span>
+                <span className="review-list__count">
+                    {trail && `\(${trail.default_weighting}\)`}
+                </span>
+                <span>
+                    {trail && <button onClick={() => open()}>
+                        Write Review
+                    </button>}
+                </span>
+            </div>
             <div className="review-list__container">
                 {reviews && Object.keys(reviews).reverse().map(key => {
                     return (

@@ -18,7 +18,7 @@ export default function StarRating({ fixed, rating, setRating}) {
 
     return (
         <div className="star-rating">
-            {[ ...Array(5)].map((star, i) => {
+            {[...Array(5)].map((star, i) => {
                 const val = i + 1;
 
                 return (
