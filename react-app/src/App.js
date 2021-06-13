@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { authenticate } from "./store/session";
 import { getTrails } from "./store/trails";
+import { getListById } from "./store/lists";
 
 import LoginForm from "./components/auth/LoginForm";
 import SignUpForm from "./components/auth/SignUpForm";
@@ -30,7 +31,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // dispatch(getTrails())
+    dispatch(getListById(1, {getUser: true, getTrails: true, getListsTrails: true}))
   }, [dispatch])
 
   if (!loaded) {

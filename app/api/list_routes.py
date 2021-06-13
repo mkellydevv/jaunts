@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.models import List, db
+from app.models import db, List, ListTrail
 from app.forms import ListForm
 from .utils import validation_errors_to_error_messages
 from flask_login import current_user, login_required
@@ -7,19 +7,28 @@ from flask_login import current_user, login_required
 
 bp = Blueprint('lists', __name__)
 
+
 # GET all lists
 @bp.route('', methods=['GET'])
 def get_lists():
     lists = List.query.all()
-    joins = { "user" }
+    joins = { "user", "trails" }
     return {"lists": [lst.to_dict(joins) for lst in lists] }
 
 
 # GET a list
 @bp.route('/<int:id>', methods=['GET'])
 def get_list(id):
+    args = request.args
+
+    # Optionally add joined tables to returned trails
+    joins = set()
+    if args["getListsTrails"]: joins.add("lists_trails")
+    if args["getTrails"]: joins.add("trails")
+    if args["getUser"]: joins.add("user")
+
     lst = List.query.get(id)
-    joins = { "user" }
+
     return lst.to_dict(joins)
 
 
