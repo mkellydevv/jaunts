@@ -8,7 +8,7 @@ import { trailQuery } from "../../utils/queryObjects";
 import ReviewList from "../review/ReviewList";
 import TrailCardList from "../trail-card/TrailCardList";
 import Modal from "../Modal";
-import ReviewModal from "./ReviewModal";
+import ReviewModal from "../review/ReviewModal";
 
 import "./TrailPage.css"
 
@@ -22,12 +22,29 @@ export default function SplashPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const { id } = useParams();
-    const trail = useSelector(state => state["trails"]["current"]);
-    const [showReview, setShowReview] = useState(false);
+    const trail = useSelector(state => state.trails.current);
+    const [review, setReview] = useState(null);
+    const [showReviewModal, setShowReviewModal] = useState(false);
+
+    const [activeInfoTab, setActiveInfoTab] = useState("Description");
+    const [activeFeedTab, setActiveFeedTab] = useState("Reviews");
+
+    const checkActive = (tabName, activeTab) => {
+        return tabName === activeTab ? "active" : "";
+    }
+
+    const openReviewModel = (review=null) => {
+        setReview(review);
+        setShowReviewModal(true);
+    }
+
+    const closeReviewModal = () => {
+        setReview(null);
+        setShowReviewModal(false);
+    }
 
     useEffect(() => {
         dispatch(getTrailById(id, trailQuery({
-            getReviews: true,
             getPhotos: true,
             getTags: true,
         })))
@@ -41,39 +58,88 @@ export default function SplashPage() {
     <>
         <div className="trail-page">
             <div className="trail-page__content">
-                <div className="trail-page__info">
-                    <h2>Main Info</h2>
-                    <div className="trail-page__overview">
+                <section className="trail-section">
+                    <div className="trail-section__header">
+                        {trail && <img
+                            className="trail-section__header-img"
+                            src={trail.photos[0].url}
+                        />}
+                    </div>
+                    <div className="trail-section__overview trail-section__spacing">
                         {trail && trail.overview}
                     </div>
-                    <div className="trail-page__details">
-                        <span>Length: {trail && trail.length} mi</span>
-                        <span>Elevation Gain: {trail && trail.elevation_gain} ft</span>
-                        <span>Route type: {trail && trail.route_type} </span>
+                    <div className="trail-section__details trail-section__spacing">
+                        <div>
+                            <div>Length</div>
+                            <div>{trail && trail.length} mi</div>
+                        </div>
+                        <div>
+                            <div>Elevation Gain</div>
+                            <div>{trail && trail.elevation_gain} ft</div>
+                        </div>
+                        <div>
+                            <div>Route type</div>
+                            <div>{trail && trail.route_type}</div>
+                        </div>
                     </div>
-                    <div className="trail-page__tags">
-                        Tags
+                    <div className="trail-section__tags trail-section__spacing">
+                        {trail && trail.tags.map(tag => {
+                            return (
+                                <div
+                                    className="trail-section__tag"
+                                    key={`Tag-${tag.id}`}>
+                                    {tag.name}
+                                </div>
+                            )
+                        })}
                     </div>
-                    <div className="trail-page__description">
-                        {trail && trail.description}
+
+                    {/* Section: Feeds */}
+                    <div className="trail-page__info">
+                        <div className="tab-navigation">
+                            {["Description", "Waypoints", "Tips", "Getting There"].map(tabName => {
+                                return (
+                                    <div
+                                        className={`tab ${checkActive(tabName, activeInfoTab)}`}
+                                        onClick={() => setActiveInfoTab(tabName)}
+                                    >
+                                        {tabName}
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <div className="tab-content">
+                            { trail && activeInfoTab === "Description" && trail.description }
+                            { trail && activeInfoTab === "Waypoints" && <div>Waypoints</div> }
+                            { trail && activeInfoTab === "Tips" && <div>Tips</div> }
+                            { trail && activeInfoTab === "Getting There" && <div>Getting There</div> }
+                        </div>
                     </div>
-                    <div>
-                        <span className="trail-card__rating">
-                            {trail && trail.default_rating}
-                        </span>
-                        <span className="trail-card__count">
-                            {trail && `\(${trail.default_weighting}\)`}
-                        </span>
-                        <span>
-                            {trail && <button onClick={() => setShowReview(true)}>
-                                Write Review
-                            </button>}
-                        </span>
+
+                    {/* Section: Feeds */}
+                    <div className="trail-page__feeds">
+                        <div className="tab-navigation">
+                            {["Reviews", "Photos"].map(tabName => {
+                                return (
+                                    <div
+                                        className={`tab ${checkActive(tabName, activeFeedTab)}`}
+                                        onClick={() => setActiveFeedTab(tabName)}
+                                    >
+                                        {tabName}
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <div className="tab-content">
+                            {trail && activeFeedTab === "Reviews" &&
+                                <ReviewList trail={trail} open={openReviewModel} />
+                            }
+                            {trail && activeFeedTab === "Photos" &&
+                                <h2>PHOTOS</h2>
+                            }
+                        </div>
                     </div>
-                    <div className="trail-page__reviews">
-                        {trail && <ReviewList trail={trail} />}
-                    </div>
-                </div>
+                </section>
 
                 <div className="trail-page__extra">
                     <h2>Nearby Trails</h2>
@@ -81,9 +147,9 @@ export default function SplashPage() {
                 </div>
             </div>
         </div>
-        {showReview && trail &&
-            <Modal close={()=>setShowReview(false)}>
-                <ReviewModal trail={trail} close={()=>setShowReview(false)} />
+        {showReviewModal && trail &&
+            <Modal close={closeReviewModal}>
+                <ReviewModal trail={trail} review={review} close={closeReviewModal} />
             </Modal>
         }
     </>

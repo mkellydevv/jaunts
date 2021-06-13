@@ -9,8 +9,20 @@ export function trailQuery(args={}) {
         getPhotos: "",
         getTags: "",
         getUser: "",
+    };
+    for (let key in args)
+        query[key] = args[key];
+    return query;
+}
+
+export function reviewQuery(args={}) {
+    const query = {
+        fromTrailId: null,
+        offset: 0,
+        limit: 10,
+        getUser: "",
     }
     for (let key in args)
-        query[key] = args[key]
+        query[key] = args[key];
     return query;
 }

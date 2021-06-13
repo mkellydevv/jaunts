@@ -1,11 +1,9 @@
 
-.star-rating, .star-rating__star {
+.star-rating {
     display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-.star-rating i {
+.star-rating i.dynamic {
     cursor: pointer;
     transition: all .2s ease-in-out;
 }

@@ -4,6 +4,7 @@ import "./StarRating.css";
 
 export default function StarRating({ fixed, rating, setRating}) {
     const [hover, setHover] = useState(0);
+    const dynamic = fixed ? "" : "dynamic";
 
     const highlight = (val) => {
         if (!fixed && hover > 0) {
@@ -17,14 +18,14 @@ export default function StarRating({ fixed, rating, setRating}) {
 
     return (
         <div className="star-rating">
-            {[ ...Array(5)].map((star, i) => {
+            {[...Array(5)].map((star, i) => {
                 const val = i + 1;
 
                 return (
                     <div className="star-rating__star" key={`Star-${val}`}>
                         <i
                             value={val}
-                            className={`fas fa-star ${highlight(val)}`}
+                            className={`fas fa-star ${dynamic} ${highlight(val)}`}
                             onClick={() => {
                                 if (fixed) return;
                                 setRating(val);

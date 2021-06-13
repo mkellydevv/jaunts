@@ -59,7 +59,7 @@ export default function reducer(state=initialState, action) {
             // Clear old data if action.stateKey in STATE_KEYS
             if (newState[action.stateKey] === undefined || STATE_KEYS.has(action.stateKey))
                 newState[action.stateKey] = {};
-            for (let trail of action.payload["trails"])
+            for (let trail of action.payload.trails)
                 newState[action.stateKey][trail.id] = trail;
             return newState;
         case GET_TRAIL:

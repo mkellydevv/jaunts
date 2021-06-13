@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from app.models import Review, List, db
 from app.forms import ReviewForm
 from .utils import validation_errors_to_error_messages
-from flask_login import login_required
+from flask_login import current_user, login_required
 
 
 bp = Blueprint('reviews', __name__)
@@ -11,8 +11,20 @@ bp = Blueprint('reviews', __name__)
 # GET all reviews
 @bp.route('', methods=['GET'])
 def get_reviews():
-    reviews = Review.query.all()
-    joins = { "trail", "list" }
+    args = request.args
+
+    # Optionally add joined tables to returned trails
+    joins = set()
+    if args["getUser"]: joins.add("user")
+
+    # Query db with filters
+    query = Review.query
+    query = query.filter(Review.trail_id == args["fromTrailId"])
+    query = query.offset(int(args['offset']) * int(args['limit']))
+    query = query.limit(int(args['limit']))
+
+    reviews = query.all()
+
     return {"reviews": [review.to_dict(joins) for review in reviews] }
 
 
@@ -41,7 +53,15 @@ def post_review():
         )
         db.session.add(review)
         db.session.commit()
-        return review.to_dict()
+
+        args = request.args
+
+        # Optionally add joined tables to returned trails
+        joins = set()
+        if args["getUser"]: joins.add("user")
+
+        return review.to_dict(joins)
+
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
@@ -51,15 +71,21 @@ def post_review():
 # @login_required
 def patch_review(id):
     review = Review.query.get(id)
-    lst = List.query.get(review.list_id)
-    if current_user.id == lst.user_id:
+    if current_user.id == review.user_id:
         data = request.json
         for key in data:
             setattr(review, key, data[key])
         db.session.commit()
-        return review.to_dict()
+
+        args = request.args
+
+        # Optionally add joined tables to returned trails
+        joins = set()
+        if args["getUser"]: joins.add("user")
+
+        return review.to_dict(joins)
     else:
-        return {"errors": "Unauthorized"}
+        return {"errors": "Unauthorized"}, 401
 
 
 # DELETE a review
@@ -67,10 +93,9 @@ def patch_review(id):
 # @login_required
 def delete_review(id):
     review = Review.query.get(id)
-    lst = List.query.get(review.list_id)
-    if current_user.id == lst.user_id:
+    if current_user.id == review.user_id:
         db.session.delete(review)
         db.session.commit()
-        return review.to_dict()
+        return {}
     else:
-        return {"errors": "Unauthorized"}
+        return {"errors": "Unauthorized"}, 401
