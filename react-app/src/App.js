@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { authenticate } from "./store/session";
 import { getTrails } from "./store/trails";
-import { getListById } from "./store/lists";
+import { getLists, getListById } from "./store/lists";
+import { listQuery } from "./utils/queryObjects";
 
 import LoginForm from "./components/auth/LoginForm";
 import SignUpForm from "./components/auth/SignUpForm";
@@ -18,7 +19,7 @@ import TrailPage from "./components/trail/TrailPage";
 
 
 function App() {
-  const user = useSelector(state => state.session.user)
+  const { user } = useSelector(state => state.session)
   const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
 
@@ -31,7 +32,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    dispatch(getListById(1, {getUser: true, getTrails: true, getListsTrails: true}))
+    dispatch(getLists(listQuery({fromUserId: 1, getUser: true, getTrails: 1})))
+    // dispatch(getListById(1, {getUser: true, getTrails: true, getListsTrails: true}))
   }, [dispatch])
 
   if (!loaded) {

@@ -27,10 +27,10 @@ class List(db.Model):
         }
 
         if "lists_trails" in joins:
-            dct["lists_trails"] = [list_trail.to_dict() for list_trail in self.lists_trails]
+            dct["lists_trails"] = [list_trail.to_dict() for list_trail in self.lists_trails][:joins["lists_trails"]]
 
         if "trails" in joins:
-            dct["trails"] = [trail.to_dict() for trail in self.trails]
+            dct["trails"] = [trail.to_dict() for trail in self.trails][:joins["trails"]]
 
         if "user" in joins:
             dct["user"] = self.user.to_dict()

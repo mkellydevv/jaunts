@@ -11,8 +11,22 @@ bp = Blueprint('lists', __name__)
 # GET all lists
 @bp.route('', methods=['GET'])
 def get_lists():
-    lists = List.query.all()
-    joins = { "user", "trails" }
+    args = request.args
+
+    # Optionally add joined tables to returned trails
+    joins = dict()
+    if args["getListsTrails"]: joins["lists_trails"] = int(args["getListsTrails"])
+    if args["getTrails"]: joins["trails"] = int(args["getTrails"])
+    if args["getUser"]: joins["user"] = True
+
+    query = List.query
+    if args["fromUserId"]:
+        query = query.filter(List.user_id == int(args["fromUserId"]))
+    query = query.offset(int(args['offset']) * int(args['limit']))
+    query = query.limit(int(args['limit']))
+
+    lists = query.all()
+
     return {"lists": [lst.to_dict(joins) for lst in lists] }
 
 
