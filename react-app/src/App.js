@@ -16,6 +16,7 @@ import User from "./components/user/User";
 import NavBar from "./components/nav/NavBar";
 import SplashPage from "./components/splash/SplashPage";
 import TrailPage from "./components/trail/TrailPage";
+import ListsPage from "./components/lists/ListsPage";
 
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    dispatch(getLists(listQuery({fromUserId: 1, getUser: true, getTrails: 1})))
+    // dispatch(getLists(listQuery({fromUserId: 1, getUser: true, getTrails: 1})))
     // dispatch(getListById(1, {getUser: true, getTrails: true, getListsTrails: true}))
   }, [dispatch])
 
@@ -55,6 +56,9 @@ function App() {
         </Route>
         <Route path="/trails/:id" exact={true}>
           <TrailPage />
+        </Route>
+        <Route path="/lists" exact={true}>
+          <ListsPage />
         </Route>
         <ProtectedRoute path="/users" exact={true} >
           <UsersList/>

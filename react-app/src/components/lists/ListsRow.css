@@ -1,0 +1,15 @@
+
+.lists-row {
+    display: flex;
+}
+
+.lists-row__img-container {
+    height: 160px;
+    width: 160px;
+}
+
+.lists-row__img-container img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}

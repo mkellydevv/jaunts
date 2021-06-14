@@ -1,8 +1,8 @@
 
 const ADD_REVIEW = "reviews/ADD_REVIEW";
 const ADD_REVIEWS = "reviews/ADD_REVIEWS";
-const CLEAR_REVIEWS = "trails/CLEAR_REVIEWS";
 const REMOVE_REVIEW = "trails/REMOVE_REVIEW";
+const CLEAR_REVIEWS = "trails/CLEAR_REVIEWS";
 
 const _addReview = payload => ({
     type: ADD_REVIEW,
@@ -101,11 +101,11 @@ export default function reducer(state=initialState, action) {
             for (let review of action.payload.reviews)
                 newState[review.id] = review;
             return newState;
-        case CLEAR_REVIEWS:
-            return initialState;
         case REMOVE_REVIEW:
             delete newState[action.payload];
             return newState;
+        case CLEAR_REVIEWS:
+            return initialState;
         default:
             return state;
     }

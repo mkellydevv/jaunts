@@ -78,7 +78,7 @@ def patch_list(id):
         db.session.commit()
         return lst.to_dict()
     else:
-        return {"errors": "Unauthorized"}
+        return {"errors": "Unauthorized"}, 401
 
 
 # DELETE a list
@@ -89,6 +89,6 @@ def delete_list(id):
     if current_user.id == lst.user_id:
         db.session.delete(lst)
         db.session.commit()
-        return lst.to_dict()
+        return {}
     else:
-        return {"errors": "Unauthorized"}
+        return {"errors": "Unauthorized"}, 401
