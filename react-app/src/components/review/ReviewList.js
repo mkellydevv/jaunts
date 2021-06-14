@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { clearReviews, getReviewsByTrailId } from "../../store/reviews";
 import { reviewQuery } from "../../utils/queryObjects";
+
 import Review from "./Review";
+import StarRating from "../random/StarRating";
 
 import "./ReviewList.css";
 
@@ -25,13 +27,16 @@ export default function ReviewList({ trail, open }) {
 
     return (
         <div className="review-list">
-            <div>
-                <span className="review-list__rating">
-                    {trail && trail.default_rating}
-                </span>
-                <span className="review-list__count">
-                    {trail && `\(${trail.default_weighting}\)`}
-                </span>
+            <div className="review-list__header">
+                <div className="review-list__header-info">
+                    <h1>{trail.default_rating}</h1>
+                    <span className="review-list__rating">
+                        {trail && <StarRating rating={trail.default_rating} fixed={true} />}
+                    </span>
+                    <span className="review-list__count">
+                        {trail && `\(${trail.default_weighting}\)`} Ratings
+                    </span>
+                </div>
                 <span>
                     {trail && <button onClick={() => open()}>
                         Write Review

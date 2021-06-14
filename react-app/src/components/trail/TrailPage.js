@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getTrailById, clearTrails } from "../../store/trails";
@@ -9,6 +9,7 @@ import ReviewList from "../review/ReviewList";
 import TrailCardList from "../trail-card/TrailCardList";
 import Modal from "../Modal";
 import ReviewModal from "../review/ReviewModal";
+import StarRating from "../random/StarRating";
 
 import "./TrailPage.css"
 
@@ -52,7 +53,11 @@ export default function SplashPage() {
         return () => {
             dispatch(clearTrails("current"));
         }
-      }, [dispatch])
+    }, [dispatch])
+
+    useEffect(()=>{
+        console.log(`history`, history)
+    }, [history])
 
     return (
     <>
@@ -60,11 +65,31 @@ export default function SplashPage() {
             <div className="trail-page__content">
                 <section className="trail-section">
                     <div className="trail-section__header">
-                        {trail && <img
-                            className="trail-section__header-img"
-                            src={trail.photos[0].url}
-                        />}
+                        {trail && <>
+                            <img
+                                className="trail-section__header-img"
+                                src={trail.photos[0].url}
+                            />
+                            <div className="trail-section__header-container">
+                                <div className="trail-section__header-name">
+                                    {trail.name}
+                                </div>
+                                <div className="trail-section__header-info">
+                                    <span className={`trail-card__difficulty difficulty-${map[trail.difficulty]}`}>
+                                        {trail.difficulty}
+                                    </span>
+                                    <span className="trail-card__rating">
+                                        <StarRating rating={trail.default_rating} fixed={true} />
+                                    </span>
+                                    <span className="trail-card__count">
+                                        {`(${trail.default_weighting})`}
+                                    </span>
+                                </div>
+                                <div className=".trail-section__header-region">{trail.region}</div>
+                            </div>
+                        </>}
                     </div>
+                    <div className="trail-section__green-block" />
                     <div className="trail-section__overview trail-section__spacing">
                         {trail && trail.overview}
                     </div>
@@ -94,7 +119,7 @@ export default function SplashPage() {
                         })}
                     </div>
 
-                    {/* Section: Feeds */}
+                    {/* Section: Info */}
                     <div className="trail-page__info">
                         <div className="tab-navigation">
                             {["Description", "Waypoints", "Tips", "Getting There"].map(tabName => {
@@ -102,6 +127,7 @@ export default function SplashPage() {
                                     <div
                                         className={`tab ${checkActive(tabName, activeInfoTab)}`}
                                         onClick={() => setActiveInfoTab(tabName)}
+                                        key={`${tabName}`}
                                     >
                                         {tabName}
                                     </div>
@@ -124,6 +150,7 @@ export default function SplashPage() {
                                     <div
                                         className={`tab ${checkActive(tabName, activeFeedTab)}`}
                                         onClick={() => setActiveFeedTab(tabName)}
+                                        key={`${tabName}`}
                                     >
                                         {tabName}
                                     </div>

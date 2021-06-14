@@ -11,7 +11,7 @@
 
 .trail-section {
     background-color: #fff;
-    margin: 0 16px;
+    margin: 16px;
     border: 1px solid #CCCCCC;
 }
 
@@ -22,6 +22,38 @@
 .trail-section__header-img {
     object-fit: cover;
     height: 100%;
+    width: 100%;
+}
+
+.trail-section__header-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    bottom: 103px;
+    margin: 0 24px;
+    color: #fff;
+}
+
+.trail-section__header-name {
+    font-family: Proxima Nova,Arial,sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    margin-bottom: 6px;
+}
+
+.trail-section__header-info {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 6px;
+}
+
+.trail-section__green-block {
+    background-color:#428a13;
+    height: 55px;
     width: 100%;
 }
 
@@ -43,6 +75,7 @@
 
 .trail-section__details {
     display:flex;
+    border-bottom: solid #e6e6e6 1px;
 }
 
 .trail-section__details > div {
@@ -72,6 +105,11 @@
 }
 
 .trail-section__tag {
+    padding: 5.5px 12px;
+    font-size: 14px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border-radius: 8px;
     font-weight: 500;
     color: #428A13;
     border: solid 1px #428A13;
@@ -111,4 +149,15 @@
 
 .tab-content {
     background-color: #fff;
+
+    padding: 24px 0;
+    margin: 0 24px;
+    font-family: Proxima Nova, Arial, sans-serif;
+
+    border-bottom: solid #e6e6e6 1px;
+    color: #414141;
+    font-size: 18px;
+    line-height: 1.44;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
 }

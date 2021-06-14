@@ -38,5 +38,3 @@ export default function NavBar() {
 		</nav>
 	);
 }
-
-// https://d185jh8djxl1sd.cloudfront.net/assets/placeholder/person_placeholder.png

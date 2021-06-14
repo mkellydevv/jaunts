@@ -22,3 +22,7 @@
     display: grid;
     grid-template-columns: repeat(4,25%);
 }
+
+.card-quad__container > *:not(:first-child) {
+    margin-left: 16px;
+}

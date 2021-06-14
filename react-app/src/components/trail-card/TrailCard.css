@@ -7,8 +7,7 @@
     transition: all .2s ease-in-out;
 }
 
-.trail-card:not(:first-child) { margin-left: 16px; }
-.trail-card:hover { transform: scale(1.01); }
+.trail-card:hover { transform: scale(1.02); }
 
 .trail-card__img-container {
     height: 128px;

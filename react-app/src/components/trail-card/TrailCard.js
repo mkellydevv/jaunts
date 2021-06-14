@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 import StarRating from "../random/StarRating";
@@ -14,10 +14,15 @@ const map = {
 export default function TrailCard({ trail }) {
     const history = useHistory();
 
+
     return (
-        <div className="trail-card" onClick={() => {
-            history.push(`/trails/${trail.id}`);
-        }}>
+        <div
+            className="trail-card"
+            onClick={() => {
+
+                history.push(`/trails/${trail.id}`, { update: true });
+            }
+        }>
             <div className="trail-card__img-container">
                 <img className="trail-card__img" src={trail.photos[0].url.replace("extra_", "")} />
             </div>

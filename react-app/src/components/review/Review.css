@@ -4,3 +4,36 @@
     margin-bottom: 32px;
     border-bottom: 1px solid #e6e6e6;
 }
+
+.review__user-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 16px;
+}
+
+.review__user-container > * {
+    margin-right: 16px;
+}
+
+.review__user-img {
+    height: 64px;
+    width: 64px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.review img {
+    width: 48px;
+    height: 48px;
+    margin: auto;
+    border-radius: 50%;
+}
+
+.review__blurb {
+    margin-bottom: 16px;
+}
+
+.review button {
+    margin-right: 16px;
+}
