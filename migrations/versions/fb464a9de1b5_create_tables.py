@@ -1,8 +1,8 @@
 """create tables
 
-Revision ID: ac92fed52ba9
+Revision ID: fb464a9de1b5
 Revises: 
-Create Date: 2021-06-12 14:21:04.782042
+Create Date: 2021-06-14 04:32:39.954234
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ac92fed52ba9'
+revision = 'fb464a9de1b5'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -60,6 +60,18 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('lists_trails',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('list_id', sa.Integer(), nullable=False),
+    sa.Column('trail_id', sa.Integer(), nullable=False),
+    sa.Column('order', sa.Integer(), nullable=False),
+    sa.Column('rating', sa.Integer(), nullable=True),
+    sa.Column('blurb', sa.Text(), nullable=True),
+    sa.Column('date', sa.Date(), nullable=True),
+    sa.ForeignKeyConstraint(['list_id'], ['lists.id'], ),
+    sa.ForeignKeyConstraint(['trail_id'], ['trails.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('photos',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('trail_id', sa.Integer(), nullable=True),
@@ -94,6 +106,7 @@ def downgrade():
     op.drop_table('tags_trails')
     op.drop_table('reviews')
     op.drop_table('photos')
+    op.drop_table('lists_trails')
     op.drop_table('trails')
     op.drop_table('lists')
     op.drop_table('users')

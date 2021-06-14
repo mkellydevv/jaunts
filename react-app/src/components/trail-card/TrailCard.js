@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+
+import StarRating from "../random/StarRating";
 
 import "./TrailCard.css";
 
@@ -12,10 +14,15 @@ const map = {
 export default function TrailCard({ trail }) {
     const history = useHistory();
 
+
     return (
-        <div className="trail-card" onClick={() => {
-            history.push(`/trails/${trail.id}`);
-        }}>
+        <div
+            className="trail-card"
+            onClick={() => {
+
+                history.push(`/trails/${trail.id}`, { update: true });
+            }
+        }>
             <div className="trail-card__img-container">
                 <img className="trail-card__img" src={trail.photos[0].url.replace("extra_", "")} />
             </div>
@@ -27,7 +34,7 @@ export default function TrailCard({ trail }) {
                         {trail.difficulty}
                     </span>
                     <span className="trail-card__rating">
-                        {trail.default_rating}
+                        <StarRating rating={trail.default_rating} fixed={true} />
                     </span>
                     <span className="trail-card__count">
                         {`(${trail.default_weighting})`}

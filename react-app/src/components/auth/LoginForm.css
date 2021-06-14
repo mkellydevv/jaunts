@@ -1,0 +1,16 @@
+
+.login-form {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.login-form > * {
+    margin-bottom: 8px;
+}
+
+.login-form label, .login-form input {
+    margin-right: 8px;
+}

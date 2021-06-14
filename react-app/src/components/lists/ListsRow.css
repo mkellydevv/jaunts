@@ -1,0 +1,42 @@
+
+.lists-row {
+    display: grid;
+    grid-template-columns: 15% 50% 15% 15%;
+    border-radius: 8px;
+    border: 1px solid #e6e6e6;
+    margin: 16px;
+    padding: 16px;
+    font-family: Proxima Nova,Arial,sans-serif;
+    line-height: 1.5;
+    color: #414141;
+    box-sizing: border-box;
+}
+
+.lists-row > * {
+    margin-right: 16px;
+}
+
+
+.lists-row__img-container {
+    height: 160px;
+    width: 160px;
+}
+
+.lists-row__img-container img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.lists-row__name, .lists-row__stats {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.lists-row__blurb {
+
+}
+
+.lists-row button {
+    margin-right: 16px;
+}

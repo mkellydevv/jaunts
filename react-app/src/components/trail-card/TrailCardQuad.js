@@ -23,7 +23,7 @@ export default function TrailCardQuad({ tag }) {
 
     return (
         <div className="card-quad">
-            <h2>{tag} Quad</h2>
+            <h2>Explore {tag[0].toUpperCase() + tag.slice(1)} Trails</h2>
             <div className="card-quad__container">
                 {trails && Object.keys(trails).map(key => {
                     return (

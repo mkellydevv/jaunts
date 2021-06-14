@@ -28,7 +28,6 @@ export default function TrailCardList({ trail }) {
 
     return (
         <div className="card-list">
-            <h2>Trail List</h2>
             <div className="card-list__container">
                 {trails && Object.keys(trails).map(key => {
                     return (

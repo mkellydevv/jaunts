@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.models import List, db
+from app.models import db, List, ListTrail
 from app.forms import ListForm
 from .utils import validation_errors_to_error_messages
 from flask_login import current_user, login_required
@@ -7,19 +7,42 @@ from flask_login import current_user, login_required
 
 bp = Blueprint('lists', __name__)
 
+
 # GET all lists
 @bp.route('', methods=['GET'])
 def get_lists():
-    lists = List.query.all()
-    joins = { "user" }
+    args = request.args
+
+    # Optionally add joined tables to returned trails
+    joins = dict()
+    if args["getListsTrails"]: joins["lists_trails"] = int(args["getListsTrails"])
+    if args["getTrails"]: joins["trails"] = int(args["getTrails"])
+    if args["getUser"]: joins["user"] = True
+
+    query = List.query
+    if args["fromUserId"]:
+        query = query.filter(List.user_id == int(args["fromUserId"]))
+    query = query.offset(int(args['offset']) * int(args['limit']))
+    query = query.limit(int(args['limit']))
+
+    lists = query.all()
+
     return {"lists": [lst.to_dict(joins) for lst in lists] }
 
 
 # GET a list
 @bp.route('/<int:id>', methods=['GET'])
 def get_list(id):
+    args = request.args
+
+    # Optionally add joined tables to returned trails
+    joins = set()
+    if args["getListsTrails"]: joins.add("lists_trails")
+    if args["getTrails"]: joins.add("trails")
+    if args["getUser"]: joins.add("user")
+
     lst = List.query.get(id)
-    joins = { "user" }
+
     return lst.to_dict(joins)
 
 
@@ -38,7 +61,15 @@ def post_list():
         )
         db.session.add(lst)
         db.session.commit()
-        return lst.to_dict()
+
+        args = request.args
+
+        # Optionally add joined tables to returned trails
+        joins = dict()
+        if args["getTrails"]: joins["trails"] = int(args["getTrails"])
+        if args["getUser"]: joins["user"] = True
+
+        return lst.to_dict(joins)
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
 
@@ -53,9 +84,17 @@ def patch_list(id):
         for key in data:
             setattr(lst, key, data[key])
         db.session.commit()
-        return lst.to_dict()
+
+        args = request.args
+
+        # Optionally add joined tables to returned trails
+        joins = dict()
+        if args["getTrails"]: joins["trails"] = int(args["getTrails"])
+        if args["getUser"]: joins["user"] = True
+
+        return lst.to_dict(joins)
     else:
-        return {"errors": "Unauthorized"}
+        return {"errors": "Unauthorized"}, 401
 
 
 # DELETE a list
@@ -66,6 +105,6 @@ def delete_list(id):
     if current_user.id == lst.user_id:
         db.session.delete(lst)
         db.session.commit()
-        return lst.to_dict()
+        return {}
     else:
-        return {"errors": "Unauthorized"}
+        return {"errors": "Unauthorized"}, 401

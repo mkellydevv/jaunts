@@ -2,14 +2,64 @@
 #navbar {
     width: 100%;
     font-family: Proxima Nova, Arial, sans-serif;
-    display: flex;
-    flex-wrap: wrap;
-    flex-grow: 1;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    justify-content: center;
     align-items: center;
     list-style: none;
     background-color: #fff;
     height: 60px;
     margin: 0;
     position: sticky;
+    border-bottom: #CCCCCC 1px solid;
+    box-sizing: border-box;
+}
+
+#navbar > * {
+    box-sizing:border-box;
+    padding: 0 16px;
+    text-decoration: none;
+}
+
+.navbar__lists {
+    height:100%;
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.navbar__lists > a, .navbar__auth > a {
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: 700;
+    color: #414141;
+}
+
+.navbar__lists > a:hover, .navbar__auth > a:hover {
+    color: #428a13;
+    border-bottom: solid #428a13 3px;
+}
+
+.navbar__home {
+    display: flex;
+    justify-content: center;
+}
+
+.navbar__home > * {
+    color:#808080;
+    font-size: 36px !important;
+    font-weight: 900 !important;
+    text-decoration: none;
+}
+
+.navbar__auth {
+    height:100%;
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.navbar__auth > * {
+    margin-left: 16px;
+    box-sizing:content-box;
 }

@@ -1,4 +1,5 @@
 from .db import db
+from .list_trail_model import ListTrail
 from .tag_trail_model import tags_trails
 import enum
 
@@ -34,9 +35,16 @@ class Trail(db.Model):
     default_rating = db.Column(db.Float, nullable=False)
     default_weighting = db.Column(db.Integer, nullable=False)
 
-    reviews = db.relationship("Review", back_populates="trail")
+    lists_trails = db.relationship("ListTrail", back_populates="trail")
     photos = db.relationship("Photo", back_populates="trail")
+    reviews = db.relationship("Review", back_populates="trail")
     user = db.relationship("User", back_populates="trails")
+
+    lists = db.relationship(
+        "List",
+        secondary="lists_trails",
+        back_populates="trails"
+    )
 
     tags = db.relationship(
         "Tag",
@@ -63,11 +71,14 @@ class Trail(db.Model):
             "default_weighting": self.default_weighting,
         }
 
-        if "reviews" in joins:
-            dct["reviews"] = [review.to_dict() for review in self.reviews]
+        if "lists" in joins:
+            dct["lists"] = [lst.to_dict() for lst in self.lists]
 
         if "photos" in joins:
             dct["photos"] = [photo.to_dict() for photo in self.photos]
+
+        if "reviews" in joins:
+            dct["reviews"] = [review.to_dict() for review in self.reviews]
 
         if "tags" in joins:
             dct["tags"] = [tag.to_dict() for tag in self.tags]

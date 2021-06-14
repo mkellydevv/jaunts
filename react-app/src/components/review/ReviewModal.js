@@ -5,7 +5,6 @@ import StarRating from "../random/StarRating";
 import { createReview, updateReview } from "../../store/reviews";
 import { reviewQuery } from "../../utils/queryObjects";
 
-
 import "./ReviewModal.css"
 
 export default function ReviewModal({ trail, review, close }) {
@@ -21,7 +20,7 @@ export default function ReviewModal({ trail, review, close }) {
 
         const query = reviewQuery({ getUser: true });
         let data;
-        if (review){
+        if (review) {
             data = await dispatch(updateReview(review.id, query, payload));
         }
         else {
@@ -45,9 +44,10 @@ export default function ReviewModal({ trail, review, close }) {
                 <StarRating fixed={false} setRating={setRating} rating={rating}/>
             </div>
             <div>
-                <input
+                <textarea
                     className="review-modal__blurb"
-                    type="textarea"
+                    cols={40}
+                    rows={10}
                     placeholder="Share your thoughts about the trail so others know what to expect."
                     value={blurb}
                     onChange={e => setBlurb(e.target.value)}

@@ -9,9 +9,10 @@ const _getTrails = (payload, stateKey='default') => ({
     stateKey
 })
 
-const _getTrail = (payload) => ({
+const _getTrail = (payload, stateKey) => ({
     type: GET_TRAIL,
-    payload
+    payload,
+    stateKey
 })
 
 const _clearTrails = (stateKey='default') => ({
@@ -32,7 +33,7 @@ export const getTrails = (query={}, stateKey) => async (dispatch) => {
     }
 }
 
-export const getTrailById = (id, query={}) => async (dispatch) => {
+export const getTrailById = (id, query={}, stateKey="current") => async (dispatch) => {
     let url = `/api/trails/${id}?`;
 
     for (let key in query)
@@ -41,7 +42,7 @@ export const getTrailById = (id, query={}) => async (dispatch) => {
     const res = await fetch(url);
     if (res.ok) {
         const data = await res.json();
-        dispatch(_getTrail(data));
+        dispatch(_getTrail(data, stateKey));
     }
 }
 
@@ -63,7 +64,7 @@ export default function reducer(state=initialState, action) {
                 newState[action.stateKey][trail.id] = trail;
             return newState;
         case GET_TRAIL:
-            newState["current"] = action.payload;
+            newState[action.stateKey] = action.payload;
             return newState;
         case CLEAR_TRAILS:
             delete newState[action.stateKey];
