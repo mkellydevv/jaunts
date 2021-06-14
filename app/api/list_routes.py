@@ -61,7 +61,15 @@ def post_list():
         )
         db.session.add(lst)
         db.session.commit()
-        return lst.to_dict()
+
+        args = request.args
+
+        # Optionally add joined tables to returned trails
+        joins = dict()
+        if args["getTrails"]: joins["trails"] = int(args["getTrails"])
+        if args["getUser"]: joins["user"] = True
+
+        return lst.to_dict(joins)
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
 
@@ -76,7 +84,15 @@ def patch_list(id):
         for key in data:
             setattr(lst, key, data[key])
         db.session.commit()
-        return lst.to_dict()
+
+        args = request.args
+
+        # Optionally add joined tables to returned trails
+        joins = dict()
+        if args["getTrails"]: joins["trails"] = int(args["getTrails"])
+        if args["getUser"]: joins["user"] = True
+
+        return lst.to_dict(joins)
     else:
         return {"errors": "Unauthorized"}, 401
 

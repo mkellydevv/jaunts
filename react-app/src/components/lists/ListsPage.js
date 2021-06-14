@@ -6,11 +6,28 @@ import { getLists, clearLists } from "../../store/lists";
 import { listQuery } from "../../utils/queryObjects";
 
 import ListsRow from "./ListsRow";
+import Modal from "../Modal";
+import ListModal from "./ListModal";
+
+import "./ListsPage.css"
 
 export default function ListsPage() {
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.session);
     const { lists } = useSelector(state => state);
+    const [list, setList] = useState(null);
+    const [showListModal, setShowListModal] = useState(false);
+
+    const openListModal = (lst=null) => {
+        console.log(`list`, lst)
+        setList(lst);
+        setShowListModal(true);
+    }
+
+    const closeListModal = () => {
+        setList(null);
+        setShowListModal(false);
+    }
 
     useEffect(() => {
         if (!user) return;
@@ -29,12 +46,26 @@ export default function ListsPage() {
     return (
         <>
             <div className="lists-page">
-                { lists && Object.values(lists).map(list => {
+                <div className="lists-page__create-list">
+                    {user &&
+                        <button
+                            onClick={() => openListModal()}
+                        >
+                            Create List
+                        </button>
+                    }
+                </div>
+                { lists && Object.values(lists).map(lst => {
                     return (
-                        <ListsRow list={list} key={`List-Row-${list.id}`} />
+                        <ListsRow list={lst} open={openListModal} key={`List-Row-${lst.id}`} />
                     )
                 })}
             </div>
+            {showListModal &&
+                <Modal close={closeListModal}>
+                    <ListModal list={list} close={closeListModal} />
+                </Modal>
+            }
         </>
     )
 }

@@ -12,8 +12,14 @@
     align-items: center;
 }
 
+.modal__close-btn {
+    margin-top: 32px;
+    display: flex;
+    justify-content: flex-end;
+}
+
 .modal__content > * {
-    padding: 0 32px 32px;
+    padding: 0 32px 16px;
 }
 
 .modal__overlay {

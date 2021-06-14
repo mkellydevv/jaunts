@@ -8,7 +8,7 @@ import { trailQuery } from "../../utils/queryObjects";
 
 import "./ListsRow.css"
 
-export default function ListsRow({ list }) {
+export default function ListsRow({ list, open }) {
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.session);
     const sampleTrailId =  list.trails.length ? list.trails[0].id : "";
@@ -49,16 +49,17 @@ export default function ListsRow({ list }) {
                 <img src={imgSrc} />
             </div>
             <div>
-                <div>{list.name}</div>
+                <div className="lists-row__name">{list.name}</div>
                 <div>{user && user.username}</div>
-                <div>{list.blurb}</div>
+                <div className="lists-row__blurb">{list.blurb}</div>
             </div>
             <div>
-                Stats:
+                <div className="lists-row__stats">Stats:</div>
                 <div>Trails: {list.trails.length}</div>
                 <div>Photos: 0</div>
             </div>
             <div>
+                <button onClick={() => open(list)}>Edit</button>
                 <button onClick={handleDelete}>Delete</button>
             </div>
         </div>

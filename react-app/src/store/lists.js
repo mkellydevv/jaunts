@@ -49,6 +49,44 @@ export const getListById = (id, query={}) => async (dispatch) => {
     }
 }
 
+export const createList = (query, payload) => async (dispatch) => {
+    let url = `/api/lists?`;
+
+    for (let key in query)
+        url += `${key}=${query[key]}&`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (res.ok)
+        dispatch(_addList(data));
+    return data;
+}
+
+export const updateList = (id, query, payload) => async (dispatch) => {
+    let url = `/api/lists/${id}?`;
+
+    for (let key in query)
+        url += `${key}=${query[key]}&`;
+
+    const res = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (res.ok)
+        dispatch(_addList(data));
+    return data;
+}
+
 export const removeList = (id) => async (dispatch) => {
     const res = await fetch(`/api/lists/${id}`, { method: 'DELETE' });
 

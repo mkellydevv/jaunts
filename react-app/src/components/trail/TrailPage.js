@@ -55,10 +55,6 @@ export default function SplashPage() {
         }
     }, [dispatch])
 
-    useEffect(()=>{
-        console.log(`history`, history)
-    }, [history])
-
     return (
     <>
         <div className="trail-page">

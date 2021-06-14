@@ -8,7 +8,7 @@ export default function Modal(props) {
         <div className="modal">
             <div className="modal__overlay" onClick={props.close} />
             <div className="modal__content">
-                <div>
+                <div className="modal__close-btn">
                     <button onClick={props.close}>X</button>
                 </div>
                 {props.children}
