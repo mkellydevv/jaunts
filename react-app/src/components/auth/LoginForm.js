@@ -3,12 +3,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { login } from "../../store/session";
 
+import "./LoginForm.css";
+
 const LoginForm = () => {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const user = useSelector(state => state.session.user);
   const dispatch = useDispatch();
+
+  const handleDemo = () => {
+    setEmail("demo@aa.io");
+    setPassword("password");
+  }
 
   const onLogin = async (e) => {
     e.preventDefault();
@@ -31,14 +38,16 @@ const LoginForm = () => {
   }
 
   return (
-    <form onSubmit={onLogin}>
+    <form className="login-form" onSubmit={onLogin}>
       <div>
         {errors.map((error) => (
           <div>{error}</div>
         ))}
       </div>
       <div>
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email
+        </label>
         <input
           name="email"
           type="text"
@@ -56,8 +65,9 @@ const LoginForm = () => {
           value={password}
           onChange={updatePassword}
         />
-        <button type="submit">Login</button>
       </div>
+      <button onClick={handleDemo} type="submit">Demo Login</button>
+      <button type="submit">Login</button>
     </form>
   );
 };

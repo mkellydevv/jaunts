@@ -29,7 +29,7 @@ export default function TrailCard({ trail }) {
                         {trail.difficulty}
                     </span>
                     <span className="trail-card__rating">
-                        <StarRating rating={trail.default_rating} />
+                        <StarRating rating={trail.default_rating} fixed={true} />
                     </span>
                     <span className="trail-card__count">
                         {`(${trail.default_weighting})`}

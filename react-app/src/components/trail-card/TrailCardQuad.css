@@ -3,6 +3,19 @@
     width: 100%;
     box-sizing: border-box;
     padding: 0 16px;
+    margin-bottom: 1rem;
+}
+
+.card-quad > h2 {
+    font-family: Proxima Nova,Arial,sans-serif;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: -.2px;
+    font-weight: 700;
+    color: #414141;
+    max-width: 1240px;
+    margin: 12px auto;
+    width: calc(100% - 32px);
 }
 
 .card-quad__container {

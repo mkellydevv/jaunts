@@ -6,11 +6,12 @@
     justify-content: center;
 }
 
-.splash-page > * {
-    margin-bottom: 1rem;
-}
+
 
 .search-bar {
+    position: relative;
+    top: -36px;
+
     width: 676px;
     max-width: 100%;
     height: 72px;
