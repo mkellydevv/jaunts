@@ -1,6 +1,8 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
+import StarRating from "../random/StarRating";
+
 import "./TrailCard.css";
 
 const map = {
@@ -27,7 +29,7 @@ export default function TrailCard({ trail }) {
                         {trail.difficulty}
                     </span>
                     <span className="trail-card__rating">
-                        {trail.default_rating}
+                        <StarRating rating={trail.default_rating} />
                     </span>
                     <span className="trail-card__count">
                         {`(${trail.default_weighting})`}
