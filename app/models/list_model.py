@@ -10,6 +10,7 @@ class List(db.Model):
     blurb = db.Column(db.Text)
 
     lists_trails = db.relationship("ListTrail", back_populates="_list")
+    photos = db.relationship("Photo", back_populates="_list")
     user = db.relationship("User", back_populates="lists")
 
     trails = db.relationship(
@@ -28,6 +29,9 @@ class List(db.Model):
 
         if "lists_trails" in joins:
             dct["lists_trails"] = [list_trail.to_dict() for list_trail in self.lists_trails][:joins["lists_trails"]]
+
+        if "photos" in joins:
+            dct["photos"] = [photo.to_dict() for photo in self.photo][:joins["photos"]]
 
         if "trails" in joins:
             dct["trails"] = [trail.to_dict() for trail in self.trails][:joins["trails"]]

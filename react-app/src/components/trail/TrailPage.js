@@ -10,6 +10,8 @@ import TrailCardList from "../trail-card/TrailCardList";
 import Modal from "../Modal";
 import ReviewModal from "../review/ReviewModal";
 import StarRating from "../random/StarRating";
+import PhotoGrid from "../photos/PhotoGrid";
+import ViewPhotoModal from "../photos/ViewPhotoModal";
 
 import "./TrailPage.css"
 
@@ -27,14 +29,17 @@ export default function SplashPage() {
     const [review, setReview] = useState(null);
     const [showReviewModal, setShowReviewModal] = useState(false);
 
+    const [photoId, setPhotoId] = useState(null);
+    const [showViewPhotoModal, setShowViewPhotoModal] = useState(false);
+
     const [activeInfoTab, setActiveInfoTab] = useState("Description");
-    const [activeFeedTab, setActiveFeedTab] = useState("Reviews");
+    const [activeFeedTab, setActiveFeedTab] = useState("Photos");
 
     const checkActive = (tabName, activeTab) => {
         return tabName === activeTab ? "active" : "";
     }
 
-    const openReviewModel = (review=null) => {
+    const openReviewModal = (review=null) => {
         setReview(review);
         setShowReviewModal(true);
     }
@@ -42,6 +47,16 @@ export default function SplashPage() {
     const closeReviewModal = () => {
         setReview(null);
         setShowReviewModal(false);
+    }
+
+    const openViewPhotoModal = (photoId=null) => {
+        setPhotoId(photoId);
+        setShowViewPhotoModal(true);
+    }
+
+    const closeViewPhotoModal = () => {
+        setPhotoId(null);
+        setShowViewPhotoModal(false);
     }
 
     useEffect(() => {
@@ -155,10 +170,10 @@ export default function SplashPage() {
                         </div>
                         <div className="tab-content">
                             {trail && activeFeedTab === "Reviews" &&
-                                <ReviewList trail={trail} open={openReviewModel} />
+                                <ReviewList trail={trail} open={openReviewModal} />
                             }
                             {trail && activeFeedTab === "Photos" &&
-                                <h2>PHOTOS</h2>
+                                <PhotoGrid trail={trail} open={openViewPhotoModal} />
                             }
                         </div>
                     </div>
@@ -174,6 +189,9 @@ export default function SplashPage() {
             <Modal close={closeReviewModal}>
                 <ReviewModal trail={trail} review={review} close={closeReviewModal} />
             </Modal>
+        }
+        {showViewPhotoModal && trail &&
+            <ViewPhotoModal photos={trail.photos} photoId={photoId} close={closeViewPhotoModal} />
         }
     </>
     )

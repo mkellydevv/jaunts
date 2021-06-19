@@ -1,8 +1,10 @@
 from app.models import db, Photo
+import random
 
 def seed_photos():
     with open('selenium/states/virginia/img_links.txt') as f:
         lines = f.readlines()
+        list_ids = [None,1,2,3,4,5]
 
         # I didn't store any identifier with the img_links.txt
         # Do this in the future to make attaching IDs more modular
@@ -15,6 +17,7 @@ def seed_photos():
                 photo = Photo(
                     trail_id=i,
                     user_id=None,
+                    list_id=random.choice(list_ids),
                     url=url
                 )
                 db.session.add(photo)

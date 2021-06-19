@@ -1,0 +1,16 @@
+
+.view-photo-modal__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    z-index: 11;
+}
+
+
+
+.view-photo-modal__img {
+    height:100%;
+    object-fit: cover;
+
+}
