@@ -38,6 +38,7 @@ export default function ViewPhotoModal({ photos, photoId, close }) {
                         {photosArr.length > 0 && idx !== null &&
                             <img className="view-photo-modal__img" src={photosArr[idx].url} />
                         }
+                        <div>{idx + 1} / {photosArr.length}</div>
                     </div>
                     <button className="view-photo-modal__btn" onClick={incrementIdx}>
                         <i className="fas fa-angle-right" />

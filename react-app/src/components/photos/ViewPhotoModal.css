@@ -19,11 +19,22 @@
 .view-photo-modal__details {
     background-color: black;
     height: inherit;
+    width: 100%;
     margin: auto;
     display:flex;
-    align-content: center;
+    flex-direction: column;
+}
+
+.view-photo-modal__details > div {
+    background-color: black;
+    height: 36px;
+    width: 100%;
+    display: flex;
     justify-content: center;
     align-items: center;
+    color: #fff;
+    font-family: Proxima Nova, Arial, sans-serif;
+    font-size: 18px;
 }
 
 .view-photo-modal__img {
