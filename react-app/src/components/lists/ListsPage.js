@@ -19,7 +19,6 @@ export default function ListsPage() {
     const [showListModal, setShowListModal] = useState(false);
 
     const openListModal = (lst=null) => {
-        console.log(`list`, lst)
         setList(lst);
         setShowListModal(true);
     }

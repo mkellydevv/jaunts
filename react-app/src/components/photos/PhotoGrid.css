@@ -1,0 +1,13 @@
+
+.photo-grid {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: space-around;
+}
+
+.photo-grid > * {
+    padding: 8px;
+}

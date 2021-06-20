@@ -13,8 +13,6 @@ export default function ListModal({ list, close }) {
     const [blurb, setBlurb] = useState(list ? list.blurb : "");
     const [errors, setErrors] = useState("");
 
-    console.log("aa", list)
-
     const handleSubmit = async (e) => {
         const payload = { name, blurb };
 

@@ -23,7 +23,7 @@
 }
 
 .modal__overlay {
-    background-color: rgba(0,0,0,.6);
+    background-color: rgba(0,0,0,.85);
 }
 
 .modal__content {
