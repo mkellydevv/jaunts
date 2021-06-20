@@ -7,16 +7,16 @@ export default function ViewPhotoModal({ photos, photoId, close }) {
     const photosArr = Object.values(photos);
     const [idx, setIdx] = useState(null);
 
-    const decrementIdx = () => {
+    const decrementIdx = e => {
+        e.stopPropagation();
         if (idx > 0)
             setIdx(prev => Number(prev) - 1);
     };
 
-    const incrementIdx = () => {
+    const incrementIdx = e => {
+        e.stopPropagation();
         if (idx < photosArr.length - 1)
-            setIdx(prev => {
-                return Number(prev) + 1
-            });
+            setIdx(prev => Number(prev) + 1);
     };
 
     useEffect(() => {
@@ -28,19 +28,21 @@ export default function ViewPhotoModal({ photos, photoId, close }) {
 
     return (
         <div className="modal">
-            <div className="modal__overlay" onClick={close} />
-            <div className="view-photo-modal__content">
-                {photosArr.length > 0 && idx !== null &&
-                    <>
-                        <button className="" onClick={decrementIdx}>
-                            <i className="fas fa-arrow-left" />
-                        </button>
-                        <img className="view-photo-modal__img" src={photosArr[idx].url} />
-                        <button className="" onClick={incrementIdx}>
-                            <i className="fas fa-arrow-right" />
-                        </button>
-                    </>
-                }
+            <div className="modal__overlay" />
+            <div className="view-photo-modal__container" onClick={close}>
+                <div className="view-photo-modal__content">
+                    <button className="view-photo-modal__btn" onClick={decrementIdx}>
+                        <i className="fas fa-angle-left" />
+                    </button>
+                    <div className="view-photo-modal__details">
+                        {photosArr.length > 0 && idx !== null &&
+                            <img className="view-photo-modal__img" src={photosArr[idx].url} />
+                        }
+                    </div>
+                    <button className="view-photo-modal__btn" onClick={incrementIdx}>
+                        <i className="fas fa-angle-right" />
+                    </button>
+                </div>
             </div>
         </div>
     )
