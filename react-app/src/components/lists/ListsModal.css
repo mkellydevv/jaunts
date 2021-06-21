@@ -1,0 +1,27 @@
+
+.lists-modal {
+    overflow: hidden;
+}
+
+.lists-modal__content {
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.lists-modal__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 93px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.lists-modal__content > .list-modal__row:first {
+    border-top: 1px solid #e6e6e6;
+}
+
+.lists-modal__content::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}

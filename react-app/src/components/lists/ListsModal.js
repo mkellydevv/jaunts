@@ -1,0 +1,48 @@
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { listQuery } from "../../utils/queryObjects";
+import { getLists, clearLists } from "../../store/lists";
+
+import "./ListsModal.css";
+
+export default function ListsModal() {
+    const dispatch = useDispatch();
+    const { user } = useSelector(state => state.session);
+    const { lists } = useSelector(state => state);
+
+    useEffect(() => {
+        if (!user) return;
+        const query = listQuery({
+            fromUserId: user.id,
+            getUser: true,
+            getTrails: 100
+        });
+        dispatch(getLists(query));
+
+        return () => {
+            dispatch(clearLists());
+        }
+    }, [user, dispatch])
+
+    return (
+        <div className="lists-modal" >
+            <div>Save to List</div>
+            <div className="lists-modal__content">
+                {Object.values(lists).map(list => {
+                    return (
+                        <div className="lists-modal__row">
+                            <div className="lists-modal__details">
+                                <div className="lists-row__name">{list.name}</div>
+                                <div>Trails: {list.trails.length}</div>
+                            </div>
+                            <div className="lists-modal__star-container">
+                                <i className="far fa-star" />
+                            </div>
+                        </div>
+                    )})
+                }
+            </div>
+        </div>
+    )
+}
