@@ -18,11 +18,8 @@ export default function TrailCard({ trail }) {
     return (
         <div
             className="trail-card"
-            onClick={() => {
-
-                history.push(`/trails/${trail.id}`, { update: true });
-            }
-        }>
+            onClick={() => history.push(`/trails/${trail.id}`)}
+        >
             <div className="trail-card__img-container">
                 <img className="trail-card__img" src={trail.photos[0].url.replace("extra_", "")} />
             </div>

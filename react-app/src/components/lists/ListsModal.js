@@ -27,7 +27,9 @@ export default function ListsModal() {
 
     return (
         <div className="lists-modal" >
-            <div>Save to List</div>
+            <div className="lists-modal__header">
+                Save to List
+            </div>
             <div className="lists-modal__content">
                 {Object.values(lists).map(list => {
                     return (

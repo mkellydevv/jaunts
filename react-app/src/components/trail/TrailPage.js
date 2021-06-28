@@ -34,7 +34,7 @@ export default function SplashPage() {
     const [showListModal, setShowListModal] = useState(false);
 
     const [activeInfoTab, setActiveInfoTab] = useState("Description");
-    const [activeFeedTab, setActiveFeedTab] = useState("Photos");
+    const [activeFeedTab, setActiveFeedTab] = useState("Reviews");
 
     const checkActive = (tabName, activeTab) => {
         return tabName === activeTab ? "active" : "";
@@ -79,7 +79,7 @@ export default function SplashPage() {
         return () => {
             dispatch(clearTrails("current"));
         }
-    }, [dispatch])
+    }, [id, dispatch])
 
     return (
     <>
