@@ -12,6 +12,7 @@ import ReviewModal from "../review/ReviewModal";
 import StarRating from "../random/StarRating";
 import PhotoGrid from "../photos/PhotoGrid";
 import ViewPhotoModal from "../photos/ViewPhotoModal";
+import ListsModal from "../lists/ListsModal";
 
 import "./TrailPage.css"
 
@@ -28,12 +29,12 @@ export default function SplashPage() {
     const trail = useSelector(state => state.trails.current);
     const [review, setReview] = useState(null);
     const [showReviewModal, setShowReviewModal] = useState(false);
-
     const [photoId, setPhotoId] = useState(null);
     const [showViewPhotoModal, setShowViewPhotoModal] = useState(false);
+    const [showListModal, setShowListModal] = useState(false);
 
     const [activeInfoTab, setActiveInfoTab] = useState("Description");
-    const [activeFeedTab, setActiveFeedTab] = useState("Photos");
+    const [activeFeedTab, setActiveFeedTab] = useState("Reviews");
 
     const checkActive = (tabName, activeTab) => {
         return tabName === activeTab ? "active" : "";
@@ -59,6 +60,16 @@ export default function SplashPage() {
         setShowViewPhotoModal(false);
     }
 
+    const openListModal = (review=null) => {
+        //setReview(review);
+        setShowListModal(true);
+    }
+
+    const closeListModal = () => {
+        //setReview(null);
+        setShowListModal(false);
+    }
+
     useEffect(() => {
         dispatch(getTrailById(id, trailQuery({
             getPhotos: true,
@@ -68,7 +79,7 @@ export default function SplashPage() {
         return () => {
             dispatch(clearTrails("current"));
         }
-    }, [dispatch])
+    }, [id, dispatch])
 
     return (
     <>
@@ -100,7 +111,24 @@ export default function SplashPage() {
                             </div>
                         </>}
                     </div>
-                    <div className="trail-section__green-block" />
+                    <div className="trail-section__action-bar">
+                        <div className="trail-section__action-tab" onClick={openListModal}>
+                            <div className="trail-section__action-btn">
+                                <i className="fas fa-star" />
+                            </div>
+                            <div className="trail-section__action-name">
+                                Add to List
+                            </div>
+                        </div>
+                        <div className="trail-section__action-tab" >
+                            <div className="trail-section__action-btn">
+                                <i className="fas fa-check" />
+                            </div>
+                            <div className="trail-section__action-name">
+                                Mark Complete
+                            </div>
+                        </div>
+                    </div>
                     <div className="trail-section__overview trail-section__spacing">
                         {trail && trail.overview}
                     </div>
@@ -192,6 +220,11 @@ export default function SplashPage() {
         }
         {showViewPhotoModal && trail &&
             <ViewPhotoModal photos={trail.photos} photoId={photoId} close={closeViewPhotoModal} />
+        }
+        {showListModal && trail &&
+            <Modal close={closeListModal}>
+                <ListsModal />
+            </Modal>
         }
     </>
     )

@@ -7,7 +7,7 @@ import { listQuery } from "../../utils/queryObjects";
 
 import ListsRow from "./ListsRow";
 import Modal from "../Modal";
-import ListModal from "./ListModal";
+import AddListModal from "./AddListModal";
 
 import "./ListsPage.css"
 
@@ -62,7 +62,7 @@ export default function ListsPage() {
             </div>
             {showListModal &&
                 <Modal close={closeListModal}>
-                    <ListModal list={list} close={closeListModal} />
+                    <AddListModal list={list} close={closeListModal} />
                 </Modal>
             }
         </>

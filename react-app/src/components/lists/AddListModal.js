@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createList, updateList } from "../../store/lists";
 import { listQuery } from "../../utils/queryObjects";
 
-import "./ListModal.css";
+import "./AddListModal.css";
 
 export default function ListModal({ list, close }) {
     const dispatch = useDispatch();
