@@ -3,51 +3,51 @@ const GET_TRAILS = "trails/GET_TRAILS";
 const GET_TRAIL = "trails/GET_TRAIL";
 const CLEAR_TRAILS = "trails/CLEAR_TRAILS";
 
-const _getTrails = (payload, stateKey='default') => ({
+const _getTrails = (payload, key='default') => ({
     type: GET_TRAILS,
     payload,
-    stateKey
+    key
 })
 
-const _getTrail = (payload, stateKey) => ({
+const _getTrail = (payload, key) => ({
     type: GET_TRAIL,
     payload,
-    stateKey
+    key
 })
 
-const _clearTrails = (stateKey='default') => ({
+const _clearTrails = (key='default') => ({
     type: CLEAR_TRAILS,
-    stateKey
+    key
 })
 
-export const getTrails = (query={}, stateKey) => async (dispatch) => {
+export const getTrails = (query={}, key) => async (dispatch) => {
     let url = `/api/trails?`;
 
-    for (let key in query)
-        url += `${key}=${query[key]}&`;
+    for (let prop in query)
+        url += `${prop}=${query[prop]}&`;
 
     const res = await fetch(url);
     if (res.ok) {
         const data = await res.json();
-        dispatch(_getTrails(data, stateKey));
+        dispatch(_getTrails(data, key));
     }
 }
 
-export const getTrailById = (id, query={}, stateKey="current") => async (dispatch) => {
+export const getTrailById = (id, query={}, key="current") => async (dispatch) => {
     let url = `/api/trails/${id}?`;
 
-    for (let key in query)
-        url += `${key}=${query[key]}&`;
+    for (let prop in query)
+        url += `${prop}=${query[prop]}&`;
 
     const res = await fetch(url);
     if (res.ok) {
         const data = await res.json();
-        dispatch(_getTrail(data, stateKey));
+        dispatch(_getTrail(data, key));
     }
 }
 
-export const clearTrails = (stateKey) => async (dispatch) => {
-    dispatch(_clearTrails(stateKey));
+export const clearTrails = (key) => async (dispatch) => {
+    dispatch(_clearTrails(key));
 }
 
 const initialState = {};
@@ -57,17 +57,17 @@ export default function reducer(state=initialState, action) {
     const newState = { ...state };
     switch (action.type) {
         case GET_TRAILS:
-            // Clear old data if action.stateKey in STATE_KEYS
-            if (newState[action.stateKey] === undefined || STATE_KEYS.has(action.stateKey))
-                newState[action.stateKey] = {};
+            // Clear old data if action.key in STATE_KEYS
+            if (newState[action.key] === undefined || STATE_KEYS.has(action.key))
+                newState[action.key] = {};
             for (let trail of action.payload.trails)
-                newState[action.stateKey][trail.id] = trail;
+                newState[action.key][trail.id] = trail;
             return newState;
         case GET_TRAIL:
-            newState[action.stateKey] = action.payload;
+            newState[action.key] = action.payload;
             return newState;
         case CLEAR_TRAILS:
-            delete newState[action.stateKey];
+            delete newState[action.key];
             return newState;
         default:
             return state;

@@ -14,7 +14,7 @@ import "./ListsPage.css"
 export default function ListsPage() {
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.session);
-    const { lists } = useSelector(state => state);
+    const { owned: lists } = useSelector(state => state.lists);
     const [list, setList] = useState(null);
     const [showListModal, setShowListModal] = useState(false);
 
@@ -35,10 +35,10 @@ export default function ListsPage() {
             getUser: true,
             getTrails: 100
         });
-        dispatch(getLists(query));
+        dispatch(getLists(query, "owned"));
 
         return () => {
-            dispatch(clearLists());
+            dispatch(clearLists("owned"));
         }
     }, [user, dispatch])
 

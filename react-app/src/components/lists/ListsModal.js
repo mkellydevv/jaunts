@@ -9,7 +9,7 @@ import "./ListsModal.css";
 export default function ListsModal() {
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.session);
-    const { lists } = useSelector(state => state);
+    const { owned: lists } = useSelector(state => state.lists);
 
     useEffect(() => {
         if (!user) return;
@@ -18,12 +18,12 @@ export default function ListsModal() {
             getUser: true,
             getTrails: 100
         });
-        dispatch(getLists(query));
+        dispatch(getLists(query, "owned"));
 
         return () => {
-            dispatch(clearLists());
+            dispatch(clearLists("owned"));
         }
-    }, [user, dispatch])
+    }, [user, dispatch]);
 
     return (
         <div className="lists-modal" >
@@ -31,7 +31,7 @@ export default function ListsModal() {
                 Save to List
             </div>
             <div className="lists-modal__content">
-                {Object.values(lists).map(list => {
+                {lists && Object.values(lists).map(list => {
                     return (
                         <div className="lists-modal__row">
                             <div className="lists-modal__details">

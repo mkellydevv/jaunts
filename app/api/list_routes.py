@@ -27,7 +27,7 @@ def get_lists():
 
     lists = query.all()
 
-    return {"lists": [lst.to_dict(joins) for lst in lists] }
+    return { "lists": [lst.to_dict(joins) for lst in lists] }
 
 
 # GET a list
