@@ -20,6 +20,11 @@
 .lists-row__img-container {
     height: 160px;
     width: 160px;
+    cursor: pointer;
+}
+
+.lists-row__info {
+    cursor: pointer;
 }
 
 .lists-row__img-container img {
@@ -39,4 +44,5 @@
 
 .lists-row button {
     margin-right: 16px;
+    cursor: pointer;
 }

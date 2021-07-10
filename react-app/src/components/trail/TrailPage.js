@@ -26,7 +26,7 @@ export default function SplashPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const { id } = useParams();
-    const trail = useSelector(state => state.trails.current);
+    const trail = useSelector(state => state.trails.current ? Object.values(state.trails.current)[0] : null);
     const [review, setReview] = useState(null);
     const [showReviewModal, setShowReviewModal] = useState(false);
     const [photoId, setPhotoId] = useState(null);
@@ -71,10 +71,11 @@ export default function SplashPage() {
     }
 
     useEffect(() => {
-        dispatch(getTrailById(id, trailQuery({
+        const query = trailQuery({
             getPhotos: true,
             getTags: true,
-        })))
+        });
+        dispatch(getTrailById(id, query, "current"))
 
         return () => {
             dispatch(clearTrails("current"));

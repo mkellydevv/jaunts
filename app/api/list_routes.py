@@ -34,11 +34,10 @@ def get_lists():
 def get_list(id):
     args = request.args
 
-    # Optionally add joined tables to returned trails
-    joins = set()
-    if args["getListsTrails"]: joins.add("lists_trails")
-    if args["getTrails"]: joins.add("trails")
-    if args["getUser"]: joins.add("user")
+    joins = dict()
+    if args["getListsTrails"]: joins["lists_trails"] = int(args["getListsTrails"])
+    if args["getTrails"]: joins["trails"] = int(args["getTrails"])
+    if args["getUser"]: joins["user"] = True
 
     lst = List.query.get(id)
 

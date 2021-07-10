@@ -51,7 +51,7 @@ export const clearTrails = (key) => async (dispatch) => {
 }
 
 const initialState = {};
-const STATE_KEYS = new Set(["search", "nearby"])
+const STATE_KEYS = new Set(["search", "nearby", "trailPhoto"])
 
 export default function reducer(state=initialState, action) {
     const newState = { ...state };
@@ -64,7 +64,9 @@ export default function reducer(state=initialState, action) {
                 newState[action.key][trail.id] = trail;
             return newState;
         case GET_TRAIL:
-            newState[action.key] = action.payload;
+            if (newState[action.key] === undefined)
+                newState[action.key] = {};
+            newState[action.key][action.payload.id] = action.payload;
             return newState;
         case CLEAR_TRAILS:
             delete newState[action.key];

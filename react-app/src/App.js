@@ -17,6 +17,7 @@ import NavBar from "./components/nav/NavBar";
 import SplashPage from "./components/splash/SplashPage";
 import TrailPage from "./components/trail/TrailPage";
 import ListsPage from "./components/lists/ListsPage";
+import ListPage from "./components/list/ListPage";
 
 
 function App() {
@@ -59,6 +60,9 @@ function App() {
         </Route>
         <Route path="/lists" exact={true}>
           <ListsPage />
+        </Route>
+        <Route path="/lists/:id" exact={true}>
+          <ListPage />
         </Route>
         <ProtectedRoute path="/users" exact={true} >
           <UsersList/>

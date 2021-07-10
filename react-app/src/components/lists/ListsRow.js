@@ -10,11 +10,20 @@ import "./ListsRow.css"
 
 export default function ListsRow({ list, open }) {
     const dispatch = useDispatch();
+    const history = useHistory();
     const { user } = useSelector(state => state.session);
     const sampleTrailId =  list.lists_trails.length ? list.lists_trails[0].trail_id : "";
-    const sampleTrail = useSelector(state => state.trails[`ListsRow-${sampleTrailId}`]);
+    const sampleTrail = useSelector(state => state.trails[`list-${list.id}`]);
     const [imgSrc, setImgSrc] = useState("https://cdn-assets.alltrails.com/assets/placeholder/list_placeholder.svg");
     const [errors, setErrors] = useState("");
+
+    const handleClick = () => {
+        history.push(`/lists/${list.id}`);
+    }
+
+    const handleEdit = () => {
+        open(list);
+    }
 
     const handleDelete = async (e) => {
         const data = await dispatch(removeList(list.id));
@@ -30,25 +39,31 @@ export default function ListsRow({ list, open }) {
             dispatch(getTrailById(
                 sampleTrailId,
                 trailQuery({ getPhotos: true }),
-                `ListsRow-${sampleTrailId}`
+                `list-${list.id}`
             ));
         }
         return () => {
-            dispatch(clearTrails(`ListsRow-${sampleTrailId}`));
+            dispatch(clearTrails(`list-${list.id}`));
         }
     }, [dispatch])
 
     useEffect(() => {
         if (!sampleTrail) return;
-        setImgSrc(sampleTrail.photos[0].url.replace("extra_", ""));
+        setImgSrc(Object.values(sampleTrail)[0].photos[0].url.replace("extra_", ""));
     }, [sampleTrail])
 
     return (
         <div className="lists-row">
-            <div className="lists-row__img-container">
+            <div
+                className="lists-row__img-container"
+                onClick={handleClick}
+            >
                 <img src={imgSrc} />
             </div>
-            <div>
+            <div
+                className="lists-row__info"
+                onClick={handleClick}
+            >
                 <div className="lists-row__name">{list.name}</div>
                 <div>{user && user.username}</div>
                 <div className="lists-row__blurb">{list.blurb}</div>
@@ -59,7 +74,7 @@ export default function ListsRow({ list, open }) {
                 <div>Photos: 0</div>
             </div>
             <div>
-                <button onClick={() => open(list)}>Edit</button>
+                <button onClick={handleEdit}>Edit</button>
                 <button onClick={handleDelete}>Delete</button>
             </div>
         </div>

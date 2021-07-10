@@ -158,6 +158,9 @@ export default function reducer(state=initialState, action) {
                 newState[action.key][list.id] = list;
             return newState;
         case GET_LIST:
+            console.log('action', action.key, action.payload)
+            if (newState[action.key] === undefined)
+                newState[action.key] = {};
             newState[action.key][action.payload.id] = action.payload;
             return newState;
         case REMOVE_LIST:
