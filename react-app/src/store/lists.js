@@ -27,6 +27,46 @@ const _removeList = (payload, key="default") => ({
     key
 })
 
+export const addTrailToList = (query={}, payload) => async (dispatch) => {
+    let url = `/api/lists/${payload.listId}?`;
+
+    for (let prop in query)
+        url += `${prop}=${query[prop]}&`;
+
+    const res = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (res.ok) {
+        dispatch(_getList(data, "owned"));
+    }
+    else {
+        console.log("Errors:", res, data);
+    }
+}
+
+export const deleteTrailFromList = (query={}, listId, trailId) => async (dispatch) => {
+    let url = `/api/lists/${listId}/trails/${trailId}?`;
+
+    for (let prop in query)
+        url += `${prop}=${query[prop]}&`;
+
+    const res = await fetch(url, { method: "DELETE" });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        dispatch(_getList(data, "owned"));
+    }
+    else {
+        console.log("Errors:", res, data);
+    }
+}
+
 export const getLists = (query={}, key) => async (dispatch) => {
     let url = `/api/lists?`;
 

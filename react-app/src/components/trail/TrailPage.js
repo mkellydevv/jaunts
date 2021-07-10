@@ -223,7 +223,7 @@ export default function SplashPage() {
         }
         {showListModal && trail &&
             <Modal close={closeListModal}>
-                <ListsModal />
+                <ListsModal trail={trail} />
             </Modal>
         }
     </>

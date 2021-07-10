@@ -34,7 +34,7 @@ class List(db.Model):
             dct["photos"] = [photo.to_dict() for photo in self.photo][:joins["photos"]]
 
         if "trails" in joins:
-            dct["trails"] = [trail.to_dict() for trail in self.trails][:joins["trails"]]
+            dct["trails"] = {trail.id: trail.to_dict() for trail in self.trails[:joins["trails"]]}
 
         if "user" in joins:
             dct["user"] = self.user.to_dict()
