@@ -1,6 +1,6 @@
 export function listQuery(args={}) {
     const query ={
-        fromUserId: null,
+        fromUserId: "",
         offset: 0,
         limit: 10,
         getListsTrails: "",
@@ -14,7 +14,7 @@ export function listQuery(args={}) {
 
 export function trailQuery(args={}) {
     const query = {
-        fromListId: null,
+        fromListId: "",
         searchTerm: "",
         searchCategories: ["name"],
         searchTags: [],

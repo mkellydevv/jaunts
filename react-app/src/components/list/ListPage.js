@@ -19,11 +19,11 @@ export default function ListPage() {
         const _listQuery = listQuery({
             fromUserId: user.id,
             getListsTrails: 100,
-            getTrails: 100,
         });
 
         const _trailQuery = trailQuery({
-            fromListId: id
+            fromListId: id,
+            limit: 100
         });
 
         dispatch(getListById(id, _listQuery, "current"));
