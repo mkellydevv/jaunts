@@ -1,59 +1,103 @@
 
-const ADD_LISTS = "reviews/ADD_LISTS";
-const ADD_LIST = "lists/ADD_LIST";
-const REMOVE_LIST = "trails/REMOVE_LIST";
+const GET_LISTS = "lists/GET_LISTS";
+const GET_LIST = "lists/GET_LIST";
+const REMOVE_LIST = "lists/REMOVE_LIST";
 const CLEAR_LISTS = "lists/CLEAR_LISTS";
 
-const _addList = (payload) => ({
-    type: ADD_LIST,
-    payload
+const _getLists = (payload, key="default") => ({
+    type: GET_LISTS,
+    payload,
+    key
 })
 
-const _addLists = (payload) => ({
-    type: ADD_LISTS,
-    payload
+const _getList = (payload, key="default") => ({
+    type: GET_LIST,
+    payload,
+    key
 })
 
-const _clearLists = () => ({
-    type: CLEAR_LISTS
+const _clearLists = (key="default") => ({
+    type: CLEAR_LISTS,
+    key
 })
 
-const _removeList = payload => ({
+const _removeList = (payload, key="default") => ({
     type: REMOVE_LIST,
-    payload
+    payload,
+    key
 })
 
-export const getLists = (query={}) => async (dispatch) => {
+export const addTrailToList = (query={}, payload) => async (dispatch) => {
+    let url = `/api/lists/${payload.listId}?`;
+
+    for (let prop in query)
+        url += `${prop}=${query[prop]}&`;
+
+    const res = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (res.ok) {
+        dispatch(_getList(data, "owned"));
+    }
+    else {
+        console.log("Errors:", res, data);
+    }
+}
+
+export const deleteTrailFromList = (query={}, listId, trailId) => async (dispatch) => {
+    let url = `/api/lists/${listId}/trails/${trailId}?`;
+
+    for (let prop in query)
+        url += `${prop}=${query[prop]}&`;
+
+    const res = await fetch(url, { method: "DELETE" });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        dispatch(_getList(data, "owned"));
+    }
+    else {
+        console.log("Errors:", res, data);
+    }
+}
+
+export const getLists = (query={}, key) => async (dispatch) => {
     let url = `/api/lists?`;
 
-    for (let key in query)
-        url += `${key}=${query[key]}&`;
+    for (let prop in query)
+        url += `${prop}=${query[prop]}&`;
 
     const res = await fetch(url);
     if (res.ok) {
         const data = await res.json();
-        dispatch(_addLists(data));
+        dispatch(_getLists(data, key));
     }
 }
 
-export const getListById = (id, query={}) => async (dispatch) => {
+export const getListById = (id, query={}, key) => async (dispatch) => {
     let url = `/api/lists/${id}?`;
 
-    for (let key in query)
-        url += `${key}=${query[key]}&`;
+    for (let prop in query)
+        url += `${prop}=${query[prop]}&`;
 
     const res = await fetch(url);
     if (res.ok) {
         const data = await res.json();
-        dispatch(_addList(data));
+        dispatch(_getList(data, key));
     }
 }
 
-export const createList = (query, payload) => async (dispatch) => {
+export const createList = (query, payload, key="default") => async (dispatch) => {
     let url = `/api/lists?`;
 
-    for (let key in query)
-        url += `${key}=${query[key]}&`;
+    for (let prop in query)
+        url += `${prop}=${query[prop]}&`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -64,15 +108,15 @@ export const createList = (query, payload) => async (dispatch) => {
     });
     const data = await res.json();
     if (res.ok)
-        dispatch(_addList(data));
+        dispatch(_getList(data, key));
     return data;
 }
 
-export const updateList = (id, query, payload) => async (dispatch) => {
+export const updateList = (id, query, payload, key) => async (dispatch) => {
     let url = `/api/lists/${id}?`;
 
-    for (let key in query)
-        url += `${key}=${query[key]}&`;
+    for (let prop in query)
+        url += `${prop}=${query[prop]}&`;
 
     const res = await fetch(url, {
         method: 'PATCH',
@@ -83,41 +127,48 @@ export const updateList = (id, query, payload) => async (dispatch) => {
     });
     const data = await res.json();
     if (res.ok)
-        dispatch(_addList(data));
+        dispatch(_getList(data, key));
     return data;
 }
 
-export const removeList = (id) => async (dispatch) => {
+export const removeList = (id, key) => async (dispatch) => {
     const res = await fetch(`/api/lists/${id}`, { method: 'DELETE' });
 
     const data = await res.json();
 
     if (res.ok)
-        dispatch(_removeList(id));
+        dispatch(_removeList(id, key));
     return data;
 }
 
-export const clearLists = () => async (dispatch) => {
-    dispatch(_clearLists());
+export const clearLists = (key) => async (dispatch) => {
+    dispatch(_clearLists(key));
 }
 
 const initialState = {};
+const KEYS = new Set(["current", "owned"]);
 
 export default function reducer(state=initialState, action) {
     const newState = { ...state };
     switch (action.type) {
-        case ADD_LISTS:
+        case GET_LISTS:
+            if (newState[action.key] === undefined || KEYS.has(action.key))
+                newState[action.key] = {};
             for (let list of action.payload.lists)
-                newState[list.id] = list;
+                newState[action.key][list.id] = list;
             return newState;
-        case ADD_LIST:
-            newState[action.payload.id] = action.payload;
+        case GET_LIST:
+            console.log('action', action.key, action.payload)
+            if (newState[action.key] === undefined)
+                newState[action.key] = {};
+            newState[action.key][action.payload.id] = action.payload;
             return newState;
         case REMOVE_LIST:
-            delete newState[action.payload];
+            delete newState[action.key][action.payload];
             return newState;
         case CLEAR_LISTS:
-            return initialState;
+            delete newState[action.key];
+            return newState;
         default:
             return state;
     }
