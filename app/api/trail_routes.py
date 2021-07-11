@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from sqlalchemy import or_
-from app.models import db, Trail, tags_trails, Tag
+from app.models import db, Trail, tags_trails, Tag, ListTrail
 from app.forms import TrailForm
 from .utils import validation_errors_to_error_messages
 from flask_login import current_user, login_required
@@ -26,6 +26,8 @@ def get_trails():
 
     # Query db with filters
     query = Trail.query
+    if args["fromListId"]:
+        query = query.filter(ListTrail.trail_id == Trail.id)
     query = query.filter(
         or_(
             Trail.name.ilike(f"%{args['searchTerm']}%"),

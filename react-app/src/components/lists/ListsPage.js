@@ -38,9 +38,7 @@ export default function ListsPage() {
         });
         dispatch(getLists(query, "owned"));
 
-        return () => {
-            dispatch(clearLists("owned"));
-        }
+        return () => dispatch(clearLists("owned"));
     }, [user, dispatch])
 
     return (

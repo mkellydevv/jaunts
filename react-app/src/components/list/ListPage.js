@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 
 import { clearLists, getListById } from "../../store/lists";
-import { listQuery } from "../../utils/queryObjects";
+import { clearTrails, getTrails } from "../../store/trails";
+import { listQuery, trailQuery } from "../../utils/queryObjects";
 
 
 export default function ListPage() {
@@ -14,15 +15,23 @@ export default function ListPage() {
 
     useEffect(() => {
         if (!user) return;
-        const query = listQuery({
+
+        const _listQuery = listQuery({
             fromUserId: user.id,
             getListsTrails: 100,
             getTrails: 100,
         });
-        dispatch(getListById(id, query, "current"));
+
+        const _trailQuery = trailQuery({
+            fromListId: id
+        });
+
+        dispatch(getListById(id, _listQuery, "current"));
+        dispatch(getTrails(_trailQuery, "current"));
 
         return () => {
             dispatch(clearLists("current"));
+            dispatch(clearTrails("current"));
         }
     }, [id, user, dispatch]);
 

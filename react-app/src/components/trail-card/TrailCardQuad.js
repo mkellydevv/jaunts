@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getTrails } from "../../store/trails";
+import { getTrails, clearTrails } from "../../store/trails";
 import { trailQuery } from "../../utils/queryObjects";
 
 import TrailCard from "./TrailCard";
@@ -18,7 +18,10 @@ export default function TrailCardQuad({ tag }) {
             limit: 4,
             getPhotos: true,
         });
+
         dispatch(getTrails(trailQuery(query), tag));
+
+        return () => dispatch(clearTrails(tag));
     }, [dispatch]);
 
     return (

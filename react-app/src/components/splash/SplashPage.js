@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { getTrails } from "../../store/trails";
+import { getTrails, clearTrails } from "../../store/trails";
 import { trailQuery } from "../../utils/queryObjects";
 
 import HeroCarousel from "./HeroCarousel";
@@ -33,9 +33,10 @@ export default function SplashPage() {
             prevSearch.current = currSearch.current;
         }, 1000);
 
-        return (() => {
+        return () => {
             clearInterval(searchInterval);
-        })
+            dispatch(clearTrails("search"));
+        }
     }, [dispatch]);
 
     return (

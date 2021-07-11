@@ -14,6 +14,7 @@ export function listQuery(args={}) {
 
 export function trailQuery(args={}) {
     const query = {
+        fromListId: null,
         searchTerm: "",
         searchCategories: ["name"],
         searchTags: [],
