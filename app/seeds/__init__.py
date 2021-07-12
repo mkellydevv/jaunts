@@ -3,7 +3,7 @@ from .users import seed_users, undo_users
 from .tags_trails_seed import seed_tags_trails, undo_tags_trails
 from .photo_seed import seed_photos, undo_photos
 from .list_seed import seed_lists, undo_lists
-from .list_trail_seed import seed_lists_trails, undo_lists_trails
+from .jaunt_seed import seed_jaunts, undo_jaunts
 from .review_seed import seed_reviews, undo_reviews
 
 # Creates a seed group to hold our commands
@@ -16,7 +16,7 @@ def seed():
     seed_users()
     seed_tags_trails()
     seed_lists()
-    seed_lists_trails()
+    seed_jaunts()
     seed_photos()
     seed_reviews()
 
@@ -26,6 +26,6 @@ def undo():
     undo_users()
     undo_tags_trails()
     undo_lists()
-    undo_lists_trails()
+    undo_jaunts()
     undo_photos()
     undo_reviews()

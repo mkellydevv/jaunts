@@ -3,7 +3,7 @@ export function listQuery(args={}) {
         fromUserId: "",
         offset: 0,
         limit: 25,
-        getListsTrails: "",
+        getJaunts: "",
         getTrails: "",
         getUser: ""
     }
@@ -30,7 +30,7 @@ export function trailQuery(args={}) {
     return query;
 }
 
-export function listTrailQuery(args={}) {
+export function jauntQuery(args={}) {
     const query = {
         fromListId: "",
         fromTrailId: "",

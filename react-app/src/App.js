@@ -34,8 +34,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // dispatch(getLists(listQuery({fromUserId: 1, getUser: true, getTrails: 1})))
-    // dispatch(getListById(1, {getUser: true, getTrails: true, getListsTrails: true}))
   }, [dispatch])
 
   if (!loaded) {

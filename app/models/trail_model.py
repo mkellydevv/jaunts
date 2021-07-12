@@ -1,5 +1,5 @@
 from .db import db
-from .list_trail_model import ListTrail
+from .jaunt_model import Jaunt
 from .tag_trail_model import tags_trails
 import enum
 
@@ -35,14 +35,14 @@ class Trail(db.Model):
     default_rating = db.Column(db.Float, nullable=False)
     default_weighting = db.Column(db.Integer, nullable=False)
 
-    lists_trails = db.relationship("ListTrail", back_populates="trail")
+    jaunts = db.relationship("Jaunt", back_populates="trail")
     photos = db.relationship("Photo", back_populates="trail")
     reviews = db.relationship("Review", back_populates="trail")
     user = db.relationship("User", back_populates="trails")
 
     lists = db.relationship(
         "List",
-        secondary="lists_trails",
+        secondary="jaunts",
         back_populates="trails"
     )
 

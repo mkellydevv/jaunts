@@ -110,11 +110,7 @@ export const createList = (query, payload, key="default") => async (dispatch) =>
 }
 
 export const updateList = (id, query, payload, key) => async (dispatch) => {
-    let url = `/api/lists/${id}?`;
-
-    for (let prop in query)
-        url += `${prop}=${query[prop]}&`;
-
+    const url = appendQueryArgs(query, `/api/lists/${id}`);
     const res = await fetch(url, {
         method: 'PATCH',
         headers: {
