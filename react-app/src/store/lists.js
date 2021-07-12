@@ -1,3 +1,4 @@
+import { appendQueryArgs } from "../utils/helperFuncs";
 
 const GET_LISTS = "lists/GET_LISTS";
 const GET_LIST = "lists/GET_LIST";
@@ -68,11 +69,7 @@ export const deleteTrailFromList = (query={}, listId, trailId) => async (dispatc
 }
 
 export const getLists = (query={}, key) => async (dispatch) => {
-    let url = `/api/lists?`;
-
-    for (let prop in query)
-        url += `${prop}=${query[prop]}&`;
-
+    const url = appendQueryArgs(query, `/api/lists`);
     const res = await fetch(url);
     if (res.ok) {
         const data = await res.json();
@@ -158,7 +155,6 @@ export default function reducer(state=initialState, action) {
                 newState[action.key][list.id] = list;
             return newState;
         case GET_LIST:
-            console.log('action', action.key, action.payload)
             if (newState[action.key] === undefined)
                 newState[action.key] = {};
             newState[action.key][action.payload.id] = action.payload;

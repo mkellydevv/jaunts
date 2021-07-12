@@ -4,12 +4,14 @@ import session from "./session";
 import trails from "./trails";
 import reviews from "./reviews";
 import lists from "./lists";
+import listTrails from "./listTrails";
 
 const rootReducer = combineReducers({
     session,
     trails,
     reviews,
-    lists
+    lists,
+    listTrails,
 });
 
 let enhancer;
