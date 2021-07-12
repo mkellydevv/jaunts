@@ -21,7 +21,9 @@ export default function ListsModal({ trail }) {
         });
 
         if (listTrails[list.id][trail.id] === undefined) {
-            dispatch(createListTrail({ trailId: trail.id, listId: list.id }, query, list.id, "trail_id"));
+            dispatch(createListTrail(
+                { trailId: trail.id, listId: list.id }, query, list.id, "trail_id"
+            ));
         }
         else {
             dispatch(deleteListTrail(listTrails[list.id][trail.id].id, list.id, "trail_id"));
@@ -37,10 +39,10 @@ export default function ListsModal({ trail }) {
             getTrails: 100,
         });
         dispatch(getLists(query, "owned"));
-
         return () => {
             dispatch(clearLists("owned"));
-        }
+            dispatch(clearListTrails());
+        };
     }, [user, dispatch]);
 
     useEffect(() => {
@@ -53,11 +55,6 @@ export default function ListsModal({ trail }) {
             dispatch(getListTrails(_listTrailQuery, list.id, "trail_id"));
         }
     }, [lists]);
-
-    useEffect(() => {
-
-        return () => clearListTrails();
-    }, [listTrails]);
 
     return (
         <div className="lists-modal" >

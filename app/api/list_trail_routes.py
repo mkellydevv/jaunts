@@ -4,6 +4,7 @@ from flask_login import current_user, login_required
 
 bp = Blueprint('list_trails', __name__)
 
+
 # GET all lists_trails
 @bp.route('', methods=['GET'])
 def get_list_trails():
@@ -47,12 +48,35 @@ def post_list_trail():
 
     return list_trail.to_dict(joins)
 
+
+# PATCH a list_trail
+@bp.route('/<int:id>', methods=['PATCH'])
+# @login_required
+def patch_list_trail(id):
+    list_trail = ListTrail.query.get(id)
+    lst = List.query.get(list_trail.list_id)
+
+    if current_user.id == lst.user_id:
+        data = request.json
+        for key in data:
+            setattr(list_trail, key, data[key])
+        db.session.commit()
+
+        args = request.args
+        joins = { "getList": args["getList"], "getTrail": args["getTrail"] }
+
+        return list_trail.to_dict(joins)
+    else:
+        return {"errors": "Unauthorized"}, 401
+
+
 # DELETE a list_trail
 @bp.route('/<int:id>', methods=['DELETE'])
 # @login_required
 def delete_list_trail(id):
     list_trail = ListTrail.query.get(id)
     lst = List.query.get(list_trail.list_id)
+
     if current_user.id == lst.user_id:
         db.session.delete(list_trail)
         db.session.commit()
