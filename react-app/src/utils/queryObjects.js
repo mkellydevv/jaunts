@@ -2,7 +2,7 @@ export function listQuery(args={}) {
     const query ={
         fromUserId: "",
         offset: 0,
-        limit: 10,
+        limit: 25,
         getListsTrails: "",
         getTrails: "",
         getUser: ""
@@ -19,7 +19,7 @@ export function trailQuery(args={}) {
         searchCategories: ["name"],
         searchTags: [],
         offset: 0,
-        limit: 10,
+        limit: 25,
         getReviews: "",
         getPhotos: "",
         getTags: "",
@@ -30,12 +30,25 @@ export function trailQuery(args={}) {
     return query;
 }
 
+export function listTrailQuery(args={}) {
+    const query = {
+        fromListId: "",
+        fromTrailId: "",
+        offset: 0,
+        limit: 25,
+        getList: "",
+        getTrail: "",
+    }
+    for (let key in args)
+        query[key] = args[key];
+    return query;
+}
 
 export function reviewQuery(args={}) {
     const query = {
         fromTrailId: null,
         offset: 0,
-        limit: 10,
+        limit: 25,
         getUser: "",
     }
     for (let key in args)

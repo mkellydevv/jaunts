@@ -110,24 +110,6 @@ def delete_list(id):
 #######################################################################################
 #######################################################################################
 
-# # GET all lists_trails
-# @bp.route('/<int:list_id>/trails', methods=['GET'])
-# def get_lists_trails(list_id):
-#     args = request.args
-
-#     joins = dict()
-#     if args["getTrails"]: joins["trails"] = int(args["getTrails"])
-#     if args["getUser"]: joins["user"] = True
-
-#     query = ListTrail.query
-#     query = query.filter(ListTrail.list_id == list_id)
-#     query = query.offset(int(args['offset']) * int(args['limit']))
-#     query = query.limit(int(args['limit']))
-
-#     list_trails = query.all()
-
-#     return { "list_trails": [list_trail.to_dict(joins) for list_trail in list_trails] }
-
 # POST a ListTrail
 @bp.route('/<int:id>', methods=['POST'])
 # @login_required

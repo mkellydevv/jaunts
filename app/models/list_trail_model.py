@@ -25,10 +25,10 @@ class ListTrail(db.Model):
             "date": self.date
         }
 
-        if "list" in joins:
-            dct["list"] = self.list.to_dict()
+        if "getList" in joins:
+            dct["list"] = self._list.to_dict()
 
-        if "trail" in joins:
+        if "getTrail" in joins:
             dct["trail"] = self.trail.to_dict()
 
         return dct

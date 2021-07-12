@@ -10,6 +10,7 @@ from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.review_routes import bp as review_routes
 from .api.list_routes import bp as list_routes
+from .api.list_trail_routes import bp as list_trail_routes
 from .api.trail_routes import bp as trail_routes
 
 from .seeds import seed_commands
@@ -36,6 +37,7 @@ app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(review_routes, url_prefix='/api/reviews')
 app.register_blueprint(list_routes, url_prefix='/api/lists')
+app.register_blueprint(list_trail_routes, url_prefix='/api/listTrails')
 app.register_blueprint(trail_routes, url_prefix='/api/trails')
 
 db.init_app(app)
