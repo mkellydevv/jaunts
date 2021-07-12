@@ -18,7 +18,7 @@ export default function ListPage() {
 
         const _listQuery = listQuery({
             fromUserId: user.id,
-            getListsTrails: 100,
+            getJaunts: 100,
         });
 
         const _trailQuery = trailQuery({
@@ -41,17 +41,17 @@ export default function ListPage() {
                 {list && list.blurb}
             </div>
             <div>
-                {list && list.lists_trails.map(listTrail => {
+                {list && list.jaunts.map(jaunt => {
                     return (
                         <>
                             <div>
-                                Rating {listTrail.rating}
+                                Rating {jaunt.rating}
                             </div>
                             <div>
-                                Blurb {listTrail.blurb}
+                                Blurb {jaunt.blurb}
                             </div>
                             <div>
-                                Date {listTrail.date}
+                                Date {jaunt.date}
                             </div>
                         </>
                     )

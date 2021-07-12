@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.models import db, List, ListTrail
+from app.models import db, List
 from app.forms import ListForm
 from .utils import validation_errors_to_error_messages
 from flask_login import current_user, login_required
@@ -14,7 +14,7 @@ def get_lists():
     args = request.args
 
     joins = dict()
-    if args["getListsTrails"]: joins["lists_trails"] = int(args["getListsTrails"])
+    if args["getJaunts"]: joins["jaunts"] = int(args["getJaunts"])
     if args["getTrails"]: joins["trails"] = int(args["getTrails"])
     if args["getUser"]: joins["user"] = True
 
@@ -35,7 +35,7 @@ def get_list(id):
     args = request.args
 
     joins = dict()
-    if args["getListsTrails"]: joins["lists_trails"] = int(args["getListsTrails"])
+    if args["getJaunts"]: joins["jaunts"] = int(args["getJaunts"])
     if args["getTrails"]: joins["trails"] = int(args["getTrails"])
     if args["getUser"]: joins["user"] = True
 

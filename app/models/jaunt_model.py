@@ -1,7 +1,7 @@
 from .db import db
 
-class ListTrail(db.Model):
-    __tablename__ = "lists_trails"
+class Jaunt(db.Model):
+    __tablename__ = "jaunts"
 
     id = db.Column(db.Integer, primary_key=True)
     list_id = db.Column(db.Integer, db.ForeignKey("lists.id"), nullable=False)
@@ -11,8 +11,8 @@ class ListTrail(db.Model):
     blurb = db.Column(db.Text)
     date = db.Column(db.Date)
 
-    _list = db.relationship("List", back_populates="lists_trails")
-    trail = db.relationship("Trail", back_populates="lists_trails")
+    _list = db.relationship("List", back_populates="jaunts")
+    trail = db.relationship("Trail", back_populates="jaunts")
 
     def to_dict(self, joins={}):
         dct = {

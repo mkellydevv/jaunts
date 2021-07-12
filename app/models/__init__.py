@@ -7,4 +7,4 @@ from .user_model import User
 from .photo_model import Photo
 
 from .tag_trail_model import tags_trails
-from .list_trail_model import ListTrail
+from .jaunt_model import Jaunt

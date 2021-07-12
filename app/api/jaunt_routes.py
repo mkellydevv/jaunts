@@ -1,85 +1,85 @@
 from flask import Blueprint, request
-from app.models import db, List, Trail, ListTrail
+from app.models import db, List, Trail, Jaunt
 from flask_login import current_user, login_required
 
-bp = Blueprint('list_trails', __name__)
+bp = Blueprint('jaunts', __name__)
 
 
-# GET all lists_trails
+# GET all jaunts
 @bp.route('', methods=['GET'])
-def get_list_trails():
+def get_jaunts():
     args = request.args
     joins = { "getList": args["getList"], "getTrail": args["getTrail"] }
 
-    query = ListTrail.query
+    query = Jaunt.query
     if args["fromListId"]:
-        query = query.filter(ListTrail.list_id == int(args["fromListId"]))
+        query = query.filter(Jaunt.list_id == int(args["fromListId"]))
     if args["fromTrailId"]:
-        query = query.filter(ListTrail.trail_id == int(args["fromTrailId"]))
+        query = query.filter(Jaunt.trail_id == int(args["fromTrailId"]))
     query = query.offset(int(args['offset']) * int(args['limit']))
     query = query.limit(int(args['limit']))
 
-    list_trails = query.all()
+    jaunts = query.all()
 
-    return { "list_trails": [list_trail.to_dict(joins) for list_trail in list_trails] }
+    return { "jaunts": [jaunt.to_dict(joins) for jaunt in jaunts] }
 
 
-# POST a list_trail
+# POST a jaunt
 @bp.route('', methods=['POST'])
 # @login_required
-def post_list_trail():
+def post_jaunt():
     args = request.args
     joins = { "getList": args["getList"], "getTrail": args["getTrail"] }
     data = request.json
 
-    query = ListTrail.query.filter(ListTrail.list_id == data["listId"])
+    query = Jaunt.query.filter(Jaunt.list_id == data["listId"])
     count = query.count()
 
-    if query.filter(ListTrail.trail_id == data["trailId"]).count() > 0:
-        return {"errors": "ListTrail already exists"}, 401
+    if query.filter(Jaunt.trail_id == data["trailId"]).count() > 0:
+        return {"errors": "Jaunt already exists"}, 401
 
-    list_trail = ListTrail(
+    jaunt = Jaunt(
         list_id=data["listId"],
         trail_id=data["trailId"],
         order=count+1
     )
-    db.session.add(list_trail)
+    db.session.add(jaunt)
     db.session.commit()
 
-    return list_trail.to_dict(joins)
+    return jaunt.to_dict(joins)
 
 
-# PATCH a list_trail
+# PATCH a jaunt
 @bp.route('/<int:id>', methods=['PATCH'])
 # @login_required
-def patch_list_trail(id):
-    list_trail = ListTrail.query.get(id)
-    lst = List.query.get(list_trail.list_id)
+def patch_jaunt(id):
+    jaunt = Jaunt.query.get(id)
+    lst = List.query.get(jaunt.list_id)
 
     if current_user.id == lst.user_id:
         data = request.json
         for key in data:
-            setattr(list_trail, key, data[key])
+            setattr(jaunt, key, data[key])
         db.session.commit()
 
         args = request.args
         joins = { "getList": args["getList"], "getTrail": args["getTrail"] }
 
-        return list_trail.to_dict(joins)
+        return jaunt.to_dict(joins)
     else:
         return {"errors": "Unauthorized"}, 401
 
 
-# DELETE a list_trail
+# DELETE a jaunt
 @bp.route('/<int:id>', methods=['DELETE'])
 # @login_required
-def delete_list_trail(id):
-    list_trail = ListTrail.query.get(id)
-    lst = List.query.get(list_trail.list_id)
+def delete_jaunt(id):
+    jaunt = Jaunt.query.get(id)
+    lst = List.query.get(jaunt.list_id)
 
     if current_user.id == lst.user_id:
-        db.session.delete(list_trail)
+        db.session.delete(jaunt)
         db.session.commit()
-        return list_trail.to_dict()
+        return jaunt.to_dict()
     else:
         return {"errors": "Unauthorized"}, 401

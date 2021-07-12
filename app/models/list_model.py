@@ -1,5 +1,5 @@
 from .db import db
-from .list_trail_model import ListTrail
+from .jaunt_model import Jaunt
 
 class List(db.Model):
     __tablename__ = "lists"
@@ -9,13 +9,13 @@ class List(db.Model):
     name = db.Column(db.String, nullable=False)
     blurb = db.Column(db.Text)
 
-    lists_trails = db.relationship("ListTrail", back_populates="_list")
+    jaunts = db.relationship("Jaunt", back_populates="_list", cascade="all, delete")
     photos = db.relationship("Photo", back_populates="_list")
     user = db.relationship("User", back_populates="lists")
 
     trails = db.relationship(
         "Trail",
-        secondary="lists_trails",
+        secondary="jaunts",
         back_populates="lists"
     )
 
@@ -27,8 +27,8 @@ class List(db.Model):
             "blurb": self.blurb
         }
 
-        if "lists_trails" in joins:
-            dct["lists_trails"] = [list_trail.to_dict() for list_trail in self.lists_trails][:joins["lists_trails"]]
+        if "jaunts" in joins:
+            dct["jaunts"] = [jaunt.to_dict() for jaunt in self.jaunts][:joins["jaunts"]]
 
         if "photos" in joins:
             dct["photos"] = [photo.to_dict() for photo in self.photo][:joins["photos"]]

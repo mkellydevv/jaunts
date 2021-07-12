@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { listQuery, listTrailQuery } from "../../utils/queryObjects";
+import { listQuery, jauntQuery } from "../../utils/queryObjects";
 import { getLists, clearLists } from "../../store/lists";
-import { getListTrails, createListTrail, deleteListTrail, clearListTrails } from "../../store/listTrails";
+import { getJaunts, createJaunt, deleteJaunt, clearJaunts } from "../../store/jaunts";
 
 import "./ListsModal.css";
 
@@ -11,22 +11,22 @@ export default function ListsModal({ trail }) {
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.session);
     const { owned: lists } = useSelector(state => state.lists);
-    const listTrails = useSelector(state => state.listTrails);
+    const jaunts = useSelector(state => state.jaunts);
 
     const handleClick = (list) => {
         if (!user) return;
 
-        const query = listTrailQuery({
+        const query = jauntQuery({
             fromListId: list.id
         });
 
-        if (listTrails[list.id][trail.id] === undefined) {
-            dispatch(createListTrail(
+        if (jaunts[list.id][trail.id] === undefined) {
+            dispatch(createJaunt(
                 { trailId: trail.id, listId: list.id }, query, list.id, "trail_id"
             ));
         }
         else {
-            dispatch(deleteListTrail(listTrails[list.id][trail.id].id, list.id, "trail_id"));
+            dispatch(deleteJaunt(jaunts[list.id][trail.id].id, list.id, "trail_id"));
         }
     }
 
@@ -35,24 +35,24 @@ export default function ListsModal({ trail }) {
         const query = listQuery({
             fromUserId: user.id,
             getUser: true,
-            getListsTrails: 100,
+            getJaunts: 100,
             getTrails: 100,
         });
         dispatch(getLists(query, "owned"));
         return () => {
             dispatch(clearLists("owned"));
-            dispatch(clearListTrails());
+            dispatch(clearJaunts());
         };
     }, [user, dispatch]);
 
     useEffect(() => {
         if (!lists) return;
         for (let list of Object.values(lists)) {
-            const _listTrailQuery = listTrailQuery({
+            const _jauntQuery = jauntQuery({
                 fromListId: list.id
             });
 
-            dispatch(getListTrails(_listTrailQuery, list.id, "trail_id"));
+            dispatch(getJaunts(_jauntQuery, list.id, "trail_id"));
         }
     }, [lists]);
 
@@ -67,11 +67,11 @@ export default function ListsModal({ trail }) {
                         <div className="lists-modal__row">
                             <div className="lists-modal__details">
                                 <div className="lists-row__name">{list.name}</div>
-                                {listTrails && listTrails[list.id] && <div>Trails: {Object.values(listTrails[list.id]).length}</div>}
+                                {jaunts && jaunts[list.id] && <div>Trails: {Object.values(jaunts[list.id]).length}</div>}
                             </div>
                             <div className="lists-modal__star-container">
-                                {listTrails && listTrails[list.id] && <i
-                                    className={`${listTrails[list.id][trail.id] !== undefined ? "fas" : "far"} fa-star`}
+                                {jaunts && jaunts[list.id] && <i
+                                    className={`${jaunts[list.id][trail.id] !== undefined ? "fas" : "far"} fa-star`}
                                     onClick={() => handleClick(list)}
                                 />}
                             </div>

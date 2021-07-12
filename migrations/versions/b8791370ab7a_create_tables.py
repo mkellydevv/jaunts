@@ -1,8 +1,8 @@
 """create tables
 
-Revision ID: 312a23f65d1f
+Revision ID: b8791370ab7a
 Revises: 
-Create Date: 2021-06-18 16:07:08.267158
+Create Date: 2021-07-12 15:41:42.789426
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '312a23f65d1f'
+revision = 'b8791370ab7a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -60,7 +60,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('lists_trails',
+    op.create_table('jaunts',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('list_id', sa.Integer(), nullable=False),
     sa.Column('trail_id', sa.Integer(), nullable=False),
@@ -108,7 +108,7 @@ def downgrade():
     op.drop_table('tags_trails')
     op.drop_table('reviews')
     op.drop_table('photos')
-    op.drop_table('lists_trails')
+    op.drop_table('jaunts')
     op.drop_table('trails')
     op.drop_table('lists')
     op.drop_table('users')

@@ -1,7 +1,7 @@
-from app.models import db, ListTrail, List, Trail
+from app.models import db, Jaunt, List, Trail
 import random
 
-def seed_lists_trails():
+def seed_jaunts():
     lists = List.query.all()
     trails = Trail.query.all()
 
@@ -9,7 +9,7 @@ def seed_lists_trails():
         samples = random.sample(trails, k = random.randint(5, 15))
         i = 0
         for trail in samples:
-            listTrail = ListTrail(
+            jaunt = Jaunt(
                 list_id=lst.id,
                 trail_id=trail.id,
                 order=i,
@@ -18,9 +18,9 @@ def seed_lists_trails():
                 date=f"2021-0{random.randint(1,9)}-0{random.randint(1,9)}"
             )
             i += 1
-            db.session.add(listTrail)
+            db.session.add(jaunt)
     db.session.commit()
 
-def undo_lists_trails():
-    db.session.execute('TRUNCATE lists_trails RESTART IDENTITY CASCADE;')
+def undo_jaunts():
+    db.session.execute('TRUNCATE jaunts RESTART IDENTITY CASCADE;')
     db.session.commit()
