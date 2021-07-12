@@ -32,9 +32,9 @@ export default function ListsPage() {
         if (!user) return;
         const query = listQuery({
             fromUserId: user.id,
-            getUser: true,
             getJaunts: 100,
             getTrails: 100,
+            getUser: 1,
         });
         dispatch(getLists(query, "owned"));
 

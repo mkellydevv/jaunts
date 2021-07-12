@@ -1,22 +1,19 @@
 from flask import Blueprint, request
 from app.models import db, List
 from app.forms import ListForm
-from .utils import validation_errors_to_error_messages
+from .utils import validation_errors_to_error_messages, extractJoins
 from flask_login import current_user, login_required
 
 
 bp = Blueprint('lists', __name__)
+joinList = ["getJaunts", "getPhotos", "getTrails", "getUser"]
 
 
 # GET all lists
 @bp.route('', methods=['GET'])
 def get_lists():
     args = request.args
-
-    joins = dict()
-    if args["getJaunts"]: joins["jaunts"] = int(args["getJaunts"])
-    if args["getTrails"]: joins["trails"] = int(args["getTrails"])
-    if args["getUser"]: joins["user"] = True
+    joins = extractJoins(args, joinList)
 
     query = List.query
     if args["fromUserId"]:
@@ -33,11 +30,7 @@ def get_lists():
 @bp.route('/<int:id>', methods=['GET'])
 def get_list(id):
     args = request.args
-
-    joins = dict()
-    if args["getJaunts"]: joins["jaunts"] = int(args["getJaunts"])
-    if args["getTrails"]: joins["trails"] = int(args["getTrails"])
-    if args["getUser"]: joins["user"] = True
+    joins = extractJoins(args, joinList)
 
     lst = List.query.get(id)
 
@@ -61,11 +54,7 @@ def post_list():
         db.session.commit()
 
         args = request.args
-
-        # Optionally add joined tables to returned trails
-        joins = dict()
-        if args["getTrails"]: joins["trails"] = int(args["getTrails"])
-        if args["getUser"]: joins["user"] = True
+        joins = extractJoins(args, joinList)
 
         return lst.to_dict(joins)
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
@@ -84,11 +73,7 @@ def patch_list(id):
         db.session.commit()
 
         args = request.args
-
-        # Optionally add joined tables to returned trails
-        joins = dict()
-        if args["getTrails"]: joins["trails"] = int(args["getTrails"])
-        if args["getUser"]: joins["user"] = True
+        joins = extractJoins(args, joinList)
 
         return lst.to_dict(joins)
     else:

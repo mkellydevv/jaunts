@@ -27,16 +27,16 @@ class List(db.Model):
             "blurb": self.blurb
         }
 
-        if "jaunts" in joins:
-            dct["jaunts"] = [jaunt.to_dict() for jaunt in self.jaunts][:joins["jaunts"]]
+        if "getJaunts" in joins:
+            dct["jaunts"] = {jaunt.id: jaunt.to_dict() for jaunt in self.jaunts[:int(joins["getJaunts"])]}
 
-        if "photos" in joins:
-            dct["photos"] = [photo.to_dict() for photo in self.photo][:joins["photos"]]
+        if "getPhotos" in joins:
+            dct["photos"] = {photo.id: photo.to_dict() for photo in self.photos[:int(joins["getPhotos"])]}
 
-        if "trails" in joins:
-            dct["trails"] = {trail.id: trail.to_dict() for trail in self.trails[:joins["trails"]]}
+        if  "getTrails" in joins:
+            dct["trails"] = {trail.id: trail.to_dict() for trail in self.trails[:int(joins["getTrails"])]}
 
-        if "user" in joins:
+        if "getUser" in joins:
             dct["user"] = self.user.to_dict()
 
         return dct

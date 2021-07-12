@@ -1,15 +1,18 @@
 from flask import Blueprint, request
 from app.models import db, List, Trail, Jaunt
 from flask_login import current_user, login_required
+from .utils import extractJoins
+
 
 bp = Blueprint('jaunts', __name__)
+joinList = ["getList", "getTrail"]
 
 
 # GET all jaunts
 @bp.route('', methods=['GET'])
 def get_jaunts():
     args = request.args
-    joins = { "getList": args["getList"], "getTrail": args["getTrail"] }
+    joins = extractJoins(args, joinList)
 
     query = Jaunt.query
     if args["fromListId"]:
@@ -29,7 +32,7 @@ def get_jaunts():
 # @login_required
 def post_jaunt():
     args = request.args
-    joins = { "getList": args["getList"], "getTrail": args["getTrail"] }
+    joins = extractJoins(args, joinList)
     data = request.json
 
     query = Jaunt.query.filter(Jaunt.list_id == data["listId"])
@@ -63,7 +66,7 @@ def patch_jaunt(id):
         db.session.commit()
 
         args = request.args
-        joins = { "getList": args["getList"], "getTrail": args["getTrail"] }
+        joins = extractJoins(args, joinList)
 
         return jaunt.to_dict(joins)
     else:

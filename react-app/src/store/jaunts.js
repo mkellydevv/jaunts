@@ -61,10 +61,10 @@ export const createJaunt = (payload, query={}, key, keyId) => async (dispatch) =
     const data = await res.json();
     if (res.ok) {
         dispatch(storeJaunt(data, key, keyId));
+        return {};
     }
-    else {
+    else
         return data;
-    }
 }
 
 export const deleteJaunt = (id, key, keyId) => async (dispatch) => {
@@ -72,10 +72,10 @@ export const deleteJaunt = (id, key, keyId) => async (dispatch) => {
     const data = await res.json();
     if (res.ok) {
         dispatch(removeJaunt(data, key, keyId));
+        return {};
     }
-    else {
+    else
         return data;
-    }
 };
 
 export const clearJaunts = (key) => async (dispatch) => {

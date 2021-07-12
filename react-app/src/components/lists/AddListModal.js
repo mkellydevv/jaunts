@@ -14,21 +14,21 @@ export default function ListModal({ list, close }) {
     const [errors, setErrors] = useState("");
 
     const handleSubmit = async (e) => {
-        const payload = { name, blurb };
+        const payload = { name, blurb, "user_id": user.id };
 
         const query = listQuery({
-            getUser: true,
-            getTrails: 100
+            fromUserId: user.id,
+            getJaunts: 100,
+            getTrails: 100,
+            getUser: 1,
         });
         let data;
-        if (list) {
-            data = await dispatch(updateList(list.id, query, payload));
-        }
-        else {
-            payload["user_id"] = user.id;
-            data = await dispatch(createList(query, payload));
-        }
+        if (list)
+            data = await dispatch(updateList(list.id, query, payload, "owned"));
+        else
+            data = await dispatch(createList(query, payload, "owned"));
 
+        console.log(`data`, data)
         if (data.errors) {
             setErrors(data.errors);
             console.log("Errors:", data.errors)

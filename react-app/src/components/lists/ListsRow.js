@@ -12,7 +12,8 @@ export default function ListsRow({ list, open }) {
     const dispatch = useDispatch();
     const history = useHistory();
     const { user } = useSelector(state => state.session);
-    const sampleTrailId =  list.jaunts.length ? list.jaunts[0].trail_id : "";
+    const jauntsArr = Object.values(list.jaunts);
+    const sampleTrailId =  jauntsArr.length ? jauntsArr[0].trail_id : "";
     const sampleTrail = useSelector(state => state.trails[`list-${list.id}`]);
     const [imgSrc, setImgSrc] = useState("https://cdn-assets.alltrails.com/assets/placeholder/list_placeholder.svg");
     const [errors, setErrors] = useState("");
@@ -35,7 +36,7 @@ export default function ListsRow({ list, open }) {
     }
 
     useEffect(() => {
-        if (list.jaunts.length > 0) {
+        if (jauntsArr.length > 0) {
             dispatch(getTrailById(
                 sampleTrailId,
                 trailQuery({ getPhotos: true }),
@@ -70,7 +71,7 @@ export default function ListsRow({ list, open }) {
             </div>
             <div>
                 <div className="lists-row__stats">Stats:</div>
-                <div>Trails: {list.jaunts.length}</div>
+                <div>Trails: {jauntsArr.length}</div>
                 <div>Photos: 0</div>
             </div>
             <div>
