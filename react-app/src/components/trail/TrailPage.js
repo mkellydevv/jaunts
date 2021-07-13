@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getTrailById, clearTrails } from "../../store/trails";
+import { getTrail, clearTrails } from "../../store/trails";
 import { trailQuery } from "../../utils/queryObjects";
 
 import ReviewList from "../review/ReviewList";
@@ -26,7 +26,9 @@ export default function SplashPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const { id } = useParams();
-    const trail = useSelector(state => state.trails.current ? Object.values(state.trails.current)[0] : null);
+    const { default: trails } = useSelector(state => state.trails);
+    const trailsArr = trails ? Object.values(trails) : [];
+    const trail = trailsArr.length ? trailsArr[0] : null;
     const [review, setReview] = useState(null);
     const [showReviewModal, setShowReviewModal] = useState(false);
     const [photoId, setPhotoId] = useState(null);
@@ -72,14 +74,11 @@ export default function SplashPage() {
 
     useEffect(() => {
         const query = trailQuery({
-            getPhotos: true,
-            getTags: true,
+            getPhotos: 25,
+            getTags: 25,
         });
-        dispatch(getTrailById(id, query, "current"))
-
-        return () => {
-            dispatch(clearTrails("current"));
-        }
+        dispatch(getTrail(id, query));
+        return () => dispatch(clearTrails());
     }, [id, dispatch])
 
     return (
@@ -91,7 +90,7 @@ export default function SplashPage() {
                         {trail && <>
                             <img
                                 className="trail-section__header-img"
-                                src={trail.photos[0].url}
+                                src={Object.values(trail.photos)[0].url}
                             />
                             <div className="trail-section__header-container">
                                 <div className="trail-section__header-name">
@@ -148,7 +147,7 @@ export default function SplashPage() {
                         </div>
                     </div>
                     <div className="trail-section__tags trail-section__spacing">
-                        {trail && trail.tags.map(tag => {
+                        {trail && Object.values(trail.tags).map(tag => {
                             return (
                                 <div
                                     className="trail-section__tag"

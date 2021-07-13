@@ -58,6 +58,7 @@ def post_jaunt():
         trail_id=data["trailId"],
         order=count+1
     )
+
     db.session.add(jaunt)
     db.session.commit()
 

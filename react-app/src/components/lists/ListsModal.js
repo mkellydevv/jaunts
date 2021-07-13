@@ -10,7 +10,7 @@ import "./ListsModal.css";
 export default function ListsModal({ trail }) {
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.session);
-    const { owned: lists } = useSelector(state => state.lists);
+    const { default: lists } = useSelector(state => state.lists);
     const jaunts = useSelector(state => state.jaunts);
 
     const handleClick = (list) => {
@@ -38,11 +38,8 @@ export default function ListsModal({ trail }) {
             getJaunts: 100,
             getTrails: 100,
         });
-        dispatch(getLists(query, "owned"));
-        return () => {
-            dispatch(clearLists());
-            dispatch(clearJaunts());
-        };
+        dispatch(getLists(query));
+        return () => dispatch(clearLists());
     }, [user, dispatch]);
 
     useEffect(() => {
@@ -54,6 +51,7 @@ export default function ListsModal({ trail }) {
 
             dispatch(getJaunts(_jauntQuery, list.id, "trail_id"));
         }
+        return () => dispatch(clearJaunts());
     }, [lists]);
 
     return (

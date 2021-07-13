@@ -14,14 +14,13 @@ const map = {
 export default function TrailCard({ trail }) {
     const history = useHistory();
 
-
     return (
         <div
             className="trail-card"
             onClick={() => history.push(`/trails/${trail.id}`)}
         >
             <div className="trail-card__img-container">
-                <img className="trail-card__img" src={trail.photos[0].url.replace("extra_", "")} />
+                <img className="trail-card__img" src={Object.values(trail.photos)[0].url.replace("extra_", "")} />
             </div>
             <div className="trail-card__content">
                 <div className="trail-card__name trail-card__font">{trail.name}</div>

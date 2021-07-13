@@ -38,7 +38,7 @@ export const getJaunts = (query={}, key, keyId) => async (dispatch) => {
         const data = await res.json();
         dispatch(storeJaunts(data, key, keyId));
     }
-}
+};
 
 export const getJaunt = (id, query={}, key) => async (dispatch) => {
     const url = appendQueryArgs(query, `/api/jaunts/${id}`);
@@ -47,7 +47,7 @@ export const getJaunt = (id, query={}, key) => async (dispatch) => {
         const data = await res.json();
         dispatch(storeJaunt(data, key));
     }
-}
+};
 
 export const createJaunt = (payload, query={}, key, keyId) => async (dispatch) => {
     const url = appendQueryArgs(query, `/api/jaunts`);
@@ -65,7 +65,7 @@ export const createJaunt = (payload, query={}, key, keyId) => async (dispatch) =
     }
     else
         return data;
-}
+};
 
 export const deleteJaunt = (id, key, keyId) => async (dispatch) => {
     const res = await fetch(`/api/jaunts/${id}`, { method: "DELETE" });
@@ -98,7 +98,7 @@ export default function reducer(state=initialState, {type, payload, key="default
             newState[key][payload[keyId]] = payload;
             return newState;
         case REMOVE_JAUNTS:
-            if (key === undefined)
+            if (key === "default")
                 return initialState;
             delete newState[key];
             return newState;

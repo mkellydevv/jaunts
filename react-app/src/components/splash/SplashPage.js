@@ -8,11 +8,11 @@ import { trailQuery } from "../../utils/queryObjects";
 import HeroCarousel from "./HeroCarousel";
 import TrailCardQuad from "../trail-card/TrailCardQuad";
 
-import "./SplashPage.css"
+import "./SplashPage.css";
 
 export default function SplashPage() {
-    const currSearch = useRef("")
-    const prevSearch = useRef("")
+    const currSearch = useRef("");
+    const prevSearch = useRef("");
     const dispatch = useDispatch();
     const history = useHistory();
     const searchResults = useSelector(state => state["trails"]["search"]);

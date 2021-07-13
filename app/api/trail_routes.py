@@ -1,33 +1,27 @@
 from flask import Blueprint, request
+from flask_login import current_user, login_required
 from sqlalchemy import or_
 from app.models import db, Trail, tags_trails, Tag, List, Jaunt
 from app.forms import TrailForm
-from .utils import validation_errors_to_error_messages
-from flask_login import current_user, login_required
+from .utils import validation_errors_to_error_messages, extractJoins
 
 
 bp = Blueprint('trails', __name__)
+joinList = ["getJaunts", "getLists", "getPhotos", "getReviews", "getTags", "getUser"]
 
 
 # GET all trails
 @bp.route('', methods=['GET'])
 def get_trails():
     args = request.args
+    joins = extractJoins(args, joinList)
 
     searchCats = args['searchCategories'].split(",") if args['searchCategories'] else []
     searchTags = args['searchTags'].split(",") if args['searchTags'] else []
 
-    # Optionally add joined tables to returned trails
-    joins = set()
-    if args["getReviews"]: joins.add("reviews")
-    if args["getPhotos"]: joins.add("photos")
-    if args["getTags"]: joins.add("tags")
-    if args["getUser"]: joins.add("user")
-
     query = Trail.query
     if args["fromListId"]:
         query = query.filter(Trail.id == Jaunt.trail_id, Jaunt.list_id == args["fromListId"])
-        #query = query.join(Jaunt).filter(Jaunt.list_id == int(args["fromListId"]))
     query = query.filter(
         or_(
             Trail.name.ilike(f"%{args['searchTerm']}%"),
@@ -48,15 +42,11 @@ def get_trails():
 @bp.route('/<int:id>', methods=['GET'])
 def get_trail(id):
     args = request.args
-
-    # Optionally add joined tables to returned trails
-    joins = set()
-    if args["getReviews"]: joins.add("reviews")
-    if args["getPhotos"]: joins.add("photos")
-    if args["getTags"]: joins.add("tags")
-    if args["getUser"]: joins.add("user")
-
+    joins = extractJoins(args, joinList)
     trail = Trail.query.get(id)
+
+    if not trail:
+        return { "errors": "Trail not found" }, 404
 
     return trail.to_dict(joins)
 
@@ -68,7 +58,10 @@ def post_trail():
     form = TrailForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
+        args = request.args
+        joins = extractJoins(args, joinList)
         data = form.data
+
         trail = Trail(
             user_id=data["user_id"],
             name=data["name"],
@@ -85,9 +78,11 @@ def post_trail():
             default_rating=data["default_rating"],
             default_weighting=data["default_weighting"]
         )
+
         db.session.add(trail)
         db.session.commit()
-        return trail.to_dict()
+
+        return trail.to_dict(joins)
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
 
@@ -96,14 +91,19 @@ def post_trail():
 # @login_required
 def patch_trail(id):
     trail = Trail.query.get(id)
+
     if current_user.id == trail.user_id:
         data = request.json
         for key in data:
             setattr(trail, key, data[key])
         db.session.commit()
-        return trail.to_dict()
+
+        args = request.args
+        joins = extractJoins(args, joinList)
+
+        return trail.to_dict(joins)
     else:
-        return {"errors": "Unauthorized"}
+        return {"errors": "Unauthorized"}, 401
 
 
 # DELETE a trail
@@ -111,9 +111,10 @@ def patch_trail(id):
 # @login_required
 def delete_trail(id):
     trail = Trail.query.get(id)
+
     if current_user.id == trail.user_id:
         db.session.delete(trail)
         db.session.commit()
         return trail.to_dict()
     else:
-        return {"errors": "Unauthorized"}
+        return {"errors": "Unauthorized"}, 401

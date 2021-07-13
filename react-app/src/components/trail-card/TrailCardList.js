@@ -17,13 +17,11 @@ export default function TrailCardList({ trail }) {
             searchTerm: trail.region,
             searchCategories: ["region"],
             limit: 10,
-            getPhotos: true,
+            getPhotos: 25,
         });
         dispatch(getTrails(query, "nearby"));
 
-        return () => {
-            dispatch(clearTrails("nearby"))
-        }
+        return () => dispatch(clearTrails("nearby"));
     }, [dispatch]);
 
     return (
