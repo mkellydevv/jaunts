@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { createList, updateList } from "../../store/lists";
+import { createList, editList } from "../../store/lists";
 import { listQuery } from "../../utils/queryObjects";
 
 import "./AddListModal.css";
@@ -24,9 +24,9 @@ export default function ListModal({ list, close }) {
         });
         let data;
         if (list)
-            data = await dispatch(updateList(list.id, query, payload, "owned"));
+            data = await dispatch(editList(list.id, query, payload));
         else
-            data = await dispatch(createList(query, payload, "owned"));
+            data = await dispatch(createList(query, payload));
 
         console.log(`data`, data)
         if (data.errors) {

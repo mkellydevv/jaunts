@@ -2,8 +2,8 @@ import { appendQueryArgs } from "../utils/helperFuncs";
 
 const STORE_LISTS = "lists/STORE_LISTS";
 const STORE_LIST = "lists/STORE_LIST";
+const REMOVE_LISTS = "lists/REMOVE_LISTS";
 const REMOVE_LIST = "lists/REMOVE_LIST";
-const CLEAR_LISTS = "lists/CLEAR_LISTS";
 
 const storeLists = (payload, key) => ({
     type: STORE_LISTS,
@@ -17,56 +17,16 @@ const storeList = (payload, key) => ({
     key
 })
 
-const _clearLists = (key) => ({
-    type: CLEAR_LISTS,
+const removeLists = (key) => ({
+    type: REMOVE_LISTS,
     key
 })
 
-const _removeList = (payload, key) => ({
+const removeList = (payload, key) => ({
     type: REMOVE_LIST,
     payload,
     key
 })
-
-export const addTrailToList = (query={}, payload) => async (dispatch) => {
-    let url = `/api/lists/${payload.listId}?`;
-
-    for (let prop in query)
-        url += `${prop}=${query[prop]}&`;
-
-    const res = await fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-    if (res.ok) {
-        dispatch(storeList(data, "owned"));
-    }
-    else {
-        console.log("Errors:", res, data);
-    }
-}
-
-export const deleteTrailFromList = (query={}, listId, trailId) => async (dispatch) => {
-    let url = `/api/lists/${listId}/trails/${trailId}?`;
-
-    for (let prop in query)
-        url += `${prop}=${query[prop]}&`;
-
-    const res = await fetch(url, { method: "DELETE" });
-
-    const data = await res.json();
-
-    if (res.ok) {
-        dispatch(storeList(data, "owned"));
-    }
-    else {
-        console.log("Errors:", res, data);
-    }
-}
 
 export const getLists = (query={}, key) => async (dispatch) => {
     const url = appendQueryArgs(query, `/api/lists`);
@@ -105,7 +65,7 @@ export const createList = (query, payload, key) => async (dispatch) => {
     return data;
 }
 
-export const updateList = (id, query, payload, key) => async (dispatch) => {
+export const editList = (id, query, payload, key) => async (dispatch) => {
     const url = appendQueryArgs(query, `/api/lists/${id}`);
     const res = await fetch(url, {
         method: 'PATCH',
@@ -124,13 +84,11 @@ export const updateList = (id, query, payload, key) => async (dispatch) => {
         return data;
 }
 
-export const removeList = (id, key) => async (dispatch) => {
+export const deleteList = (id, key) => async (dispatch) => {
     const res = await fetch(`/api/lists/${id}`, { method: 'DELETE' });
-
     const data = await res.json();
-
     if (res.ok) {
-        dispatch(_removeList(id, key));
+        dispatch(removeList(id, key));
         return {};
     }
     else
@@ -138,12 +96,12 @@ export const removeList = (id, key) => async (dispatch) => {
 }
 
 export const clearLists = (key) => async (dispatch) => {
-    dispatch(_clearLists(key));
+    dispatch(removeLists(key));
 }
 
 const initialState = {};
 
-export default function reducer(state=initialState, { type, payload, key }) {
+export default function reducer(state=initialState, { type, payload, key="default" }) {
     const newState = { ...state };
     switch (type) {
         case STORE_LISTS:
@@ -156,11 +114,13 @@ export default function reducer(state=initialState, { type, payload, key }) {
                 newState[key] = {};
             newState[key][payload.id] = payload;
             return newState;
+        case REMOVE_LISTS:
+            if (key === undefined)
+                return initialState;
+            delete newState[key];
+            return newState;
         case REMOVE_LIST:
             delete newState[key][payload];
-            return newState;
-        case CLEAR_LISTS:
-            delete newState[key];
             return newState;
         default:
             return state;

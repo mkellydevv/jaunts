@@ -1,5 +1,4 @@
 from .db import db
-from .jaunt_model import Jaunt
 
 class List(db.Model):
     __tablename__ = "lists"

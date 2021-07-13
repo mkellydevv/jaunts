@@ -1,8 +1,8 @@
 from flask import Blueprint, request
+from flask_login import current_user, login_required
 from app.models import db, List
 from app.forms import ListForm
 from .utils import validation_errors_to_error_messages, extractJoins
-from flask_login import current_user, login_required
 
 
 bp = Blueprint('lists', __name__)
@@ -31,8 +31,10 @@ def get_lists():
 def get_list(id):
     args = request.args
     joins = extractJoins(args, joinList)
-
     lst = List.query.get(id)
+
+    if not lst:
+        return { "errors": "List not found" }, 404
 
     return lst.to_dict(joins)
 
@@ -85,6 +87,7 @@ def patch_list(id):
 # @login_required
 def delete_list(id):
     lst = List.query.get(id)
+
     if current_user.id == lst.user_id:
         db.session.delete(lst)
         db.session.commit()

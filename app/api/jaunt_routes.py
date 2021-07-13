@@ -1,6 +1,6 @@
 from flask import Blueprint, request
-from app.models import db, List, Trail, Jaunt
 from flask_login import current_user, login_required
+from app.models import db, List, Trail, Jaunt
 from .utils import extractJoins
 
 
@@ -27,6 +27,18 @@ def get_jaunts():
     return { "jaunts": [jaunt.to_dict(joins) for jaunt in jaunts] }
 
 
+# GET a jaunt
+@bp.route('/<int:id>', methods=['GET'])
+def get_jaunt(id):
+    args = request.args
+    joins = extractJoins(args, joinList)
+    jaunt = Jaunt.query.get(id)
+
+    if not jaunt:
+        return { "errors": "Jaunt not found" }, 404
+
+    return jaunt.to_dict(joins)
+
 # POST a jaunt
 @bp.route('', methods=['POST'])
 # @login_required
@@ -39,7 +51,7 @@ def post_jaunt():
     count = query.count()
 
     if query.filter(Jaunt.trail_id == data["trailId"]).count() > 0:
-        return {"errors": "Jaunt already exists"}, 401
+        return { "errors": "Jaunt already exists" }, 400
 
     jaunt = Jaunt(
         list_id=data["listId"],

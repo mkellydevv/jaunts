@@ -4,36 +4,46 @@ import { useHistory, useParams } from "react-router-dom";
 
 import { clearLists, getListById } from "../../store/lists";
 import { clearTrails, getTrails } from "../../store/trails";
-import { listQuery, trailQuery } from "../../utils/queryObjects";
+import { clearJaunts, getJaunts } from "../../store/jaunts";
+import { listQuery, trailQuery, jauntQuery } from "../../utils/queryObjects";
 
+import "./ListPage.css";
 
 export default function ListPage() {
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.session);
     const { id } = useParams();
-    const list = useSelector(state => state.lists.current ? Object.values(state.lists.current)[0] : null);
+    const { default: lists } = useSelector(state => state.lists);
+    const { default: trails } = useSelector(state => state.trails);
+    const { default: jaunts } = useSelector(state => state.jaunts);
+    const list = lists ? lists[0] : null;
 
     useEffect(() => {
         if (!user) return;
 
         const _listQuery = listQuery({
-            fromUserId: user.id,
-            getJaunts: 100,
+            fromUserId: user.id
         });
 
         const _trailQuery = trailQuery({
-            fromListId: id,
-            limit: 100
+            fromListId: id
         });
 
-        dispatch(getListById(id, _listQuery, "current"));
-        dispatch(getTrails(_trailQuery, "current"));
+        const _jauntQuery = jauntQuery({
+            fromListId: id
+        });
+
+        dispatch(getListById(id, _listQuery));
+        dispatch(getTrails(_trailQuery));
+        dispatch(getJaunts(_jauntQuery));
 
         return () => {
-            dispatch(clearLists("current"));
-            dispatch(clearTrails("current"));
+            dispatch(clearLists());
+            dispatch(clearTrails());
+            dispatch(clearJaunts());
         }
     }, [id, user, dispatch]);
+
 
     return (
         <div>
@@ -41,9 +51,9 @@ export default function ListPage() {
                 {list && list.blurb}
             </div>
             <div>
-                {list && list.jaunts.map(jaunt => {
+                {jaunts && Object.values(jaunts).map(jaunt => {
                     return (
-                        <>
+                        <div>
                             <div>
                                 Rating {jaunt.rating}
                             </div>
@@ -53,7 +63,8 @@ export default function ListPage() {
                             <div>
                                 Date {jaunt.date}
                             </div>
-                        </>
+                            <br />
+                        </div>
                     )
                 })}
             </div>

@@ -14,7 +14,7 @@ import "./ListsPage.css"
 export default function ListsPage() {
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.session);
-    const { owned: lists } = useSelector(state => state.lists);
+    const { default: lists } = useSelector(state => state.lists);
     const [list, setList] = useState(null);
     const [showListModal, setShowListModal] = useState(false);
 
@@ -31,14 +31,11 @@ export default function ListsPage() {
     useEffect(() => {
         if (!user) return;
         const query = listQuery({
-            fromUserId: user.id,
-            getJaunts: 100,
-            getTrails: 100,
-            getUser: 1,
+            fromUserId: user.id
         });
-        dispatch(getLists(query, "owned"));
+        dispatch(getLists(query));
 
-        return () => dispatch(clearLists("owned"));
+        return () => dispatch(clearLists());
     }, [user, dispatch])
 
     return (
