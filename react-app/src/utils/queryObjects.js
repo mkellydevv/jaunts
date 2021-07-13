@@ -4,6 +4,7 @@ export function listQuery(args={}) {
         offset: 0,
         limit: 25,
         getJaunts: "",
+        getPhotos: "",
         getTrails: "",
         getUser: ""
     }

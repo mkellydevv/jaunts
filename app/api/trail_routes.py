@@ -24,10 +24,10 @@ def get_trails():
     if args["getTags"]: joins.add("tags")
     if args["getUser"]: joins.add("user")
 
-    # Query db with filters
     query = Trail.query
     if args["fromListId"]:
-        query = query.join(Jaunt).filter(Jaunt.list_id == int(args["fromListId"]))
+        query = query.filter(Trail.id == Jaunt.trail_id, Jaunt.list_id == args["fromListId"])
+        #query = query.join(Jaunt).filter(Jaunt.list_id == int(args["fromListId"]))
     query = query.filter(
         or_(
             Trail.name.ilike(f"%{args['searchTerm']}%"),

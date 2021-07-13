@@ -28,7 +28,7 @@ class Jaunt(db.Model):
         if "getList" in joins:
             dct["list"] = self._list.to_dict()
 
-        if "getTrail" in joins:
+        if "getList" in joins:
             dct["trail"] = self.trail.to_dict()
 
         return dct

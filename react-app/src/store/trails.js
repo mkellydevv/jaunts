@@ -9,7 +9,7 @@ const _getTrails = (payload, key='default') => ({
     key
 })
 
-const _getTrail = (payload, key) => ({
+const _getTrail = (payload, key="default") => ({
     type: GET_TRAIL,
     payload,
     key

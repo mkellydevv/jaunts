@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { clearTrails, getTrailById } from "../../store/trails";
-import { removeList } from "../../store/lists";
-import { trailQuery } from "../../utils/queryObjects";
+import { clearJaunts, getJaunts } from "../../store/jaunts";
+import { deleteList } from "../../store/lists";
+import { clearTrails, getTrails } from "../../store/trails";
+import { trailQuery, jauntQuery } from "../../utils/queryObjects";
 
 import "./ListsRow.css"
 
@@ -12,8 +13,11 @@ export default function ListsRow({ list, open }) {
     const dispatch = useDispatch();
     const history = useHistory();
     const { user } = useSelector(state => state.session);
-    const sampleTrailId =  list.jaunts.length ? list.jaunts[0].trail_id : "";
-    const sampleTrail = useSelector(state => state.trails[`list-${list.id}`]);
+    const key = `list-${list.id}`;
+    const jaunts = useSelector(state => state.jaunts[key]);
+    const jauntsArr = jaunts ? Object.values(jaunts) : [];
+    const trails = useSelector(state => state.trails[key]);
+    const trailsArr = trails ? Object.values(trails) : [];
     const [imgSrc, setImgSrc] = useState("https://cdn-assets.alltrails.com/assets/placeholder/list_placeholder.svg");
     const [errors, setErrors] = useState("");
 
@@ -26,7 +30,7 @@ export default function ListsRow({ list, open }) {
     }
 
     const handleDelete = async (e) => {
-        const data = await dispatch(removeList(list.id));
+        const data = await dispatch(deleteList(list.id));
 
         if (data.errors) {
             setErrors(data.errors);
@@ -35,22 +39,29 @@ export default function ListsRow({ list, open }) {
     }
 
     useEffect(() => {
-        if (list.jaunts.length > 0) {
-            dispatch(getTrailById(
-                sampleTrailId,
-                trailQuery({ getPhotos: true }),
-                `list-${list.id}`
-            ));
-        }
+        const _jauntQuery = jauntQuery({
+            fromListId: list.id
+        });
+
+        const _trailQuery = trailQuery({
+            fromListId: list.id,
+            getPhotos: true,
+            limit: 1
+        });
+
+        dispatch(getJaunts(_jauntQuery, `list-${list.id}`));
+        dispatch(getTrails(_trailQuery, `list-${list.id}`));
+
         return () => {
-            dispatch(clearTrails(`list-${list.id}`));
+            dispatch(clearJaunts());
+            dispatch(clearTrails());
         }
-    }, [dispatch])
+    }, [dispatch]);
 
     useEffect(() => {
-        if (!sampleTrail) return;
-        setImgSrc(Object.values(sampleTrail)[0].photos[0].url.replace("extra_", ""));
-    }, [sampleTrail])
+        if (!trails || trailsArr.length === 0) return;
+        setImgSrc(trailsArr[0].photos[0].url.replace("extra_", ""));
+    }, [trails])
 
     return (
         <div className="lists-row">
@@ -70,7 +81,7 @@ export default function ListsRow({ list, open }) {
             </div>
             <div>
                 <div className="lists-row__stats">Stats:</div>
-                <div>Trails: {list.jaunts.length}</div>
+                <div>Trails: {jauntsArr.length}</div>
                 <div>Photos: 0</div>
             </div>
             <div>

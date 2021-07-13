@@ -7,3 +7,11 @@ def validation_errors_to_error_messages(validation_errors):
         for error in validation_errors[field]:
             errorMessages.append(f"{field} : {error}")
     return errorMessages
+
+def extractJoins(args, joins):
+    """ Extracts the join arguments from the request arguments. """
+    dct = {}
+    for join in joins:
+        if args[join] != "":
+            dct[join] = args[join]
+    return dct

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { createList, updateList } from "../../store/lists";
+import { createList, editList } from "../../store/lists";
 import { listQuery } from "../../utils/queryObjects";
 
 import "./AddListModal.css";
@@ -14,21 +14,21 @@ export default function ListModal({ list, close }) {
     const [errors, setErrors] = useState("");
 
     const handleSubmit = async (e) => {
-        const payload = { name, blurb };
+        const payload = { name, blurb, "user_id": user.id };
 
         const query = listQuery({
-            getUser: true,
-            getTrails: 100
+            fromUserId: user.id,
+            getJaunts: 100,
+            getTrails: 100,
+            getUser: 1,
         });
         let data;
-        if (list) {
-            data = await dispatch(updateList(list.id, query, payload));
-        }
-        else {
-            payload["user_id"] = user.id;
+        if (list)
+            data = await dispatch(editList(list.id, query, payload));
+        else
             data = await dispatch(createList(query, payload));
-        }
 
+        console.log(`data`, data)
         if (data.errors) {
             setErrors(data.errors);
             console.log("Errors:", data.errors)
