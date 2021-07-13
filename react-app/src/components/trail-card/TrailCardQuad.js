@@ -16,11 +16,9 @@ export default function TrailCardQuad({ tag }) {
         const query = trailQuery({
             searchTags: [tag],
             limit: 4,
-            getPhotos: true,
+            getPhotos: 25,
         });
-
         dispatch(getTrails(trailQuery(query), tag));
-
         return () => dispatch(clearTrails(tag));
     }, [dispatch]);
 

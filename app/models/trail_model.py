@@ -71,19 +71,22 @@ class Trail(db.Model):
             "default_weighting": self.default_weighting,
         }
 
-        if "lists" in joins:
-            dct["lists"] = [lst.to_dict() for lst in self.lists]
+        if "getJaunts" in joins:
+            dct["jaunts"] = {jaunt.id: jaunt.to_dict() for jaunt in self.jaunts[:int(joins["getJaunts"])]}
 
-        if "photos" in joins:
-            dct["photos"] = [photo.to_dict() for photo in self.photos]
+        if "getLists" in joins:
+            dct["lists"] = {lst.id: lst.to_dict() for lst in self.lists[:int(joins["getLists"])]}
 
-        if "reviews" in joins:
-            dct["reviews"] = [review.to_dict() for review in self.reviews]
+        if "getPhotos" in joins:
+            dct["photos"] = {photo.id: photo.to_dict() for photo in self.photos[:int(joins["getPhotos"])]}
 
-        if "tags" in joins:
-            dct["tags"] = [tag.to_dict() for tag in self.tags]
+        if "getReviews" in joins:
+            dct["reviews"] = {review.id: review.to_dict() for review in self.reviews[:int(joins["getReviews"])]}
 
-        if "user" in joins:
+        if "getTags" in joins:
+            dct["tags"] = {tag.id: tag.to_dict() for tag in self.tags[:int(joins["getTags"])]}
+
+        if "getUser" in joins:
             dct["user"] = self.user.to_dict()
 
         return dct

@@ -45,7 +45,7 @@ export default function ListsRow({ list, open }) {
 
         const _trailQuery = trailQuery({
             fromListId: list.id,
-            getPhotos: true,
+            getPhotos: 1,
             limit: 1
         });
 
@@ -60,7 +60,7 @@ export default function ListsRow({ list, open }) {
 
     useEffect(() => {
         if (!trails || trailsArr.length === 0) return;
-        setImgSrc(trailsArr[0].photos[0].url.replace("extra_", ""));
+        setImgSrc(Object.values(trailsArr[0].photos)[0].url.replace("extra_", ""));
     }, [trails])
 
     return (

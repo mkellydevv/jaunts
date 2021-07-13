@@ -106,8 +106,8 @@ export default function reducer(state=initialState, { type, payload, key="defaul
     switch (type) {
         case STORE_LISTS:
             newState[key] = {};
-            for (let list of payload.lists)
-                newState[key][list.id] = list;
+            for (let item of payload.lists)
+                newState[key][item.id] = item;
             return newState;
         case STORE_LIST:
             if (newState[key] === undefined)
@@ -115,7 +115,7 @@ export default function reducer(state=initialState, { type, payload, key="defaul
             newState[key][payload.id] = payload;
             return newState;
         case REMOVE_LISTS:
-            if (key === undefined)
+            if (key === "default")
                 return initialState;
             delete newState[key];
             return newState;

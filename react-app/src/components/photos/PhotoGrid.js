@@ -8,7 +8,7 @@ export default function PhotoGrid({ trail, open }) {
 
     return (
         <div className="photo-grid">
-            {trail.photos.map(photo => {
+            {Object.values(trail.photos).map(photo => {
                 return (
                     <PhotoCard photo={photo} open={open} keyname={`PhotoCard-${photo.id}`} />
                 )
