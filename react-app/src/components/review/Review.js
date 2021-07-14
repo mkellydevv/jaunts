@@ -2,17 +2,17 @@ import React, { useState} from "react"
 import { useSelector, useDispatch } from "react-redux";
 
 import StarRating from "../random/StarRating";
-import { removeReview } from "../../store/reviews";
+import { deleteReview } from "../../store/reviews";
 
 import "./Review.css"
 
 export default function Review({ review, open }) {
-    const { user } = useSelector(state => state.session);
     const dispatch = useDispatch();
+    const { user } = useSelector(state => state.session);
     const [errors, setErrors] = useState("");
 
     const handleDelete = async (e) => {
-        const data = await dispatch(removeReview(review.id));
+        const data = await dispatch(deleteReview(review.id));
 
         if (data.errors) {
             setErrors(data.errors);

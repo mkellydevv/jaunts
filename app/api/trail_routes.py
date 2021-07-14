@@ -57,6 +57,7 @@ def get_trail(id):
 def post_trail():
     form = TrailForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+
     if form.validate_on_submit():
         args = request.args
         joins = extractJoins(args, joinList)

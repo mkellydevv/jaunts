@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { clearReviews, getReviewsByTrailId } from "../../store/reviews";
+import { clearReviews, getReviews } from "../../store/reviews";
 import { reviewQuery } from "../../utils/queryObjects";
 
 import Review from "./Review";
@@ -16,13 +16,10 @@ export default function ReviewList({ trail, open }) {
     useEffect(() => {
         const query = reviewQuery({
             fromTrailId: trail.id,
-            getUser: true
+            getUser: 1
         });
-        dispatch(getReviewsByTrailId(query));
-
-        return () => {
-            dispatch(clearReviews());
-        }
+        dispatch(getReviews(query));
+        return () => dispatch(clearReviews());
     }, [dispatch]);
 
     return (

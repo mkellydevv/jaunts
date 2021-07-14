@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 
-import { clearLists, getListById } from "../../store/lists";
+import { clearLists, getList } from "../../store/lists";
 import { clearTrails, getTrails } from "../../store/trails";
 import { clearJaunts, getJaunts } from "../../store/jaunts";
 import { listQuery, trailQuery, jauntQuery } from "../../utils/queryObjects";
@@ -33,7 +33,7 @@ export default function ListPage() {
             fromListId: id
         });
 
-        dispatch(getListById(id, _listQuery));
+        dispatch(getList(id, _listQuery));
         dispatch(getTrails(_trailQuery));
         dispatch(getJaunts(_jauntQuery));
 

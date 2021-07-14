@@ -24,10 +24,10 @@ class Review(db.Model):
             "date": self.date
         }
 
-        if "user" in joins:
-            dct["user"] = self.user.to_dict()
-
-        if "trail" in joins:
+        if "getTrail" in joins:
             dct["trail"] = self.trail.to_dict()
+
+        if "getUser" in joins:
+            dct["user"] = self.user.to_dict()
 
         return dct

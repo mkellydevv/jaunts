@@ -37,12 +37,8 @@ export const getLists = (query={}, key) => async (dispatch) => {
     }
 }
 
-export const getListById = (id, query={}, key) => async (dispatch) => {
-    let url = `/api/lists/${id}?`;
-
-    for (let prop in query)
-        url += `${prop}=${query[prop]}&`;
-
+export const getList = (id, query={}, key) => async (dispatch) => {
+    const url = appendQueryArgs(query, `/api/lists/${id}`);
     const res = await fetch(url);
     if (res.ok) {
         const data = await res.json();
@@ -54,14 +50,14 @@ export const createList = (query, payload, key) => async (dispatch) => {
     const url = appendQueryArgs(query, `/api/lists`);
     const res = await fetch(url, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     });
     const data = await res.json();
-    if (res.ok)
+    if (res.ok) {
         dispatch(storeList(data, key));
+        return {};
+    }
     return data;
 }
 
@@ -69,19 +65,15 @@ export const editList = (id, query, payload, key) => async (dispatch) => {
     const url = appendQueryArgs(query, `/api/lists/${id}`);
     const res = await fetch(url, {
         method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     });
     const data = await res.json();
     if (res.ok) {
-        console.log(data,key)
         dispatch(storeList(data, key));
         return {};
     }
-    else
-        return data;
+    return data;
 }
 
 export const deleteList = (id, key) => async (dispatch) => {
@@ -91,8 +83,7 @@ export const deleteList = (id, key) => async (dispatch) => {
         dispatch(removeList(id, key));
         return {};
     }
-    else
-        return data;
+    return data;
 }
 
 export const clearLists = (key) => async (dispatch) => {
