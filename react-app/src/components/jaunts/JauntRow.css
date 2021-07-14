@@ -1,0 +1,37 @@
+.jaunt-row__gallery {
+
+}
+
+.jaunt-row__gallery-main {
+    height: 480px;
+}
+
+.jaunt-row__gallery-main > img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.jaunt-row__gallery-imgages {
+    height: 160px;
+    background-color: black;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 16px;
+}
+
+.jaunt-row__gallery-img-container {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    justify-self: center;
+    align-self: center;
+}
+
+.jaunt-row__gallery-img-container > img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}

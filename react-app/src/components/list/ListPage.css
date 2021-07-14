@@ -1,0 +1,10 @@
+.page-content {
+    display: grid;
+    /* grid-template-columns: 75% 25%; */
+}
+
+.list-page {
+    background-color: #fff;
+    margin: 16px;
+    border: 1px solid #CCCCCC;
+}
