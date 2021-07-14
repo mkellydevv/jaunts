@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import StarRating from "../random/StarRating";
-import { createReview, updateReview } from "../../store/reviews";
+import { createReview, editReview } from "../../store/reviews";
 import { reviewQuery } from "../../utils/queryObjects";
 
 import "./ReviewModal.css"
@@ -21,7 +21,7 @@ export default function ReviewModal({ trail, review, close }) {
         const query = reviewQuery({ getUser: true });
         let data;
         if (review) {
-            data = await dispatch(updateReview(review.id, query, payload));
+            data = await dispatch(editReview(review.id, query, payload));
         }
         else {
             payload["trail_id"] = trail.id;

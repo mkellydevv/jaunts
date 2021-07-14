@@ -45,18 +45,20 @@ def get_list(id):
 def post_list():
     form = ListForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+
     if form.validate_on_submit():
+        args = request.args
+        joins = extractJoins(args, joinList)
         data = form.data
+
         lst = List(
             user_id=data["user_id"],
             name=data["name"],
             blurb=data["blurb"]
         )
+
         db.session.add(lst)
         db.session.commit()
-
-        args = request.args
-        joins = extractJoins(args, joinList)
 
         return lst.to_dict(joins)
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401

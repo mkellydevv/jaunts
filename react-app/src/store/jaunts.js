@@ -53,9 +53,7 @@ export const createJaunt = (payload, query={}, key, keyId) => async (dispatch) =
     const url = appendQueryArgs(query, `/api/jaunts`);
     const res = await fetch(url, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
     });
     const data = await res.json();
@@ -63,8 +61,7 @@ export const createJaunt = (payload, query={}, key, keyId) => async (dispatch) =
         dispatch(storeJaunt(data, key, keyId));
         return {};
     }
-    else
-        return data;
+    return data;
 };
 
 export const deleteJaunt = (id, key, keyId) => async (dispatch) => {
@@ -74,8 +71,7 @@ export const deleteJaunt = (id, key, keyId) => async (dispatch) => {
         dispatch(removeJaunt(data, key, keyId));
         return {};
     }
-    else
-        return data;
+    return data;
 };
 
 export const clearJaunts = (key) => async (dispatch) => {

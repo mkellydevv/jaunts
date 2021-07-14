@@ -49,9 +49,10 @@ export function jauntQuery(args={}) {
 
 export function reviewQuery(args={}) {
     const query = {
-        fromTrailId: null,
+        fromTrailId: "",
         offset: 0,
         limit: 25,
+        getTrail: "",
         getUser: "",
     }
     for (let key in args)

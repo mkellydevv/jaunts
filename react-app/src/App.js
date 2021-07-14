@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { authenticate } from "./store/session";
 import { getTrails } from "./store/trails";
-import { getLists, getListById } from "./store/lists";
+import { getLists, getList } from "./store/lists";
 import { listQuery } from "./utils/queryObjects";
 
 import LoginForm from "./components/auth/LoginForm";
