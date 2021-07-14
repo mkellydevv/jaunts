@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 
 import PhotoCard from "./PhotoCard";
 
-import "./PhotoGrid.css"
+import "./PhotoGrid.css";
 
-export default function PhotoGrid({ trail, open }) {
+export default function PhotoGrid({ photosArr, open }) {
 
     return (
         <div className="photo-grid">
-            {Object.values(trail.photos).map(photo => {
+            {photosArr.map(photo => {
                 return (
                     <PhotoCard photo={photo} open={open} keyname={`PhotoCard-${photo.id}`} />
                 )

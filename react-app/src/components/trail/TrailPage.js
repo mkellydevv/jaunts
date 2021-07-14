@@ -3,7 +3,8 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getTrail, clearTrails } from "../../store/trails";
-import { trailQuery } from "../../utils/queryObjects";
+import { getPhotos, clearPhotos } from "../../store/photos";
+import { photoQuery, trailQuery } from "../../utils/queryObjects";
 
 import ReviewList from "../review/ReviewList";
 import TrailCardList from "../trail-card/TrailCardList";
@@ -26,17 +27,20 @@ export default function SplashPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const { id } = useParams();
+
     const { default: trails } = useSelector(state => state.trails);
     const trailsArr = trails ? Object.values(trails) : [];
     const trail = trailsArr.length ? trailsArr[0] : null;
+    const { default: photos } = useSelector(state => state.photos);
+    const photosArr = photos ? Object.values(photos) : [];
+
     const [review, setReview] = useState(null);
     const [showReviewModal, setShowReviewModal] = useState(false);
     const [photoId, setPhotoId] = useState(null);
     const [showViewPhotoModal, setShowViewPhotoModal] = useState(false);
     const [showListModal, setShowListModal] = useState(false);
-
     const [activeInfoTab, setActiveInfoTab] = useState("Description");
-    const [activeFeedTab, setActiveFeedTab] = useState("Reviews");
+    const [activeFeedTab, setActiveFeedTab] = useState("Photos");
 
     const checkActive = (tabName, activeTab) => {
         return tabName === activeTab ? "active" : "";
@@ -73,13 +77,22 @@ export default function SplashPage() {
     }
 
     useEffect(() => {
-        const query = trailQuery({
-            getPhotos: 25,
+        const _photoQuery = photoQuery({
+            fromTrailId: id,
+        });
+
+        const _trailQuery = trailQuery({
             getTags: 25,
         });
-        dispatch(getTrail(id, query));
-        return () => dispatch(clearTrails());
-    }, [id, dispatch])
+
+        dispatch(getPhotos(_photoQuery));
+        dispatch(getTrail(id, _trailQuery));
+
+        return () => {
+            dispatch(clearPhotos());
+            dispatch(clearTrails());
+        }
+    }, [dispatch])
 
     return (
     <>
@@ -88,10 +101,10 @@ export default function SplashPage() {
                 <section className="trail-section">
                     <div className="trail-section__header">
                         {trail && <>
-                            <img
+                            {photos && <img
                                 className="trail-section__header-img"
-                                src={Object.values(trail.photos)[0].url}
-                            />
+                                src={photosArr[0].url}
+                            />}
                             <div className="trail-section__header-container">
                                 <div className="trail-section__header-name">
                                     {trail.name}
@@ -201,7 +214,7 @@ export default function SplashPage() {
                                 <ReviewList trail={trail} open={openReviewModal} />
                             }
                             {trail && activeFeedTab === "Photos" &&
-                                <PhotoGrid trail={trail} open={openViewPhotoModal} />
+                                <PhotoGrid photosArr={photosArr} open={openViewPhotoModal} />
                             }
                         </div>
                     </div>
@@ -218,8 +231,8 @@ export default function SplashPage() {
                 <ReviewModal trail={trail} review={review} close={closeReviewModal} />
             </Modal>
         }
-        {showViewPhotoModal && trail &&
-            <ViewPhotoModal photos={trail.photos} photoId={photoId} close={closeViewPhotoModal} />
+        {showViewPhotoModal && photos &&
+            <ViewPhotoModal photosArr={photosArr} photoId={photoId} close={closeViewPhotoModal} />
         }
         {showListModal && trail &&
             <Modal close={closeListModal}>
