@@ -5,6 +5,7 @@ import trails from "./trails";
 import reviews from "./reviews";
 import lists from "./lists";
 import jaunts from "./jaunts";
+import photos from "./photos";
 
 const rootReducer = combineReducers({
     session,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
     reviews,
     lists,
     jaunts,
+    photos
 });
 
 let enhancer;

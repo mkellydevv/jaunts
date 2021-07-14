@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
+import "./ViewPhotoModal.css";
 
-import "./ViewPhotoModal.css"
-
-export default function ViewPhotoModal({ photos, photoId, close }) {
-    const photosArr = Object.values(photos);
+export default function ViewPhotoModal({ photosArr, photoId, close }) {
     const [idx, setIdx] = useState(null);
 
     const decrementIdx = e => {

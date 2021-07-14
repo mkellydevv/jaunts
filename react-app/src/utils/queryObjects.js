@@ -1,3 +1,17 @@
+export function jauntQuery(args={}) {
+    const query = {
+        fromListId: "",
+        fromTrailId: "",
+        offset: 0,
+        limit: 25,
+        getList: "",
+        getTrail: "",
+    }
+    for (let key in args)
+        query[key] = args[key];
+    return query;
+}
+
 export function listQuery(args={}) {
     const query ={
         fromUserId: "",
@@ -7,6 +21,35 @@ export function listQuery(args={}) {
         getPhotos: "",
         getTrails: "",
         getUser: ""
+    }
+    for (let key in args)
+        query[key] = args[key];
+    return query;
+}
+
+export function photoQuery(args={}) {
+    const query = {
+        fromListId: "",
+        fromTrailId: "",
+        fromUserId: "",
+        offset: 0,
+        limit: 25,
+        getList: "",
+        getTrail: "",
+        getUser: "",
+    }
+    for (let key in args)
+        query[key] = args[key];
+    return query;
+}
+
+export function reviewQuery(args={}) {
+    const query = {
+        fromTrailId: "",
+        offset: 0,
+        limit: 25,
+        getTrail: "",
+        getUser: "",
     }
     for (let key in args)
         query[key] = args[key];
@@ -28,33 +71,6 @@ export function trailQuery(args={}) {
         getTags: "",
         getUser: "",
     };
-    for (let key in args)
-        query[key] = args[key];
-    return query;
-}
-
-export function jauntQuery(args={}) {
-    const query = {
-        fromListId: "",
-        fromTrailId: "",
-        offset: 0,
-        limit: 25,
-        getList: "",
-        getTrail: "",
-    }
-    for (let key in args)
-        query[key] = args[key];
-    return query;
-}
-
-export function reviewQuery(args={}) {
-    const query = {
-        fromTrailId: "",
-        offset: 0,
-        limit: 25,
-        getTrail: "",
-        getUser: "",
-    }
     for (let key in args)
         query[key] = args[key];
     return query;

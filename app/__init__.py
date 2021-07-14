@@ -12,6 +12,7 @@ from .api.review_routes import bp as review_routes
 from .api.list_routes import bp as list_routes
 from .api.trail_routes import bp as trail_routes
 from .api.jaunt_routes import bp as jaunt_routes
+from .api.photo_routes import bp as photo_routes
 
 from .seeds import seed_commands
 
@@ -39,6 +40,7 @@ app.register_blueprint(review_routes, url_prefix='/api/reviews')
 app.register_blueprint(list_routes, url_prefix='/api/lists')
 app.register_blueprint(trail_routes, url_prefix='/api/trails')
 app.register_blueprint(jaunt_routes, url_prefix='/api/jaunts')
+app.register_blueprint(photo_routes, url_prefix='/api/photos')
 
 db.init_app(app)
 Migrate(app, db)

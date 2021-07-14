@@ -17,7 +17,7 @@ export default function TrailCardList({ trail }) {
             searchTerm: trail.region,
             searchCategories: ["region"],
             limit: 10,
-            getPhotos: 25,
+            getPhotos: 1,
         });
         dispatch(getTrails(query, "nearby"));
 
