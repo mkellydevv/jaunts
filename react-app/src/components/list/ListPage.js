@@ -42,7 +42,6 @@ export default function ListPage() {
         dispatch(getTrails(_trailQuery));
 
         return () => {
-            console.log(`CLEAREDDDDDDDDDDDDDDDDDDDDD`)
             dispatch(clearLists());
             dispatch(clearTrails());
             dispatch(clearJaunts());

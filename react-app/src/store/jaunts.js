@@ -64,6 +64,21 @@ export const createJaunt = (payload, query={}, key, keyId) => async (dispatch) =
     return data;
 };
 
+export const editJaunt = (id, query={}, payload, key, keyId) => async (dispatch) => {
+    const url = appendQueryArgs(query, `/api/jaunts/${id}`);
+    const res = await fetch(url, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (res.ok) {
+        dispatch(storeJaunt(data, key, keyId));
+        return {};
+    }
+    return data;
+}
+
 export const deleteJaunt = (id, key, keyId) => async (dispatch) => {
     const res = await fetch(`/api/jaunts/${id}`, { method: "DELETE" });
     const data = await res.json();

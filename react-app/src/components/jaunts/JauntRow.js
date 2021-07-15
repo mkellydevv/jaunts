@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { editJaunt } from "../../store/jaunts";
 import { clearPhotos, getPhotos } from "../../store/photos";
 import { clearTrails } from "../../store/trails";
 import { getDateString } from "../../utils/helperFuncs";
-import { photoQuery } from "../../utils/queryObjects";
+import { jauntQuery, photoQuery } from "../../utils/queryObjects";
 
 import StarRating from "../random/StarRating";
 
@@ -21,6 +22,33 @@ export default function JauntRow({ jaunt, trail, user }) {
     const [photosKey, setPhotosKey] = useState("");
     const [photosArr, setPhotosArr] = useState([]);
     const [mainPhoto, setMainPhoto] = useState(null);
+    const [rating, setRating] = useState(jaunt.rating);
+    const [date, setDate] = useState(jaunt.date ? new Date(jaunt.date).toISOString().split('T')[0] : "");
+    const [showDateInput, setShowDateInput] = useState(false);
+    const blurbDefault = "Enter a description for this trail.";
+    const [blurb, setBlurb] = useState(jaunt.blurb ? jaunt.blurb : blurbDefault);
+    const [showBlurbInput, setShowBlurbInput] = useState(blurb ? false : true);
+
+    const handleEditBlurb = (val) => {
+        const query = jauntQuery({
+            fromListId: jaunt.list_id
+        });
+        dispatch(editJaunt(jaunt.id, query, { blurb: val }));
+    }
+
+    const handleEditDate = (val) => {
+        const query = jauntQuery({
+            fromListId: jaunt.list_id
+        });
+        dispatch(editJaunt(jaunt.id, query, { date: val }));
+    }
+
+    const handleEditRating = (val) => {
+        const query = jauntQuery({
+            fromListId: jaunt.list_id
+        });
+        dispatch(editJaunt(jaunt.id, query, { rating: val }));
+    }
 
     const handleImageClick = (photoId=null) => {
         setMainPhoto(photos[photoId]);
@@ -90,15 +118,56 @@ export default function JauntRow({ jaunt, trail, user }) {
             </div>
             <div className="jaunt-row__overview">
                 <div>
-                    <StarRating fixed={true} rating={jaunt.rating} />
+                    <StarRating
+                        fixed={false}
+                        rating={rating}
+                        setRating={setRating}
+                        handleEdit={handleEditRating}
+                    />
                 </div>
                 <div>
-                    {jaunt.date ? getDateString(jaunt.date) : "Select Date"}
+                    {!showDateInput && <>
+                        <div className="jaunt-row__date">
+                            {date ? getDateString(date) : "Enter date visited."}
+                        </div>
+                        <div className="jaunt-row__edit-date" onClick={()=>setShowDateInput(true)}>
+                            <i className="fas fa-edit" />
+                        </div>
+                    </>}
+                    {showDateInput && <input
+                        className="jaunt-row__edit-date-input"
+                        type="date"
+                        value={date}
+                        onChange={e => {
+                            setDate(e.target.value);
+                            setShowDateInput(false);
+                            handleEditDate(e.target.value);
+                        }}
+                    />}
                 </div>
                 <div>
-                    {jaunt.blurb}
+                    {!showBlurbInput && <>
+                        <div className="jaunt-row__blurb">
+                            {blurb}
+                        </div>
+                        <div className="jaunt-row__edit-blurb" onClick={()=>setShowBlurbInput(true)}>
+                            <i className="fas fa-edit" />
+                        </div>
+                    </>}
+                    {showBlurbInput && <textarea
+                        className="jaunt-row__edit-blurb-input"
+                        value={blurb === blurbDefault ? "" : blurb}
+                        onChange={e => {
+                            setBlurb(e.target.value);
+                        }}
+                        onKeyPress={e => {
+                            if (e.key === "Enter") {
+                                setShowBlurbInput(false);
+                                handleEditBlurb(blurb);
+                            }
+                        }}
+                    />}
                 </div>
-                <br />
             </div>
         </div>
     )

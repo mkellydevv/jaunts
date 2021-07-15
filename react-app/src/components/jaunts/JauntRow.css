@@ -71,7 +71,43 @@
     color: #414141;
     font-size: 18px;
     line-height: 1.44;
-    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.jaunt-row__date, .jaunt-row__blurb {
+    display: inline;
+    margin-right: 8px;
+}
+
+.jaunt-row__edit-date, .jaunt-row__edit-blurb {
+    display: inline-block;
+    cursor: pointer;
+    color: #e6e6e6;
+}
+
+.jaunt-row__edit-date:hover, .jaunt-row__edit-blurb:hover {
+    color: #428513;
+}
+
+.jaunt-row__edit-date-input, .jaunt-row__edit-blurb-input {
+    border: 1px solid black;
+    font-family: Proxima Nova, Arial, sans-serif;
+    color: #414141;
+    line-height: 1.44;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.jaunt-row__edit-blurb-input {
+    border: 1px solid #e6e6e6 !important;
+    width: 100%;
+    height: 160px;
+    border: 1px solid black;
+    font-family: Proxima Nova, Arial, sans-serif;
+    color: #414141;
+    font-size: 18px;
+    line-height: 1.44;
     overflow-wrap: break-word;
     box-sizing: border-box;
 }
