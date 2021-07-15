@@ -1,0 +1,113 @@
+.jaunt-row {
+    background-color: #fff;
+    margin-bottom: 16px;
+    border: 1px solid #CCCCCC;
+    box-shadow: 0 8px 16px 0 rgb(0 0 0 / 8%);
+    box-sizing: border-box;
+}
+
+.jaunt-row__info {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: Proxima Nova,Arial,sans-serif;
+    margin: 32px 32px 24px 32px;
+    display: flex;
+}
+
+.jaunt-row__name {
+    cursor: pointer;
+    border-bottom: solid transparent 3px;
+}
+
+.jaunt-row__name:hover {
+    color: #428a13;
+    border-bottom: solid #428a13 3px;
+}
+
+.jaunt-row__gallery {
+    margin: 0 32px 24px 32px;
+}
+
+.jaunt-row__gallery-main {
+    height: 480px;
+}
+
+.jaunt-row__gallery-main > img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.jaunt-row__gallery-imgages {
+    height: 160px;
+    background-color: black;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 16px;
+}
+
+.jaunt-row__gallery-img-container {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    justify-self: center;
+    align-self: center;
+}
+
+.jaunt-row__gallery-img-container > img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.jaunt-row__overview {
+    border-top: solid #e6e6e6 1px;
+    border-bottom: solid #e6e6e6 1px;
+    margin: 0 32px 24px 32px;
+    padding: 16px;
+    font-family: Proxima Nova, Arial, sans-serif;
+    color: #414141;
+    font-size: 18px;
+    line-height: 1.44;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.jaunt-row__date, .jaunt-row__blurb {
+    display: inline;
+    margin-right: 8px;
+}
+
+.jaunt-row__edit-date, .jaunt-row__edit-blurb {
+    display: inline-block;
+    cursor: pointer;
+    color: #e6e6e6;
+}
+
+.jaunt-row__edit-date:hover, .jaunt-row__edit-blurb:hover {
+    color: #428513;
+}
+
+.jaunt-row__edit-date-input, .jaunt-row__edit-blurb-input {
+    border: 1px solid black;
+    font-family: Proxima Nova, Arial, sans-serif;
+    color: #414141;
+    line-height: 1.44;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.jaunt-row__edit-blurb-input {
+    border: 1px solid #e6e6e6 !important;
+    width: 100%;
+    height: 160px;
+    border: 1px solid black;
+    font-family: Proxima Nova, Arial, sans-serif;
+    color: #414141;
+    font-size: 18px;
+    line-height: 1.44;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+}

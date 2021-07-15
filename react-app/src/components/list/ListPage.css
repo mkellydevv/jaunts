@@ -1,0 +1,14 @@
+.page-content {
+    display: grid;
+    /* grid-template-columns: 75% 25%; */
+}
+
+.list-page {
+    margin: 16px;
+}
+
+.list-page__jaunt-rows {
+    display: flex;
+    flex-flow: column nowrap;
+    margin-bottom: 16px;
+}

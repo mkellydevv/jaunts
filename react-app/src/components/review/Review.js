@@ -1,10 +1,12 @@
 import React, { useState} from "react"
 import { useSelector, useDispatch } from "react-redux";
 
-import StarRating from "../random/StarRating";
 import { deleteReview } from "../../store/reviews";
+import { getDateString } from "../../utils/helperFuncs";
 
-import "./Review.css"
+import StarRating from "../random/StarRating";
+
+import "./Review.css";
 
 export default function Review({ review, open }) {
     const dispatch = useDispatch();
@@ -32,7 +34,7 @@ export default function Review({ review, open }) {
                         <span>
                             <StarRating fixed={true} rating={review.rating} />
                         </span>
-                        <span>{review.date}</span>
+                        <span>{getDateString(review.date)}</span>
                     </div>
                 </div>
             </div>

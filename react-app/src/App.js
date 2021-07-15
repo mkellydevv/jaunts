@@ -21,7 +21,7 @@ import ListPage from "./components/list/ListPage";
 
 
 function App() {
-  const { user } = useSelector(state => state.session)
+  const { user } = useSelector(state => state.session);
   const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
 

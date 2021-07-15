@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import "./StarRating.css";
 
-export default function StarRating({ fixed, rating, setRating}) {
+export default function StarRating({ fixed, rating, setRating, handleEdit}) {
     const [hover, setHover] = useState(0);
     const dynamic = fixed ? "" : "dynamic";
 
@@ -29,6 +29,8 @@ export default function StarRating({ fixed, rating, setRating}) {
                             onClick={() => {
                                 if (fixed) return;
                                 setRating(val);
+                                if (handleEdit)
+                                    handleEdit(val);
                             }}
                             onMouseEnter={() => setHover(val)}
                             onMouseLeave={() => setHover(0)}

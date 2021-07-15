@@ -6,8 +6,9 @@ class List(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    name = db.Column(db.String, nullable=False)
     blurb = db.Column(db.Text)
+    name = db.Column(db.String, nullable=False)
+    # private = db.Column(db.Boolean, nullable=False, default=False)
 
     jaunts = db.relationship("Jaunt", back_populates="_list", cascade="all, delete")
     photos = db.relationship("Photo", back_populates="_list")
@@ -23,8 +24,9 @@ class List(db.Model):
         dct = {
             "id": self.id,
             "user_id": self.user_id,
+            "blurb": self.blurb,
             "name": self.name,
-            "blurb": self.blurb
+            # "private": self.private,
         }
 
         if "getJaunts" in joins:
