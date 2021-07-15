@@ -42,6 +42,7 @@ export default function ListPage() {
         dispatch(getTrails(_trailQuery));
 
         return () => {
+            console.log(`CLEAREDDDDDDDDDDDDDDDDDDDDD`)
             dispatch(clearLists());
             dispatch(clearTrails());
             dispatch(clearJaunts());
@@ -54,7 +55,7 @@ export default function ListPage() {
                 <div>
                     {list && list.blurb}
                 </div>
-                <div>
+                <div className="list-page__jaunt-rows">
                     {jaunts && trails && user && Object.values(jaunts).map(jaunt => {
                         return (
                             <JauntRow

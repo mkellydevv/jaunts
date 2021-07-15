@@ -1,5 +1,31 @@
-.jaunt-row__gallery {
+.jaunt-row {
+    background-color: #fff;
+    margin-bottom: 16px;
+    border: 1px solid #CCCCCC;
+    box-shadow: 0 8px 16px 0 rgb(0 0 0 / 8%);
+    box-sizing: border-box;
+}
 
+.jaunt-row__info {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: Proxima Nova,Arial,sans-serif;
+    margin: 32px 32px 24px 32px;
+    display: flex;
+}
+
+.jaunt-row__name {
+    cursor: pointer;
+    border-bottom: solid transparent 3px;
+}
+
+.jaunt-row__name:hover {
+    color: #428a13;
+    border-bottom: solid #428a13 3px;
+}
+
+.jaunt-row__gallery {
+    margin: 0 32px 24px 32px;
 }
 
 .jaunt-row__gallery-main {
@@ -34,4 +60,18 @@
     object-fit: cover;
     height: 100%;
     width: 100%;
+}
+
+.jaunt-row__overview {
+    border-top: solid #e6e6e6 1px;
+    border-bottom: solid #e6e6e6 1px;
+    margin: 0 32px 24px 32px;
+    padding: 16px;
+    font-family: Proxima Nova, Arial, sans-serif;
+    color: #414141;
+    font-size: 18px;
+    line-height: 1.44;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
 }

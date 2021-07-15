@@ -23,7 +23,7 @@ const removeTrails = (key) => ({
 });
 
 const removeTrail = (payload, key) => ({
-    type: REMOVE_TRAILS,
+    type: REMOVE_TRAIL,
     payload,
     key
 });

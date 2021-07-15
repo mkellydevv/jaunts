@@ -23,7 +23,7 @@ const map = {
     Hard: "hard"
 }
 
-export default function SplashPage() {
+export default function TrailPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const { id } = useParams();

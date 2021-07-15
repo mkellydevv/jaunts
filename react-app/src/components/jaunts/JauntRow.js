@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { clearPhotos, getPhotos } from "../../store/photos";
+import { clearTrails } from "../../store/trails";
+import { getDateString } from "../../utils/helperFuncs";
 import { photoQuery } from "../../utils/queryObjects";
+
+import StarRating from "../random/StarRating";
 
 import "./JauntRow.css";
 
 export default function JauntRow({ jaunt, trail, user }) {
     const dispatch = useDispatch();
+    const history = useHistory();
     const { user: userPhotos } = useSelector(state => state.photos);
     const userPhotosArr = userPhotos ? Object.values(userPhotos) : [];
     const { trail: trailPhotos } = useSelector(state => state.photos);
@@ -19,6 +25,11 @@ export default function JauntRow({ jaunt, trail, user }) {
     const handleImageClick = (photoId=null) => {
         setMainPhoto(photos[photoId]);
     };
+
+    const handleTrailLinkClick = () => {
+        dispatch(clearTrails());
+        history.push(`/trails/${trail.id}`);
+    }
 
     useEffect(() => {
         const userPhotoQuery = photoQuery({
@@ -53,6 +64,11 @@ export default function JauntRow({ jaunt, trail, user }) {
 
     return (
         <div className="jaunt-row">
+            <div className="jaunt-row__info">
+                <div className="jaunt-row__name" onClick={handleTrailLinkClick}>
+                    {trail.name}
+                </div>
+            </div>
             <div className="jaunt-row__gallery">
                 <div className="jaunt-row__gallery-main">
                     {mainPhoto && <img src={mainPhoto.url} alt="Main Photo" />}
@@ -72,15 +88,15 @@ export default function JauntRow({ jaunt, trail, user }) {
                     })}
                 </div>
             </div>
-            <div>
+            <div className="jaunt-row__overview">
                 <div>
-                    Rating {jaunt.rating}
+                    <StarRating fixed={true} rating={jaunt.rating} />
                 </div>
                 <div>
-                    Blurb {jaunt.blurb}
+                    {jaunt.date ? getDateString(jaunt.date) : "Select Date"}
                 </div>
                 <div>
-                    Date {jaunt.date}
+                    {jaunt.blurb}
                 </div>
                 <br />
             </div>
