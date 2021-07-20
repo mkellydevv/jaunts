@@ -17,7 +17,7 @@ import urllib.request
 
 pp = pprint.PrettyPrinter(indent=4)
 
-URL = "https://www.all" + "trails.com"
+URL = "https://www." + "all" + "trails" + ".com"
 STATES = {
     "va": "virginia"
 }
@@ -43,26 +43,27 @@ driver = wd.Chrome(
 
 driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
 
-# Login to gain access to map data
+
 def login(driver):
+    '''
+    Login to AllTrails.com with a username and password as command line arguments.
+    '''
     if len(sys.argv) < 3:
         print("Error: Login requires email and password as command line args")
         driver.close()
         exit()
 
-    # Navigate to main page and wait
-    driver.get(URL)
-    time.sleep(8)
-
-    # Click on login button
-    driver.find_element(By.XPATH, '//*[@id="responsive-navbar-nav"]/div[3]/div/div[2]/div').click()
-    time.sleep(5)
+    # Navigate to login page and wait for it to load
+    driver.get(URL + "/login?ref=header")
+    waitForIt(driver, 3, '//*[@id="login-form"]/div/div/div[2]/form/input', 'xpath')
 
     # Enter login info and submit
     driver.find_element(By.NAME, 'userEmail').send_keys(sys.argv[1])
     driver.find_element(By.NAME, 'userPassword').send_keys(sys.argv[2])
     driver.find_element(By.XPATH, '//*[@id="login-form"]/div/div/div[2]/form/input').click()
-    time.sleep(10)
+
+    # Wait to be redirected
+    waitForIt(driver, 3, 'searchBar')
 
 # Loads trail info from a state's info.txt file into a dict
 def load_trail_info(state="virginia"):
@@ -126,6 +127,7 @@ def scrape_trail_info(driver, state="virginia", start_index=0, limit=1):
     # Load trail data from files
     links = load_trail_links(state)
     info = load_trail_info(state)
+    img_links = load_trail_img_links(state)
 
     i = start_index
     end = min(start_index + limit, len(links))
@@ -193,7 +195,7 @@ def scrape_trail_info(driver, state="virginia", start_index=0, limit=1):
         review_eles = driver.find_elements_by_class_name('styles-module__details___1QPxR.xlate-google > p')
         reviews = []
         for j in range(10):
-            reviews[j] = review_eles[j].text
+            reviews.append(review_eles[j].text)
 
         # Package data into an object
         info[link] = {
@@ -217,7 +219,13 @@ def scrape_trail_info(driver, state="virginia", start_index=0, limit=1):
         }
 
         # Scrape current trail images and track data
-        # scrape_trail_track_data(driver)
+        driver.get(link.replace("?ref=result-card", "/photos"))
+        time.sleep(8)
+        urls = []
+        photos = driver.find_elements_by_class_name("photo-item.gallery.sm")
+        for j in range(10):
+            urls.append(photos[j].get_attribute("href"))
+        img_links.append(urls)
 
         print("    scraped", i, info[link]["name"])
         i += 1
@@ -227,71 +235,161 @@ def scrape_trail_info(driver, state="virginia", start_index=0, limit=1):
         for trail in info:
             file.write(str(info[trail]) + "\n")
 
-def scrape_trail_track_data(driver):
-    el = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[2]/ul/div')
-    ActionChains(driver).move_to_element(el).perform()
-    time.sleep(2)
-    driver.find_element(By.XPATH, '//*[@id="trail_more_alternative_menu"]/span/div[1]/a').click()
-    time.sleep(5)
-    select = Select(driver.find_element_by_id("download"))
-    select.select_by_value('jsonTrk')
-    time.sleep(5)
-    driver.find_element(By.XPATH, '//*[@id="map-download-modal"]/div/div[3]/div/button[2]').click()
-    time.sleep(5)
-
-def scrape_trail_images(driver, state, data, limit=3):
-    name = data["name"]
-    link = data["link"]
-
-    # Navigate to photos of current trail
-    driver.get(link.replace("?ref=result-card", "/photos"))
-    time.sleep(5)
-
-    # Save images of this trail to folder of the same name
-    photos = driver.find_elements_by_class_name("photo-item.gallery.sm")
-    Path(f"./states/{state}/img/{name}").mkdir(parents=True, exist_ok=True)
-    for j in range(limit):
-        url = photos[j].get_attribute("href")
-        urllib.request.urlretrieve(url, f"./states/{state}/img/{name}/{j}.jpg")
-
-# Scrape just img links from all trails in links.txt
-def scrape_trail_img_links(driver, state, start_index=0, limit=1, img_limit=10):
-    links = load_trail_links(state)
-    img_links = load_trail_img_links(state)
-
-    time.sleep(5)
-
-    i = start_index
-    end = min(start_index + limit, len(links))
-    while i < end:
-        link = links[i]
-
-        driver.get(link.replace("?ref=result-card", "/photos"))
-        time.sleep(8)
-
-        urls = []
-        photos = driver.find_elements_by_class_name("photo-item.gallery.sm")
-        for j in range(img_limit):
-            urls.append(photos[j].get_attribute("href"))
-
-        img_links.append(urls)
-
-        print("    scraped", i, link)
-        i += 1
-
-    # Insert packaged info data into txt file
+    # Insert packaged image links into txt file
     with open(f'./states/{state}/img_links.txt', 'w') as file:
         for lst in img_links:
             file.write(str(lst) + "\n")
 
-# Calculates expected amount of time to complete a trail using "Naismith's rule"
+
+def download_trail_route_data(driver):
+    # Hover more button
+    more_btn = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[2]/ul/div')
+    ActionChains(driver).move_to_element(more_btn).perform()
+
+    # Click on Download Route button
+    waitForIt(driver, 3, '//*[@id="trail_more_alternative_menu"]/span/div[1]/a')
+    driver.find_element(By.XPATH, '//*[@id="trail_more_alternative_menu"]/span/div[1]/a').click()
+
+    # Select jsonTrk option
+    waitForIt(driver, 3, 'download')
+    select = Select(driver.find_element_by_id("download"))
+    select.select_by_value('jsonTrk')
+
+    # Click on Download button
+    driver.find_element(By.XPATH, '//*[@id="map-download-modal"]/div/div[3]/div/button[2]').click()
+    time.sleep(5)
+
+
 def calculate_duration(length, elevation_gain):
+    '''
+    Calculates expected amount of time to complete a trail using "Naismith's rule"
+    '''
     total_min = int((length / 3 + elevation_gain / 2000) * 60)
     return (total_min // 60, total_min % 60)
 
-# scrape_trail_links(driver, STATES["va"])
 
+def waitForIt(driver, duration, selector, attr='id', stale=False):
+    '''
+    Waits until the specified element by ID is present on the page.
+    '''
+    loop = True
+    while loop:
+        try:
+            if attr == 'id':
+                WebDriverWait(driver, duration) \
+                    .until(EC.presence_of_element_located((By.ID, selector)))
+            elif attr == 'xpath':
+                WebDriverWait(driver, duration) \
+                    .until(EC.presence_of_element_located((By.XPATH, selector)))
+            loop = False
+        except:
+            time.sleep(duration)
+
+
+def scrape_trail_data(driver, state, limit=1):
+    links = load_trail_links(state)
+    # Load trail data from json
+    try:
+        with open(f'./states/{state}/trails.json', 'r') as f:
+            trails = json.load(f)
+    except:
+        trails = {}
+
+    i = 0
+    end = min(limit, len(links))
+    while i < end:
+        link = links[i]
+        if link in trails:
+            print("    skipped", i, trails[link]["name"])
+            i +=1
+            end = min(end + 1, len(links))
+            continue
+
+        # Navigate to trail page
+        driver.get(link)
+
+        # Wait for page to load
+        waitForIt(driver, 3, 'text-container-description')
+
+        # Scrape trail data
+        name = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/h1').text
+        region = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/a').text
+        overview = driver.find_element(By.XPATH, '//*[@id="auto-overview"]').text
+        description = driver.find_element(By.ID, 'text-container-description').text
+        difficulty = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/div/span[1]').text
+        route_type = driver.find_element(By.XPATH, '//*[@id="main"]/div[2]/div[1]/article/section[2]/div/span[3]/span[2]').text
+        default_rating = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/div/span[2]/meta[1]').get_attribute("content")
+        default_weighting = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/div/span[2]/meta[4]').get_attribute("content")
+
+        try:
+            driver.find_element(By.XPATH, '//*[text()="Tips"]').click()
+            tips = driver.find_element(By.ID, 'text-container-tips').text
+        except:
+            tips = ""
+
+        try:
+            driver.find_element(By.XPATH, '//*[text()="Getting There"]').click()
+            getting_there = driver.find_element(By.ID, 'text-container-getting_there').text
+        except:
+            getting_there = ""
+
+        length = driver.find_element(By.XPATH, '//*[@id="main"]/div[2]/div[1]/article/section[2]/div/span[1]/span[2]').text
+        length = float(length.split(' ')[0])
+
+        elevation_gain = driver.find_element(By.XPATH, '//*[@id="main"]/div[2]/div[1]/article/section[2]/div/span[2]/span[2]').text
+        elevation_gain = int(elevation_gain.split(' ')[0].replace(',', ''))
+
+        duration = calculate_duration(length, elevation_gain)
+
+        tags = driver.find_elements_by_class_name('big.rounded.active')
+        for j in range(len(tags)):
+            tags[j] = tags[j].text
+
+        review_eles = driver.find_elements_by_class_name('styles-module__details___1QPxR.xlate-google > p')
+        reviews = []
+        for j in range(10):
+            reviews.append(review_eles[j].text)
+
+        # Download trail route data
+        # download_trail_route_data(driver)
+
+        # Navigate to photos of this trail
+        driver.get(link.replace("?ref=result-card", "/photos"))
+        waitForIt(driver, 3, 'photo-fileupload-button')
+        images = driver.find_elements_by_class_name("photo-item.gallery.sm")
+        image_urls = []
+        for j in range(10):
+            image_urls.append(images[j].get_attribute("href"))
+
+        # Store trail data in dict
+        trails[link] = {
+            "name": name,
+            "region": region,
+            "overview": overview,
+            "description": description,
+            "tips": tips,
+            "getting_there": getting_there,
+            "difficulty": difficulty,
+            "length": length,
+            "elevation_gain": elevation_gain,
+            "route_type": route_type,
+            "duration_hours": duration[0],
+            "duration_minutes": duration[1],
+            "default_rating": default_rating,
+            "default_weighting": default_weighting,
+            "tags": tags,
+            "reviews": reviews,
+            "images": image_urls
+        }
+
+        # Save trail data to json
+        with open(f'./states/{state}/trails.json', 'w') as f:
+            json.dump(trails, f)
+
+        i += 1
+        print("scraped", i, trails[link]["name"])
+
+
+# scrape_trail_links(driver, STATES["va"])
 # login(driver)
-# scrape_trail_img_links(driver, STATES["va"], 80, 20, 10)
-scrape_trail_info(driver, STATES["va"])
-# pp.pprint(load_trail_info())
+scrape_trail_data(driver, STATES["va"], 2)
