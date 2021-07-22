@@ -73,7 +73,8 @@ export const editJaunt = (id, query={}, payload, key, keyId) => async (dispatch)
     });
     const data = await res.json();
     if (res.ok) {
-        dispatch(storeJaunt(data, key, keyId));
+        for (let jaunt of data['jaunts'])
+            dispatch(storeJaunt(jaunt, key, keyId));
         return {};
     }
     return data;

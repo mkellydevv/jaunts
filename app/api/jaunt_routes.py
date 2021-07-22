@@ -71,18 +71,29 @@ def post_jaunt():
 # @login_required
 def patch_jaunt(id):
     jaunt = Jaunt.query.get(id)
+    otherJaunt = None
     lst = List.query.get(jaunt.list_id)
 
     if current_user.id == lst.user_id:
         data = request.json
         for key in data:
+            # Re-order if necessary
+            if key == "order":
+                if jaunt.order < data[key]:
+                    val = 1
+                else:
+                    val = -1
+                otherJaunt = Jaunt.query.filter_by(list_id=jaunt.list_id, order=jaunt.order+val).first()
+                setattr(otherJaunt, key, jaunt.order)
             setattr(jaunt, key, data[key])
         db.session.commit()
 
         args = request.args
         joins = extractJoins(args, joinList)
 
-        return jaunt.to_dict(joins)
+        if otherJaunt:
+            return { "jaunts": [jaunt.to_dict(joins), otherJaunt.to_dict(joins)] }
+        return { "jaunts": [jaunt.to_dict(joins)] }
     else:
         return {"errors": "Unauthorized"}, 401
 
