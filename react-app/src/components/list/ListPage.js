@@ -17,6 +17,8 @@ export default function ListPage() {
     const { id } = useParams();
     const { user } = useSelector(state => state.session);
     const { default: jaunts } = useSelector(state => state.jaunts);
+    const jauntsArr = jaunts ? Object.values(jaunts).sort((a, b) => a.order > b.order ? 1 : -1) : [];
+    console.log(`jauntsArr`, jauntsArr)
     const { default: lists } = useSelector(state => state.lists);
     const list = lists ? lists[0] : null;
     const { default: trails } = useSelector(state => state.trails);
@@ -55,11 +57,12 @@ export default function ListPage() {
                     {list && list.blurb}
                 </div>
                 <div className="list-page__jaunt-rows">
-                    {jaunts && trails && user && Object.values(jaunts).map(jaunt => {
+                    {jaunts && trails && user && jauntsArr.map(jaunt => {
                         return (
                             <JauntRow
                                 key={jaunt.id}
                                 jaunt={jaunt}
+                                jauntsLength={jauntsArr.length}
                                 trail={trails[jaunt.trail_id]}
                                 user={user}
                             />
