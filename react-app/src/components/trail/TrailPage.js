@@ -174,7 +174,7 @@ export default function TrailPage() {
                     {/* Section: Info */}
                     <div className="trail-page__info">
                         <div className="tab-navigation">
-                            {["Description", "Waypoints", "Tips", "Getting There"].map(tabName => {
+                            {["Description", "Tips", "Getting There"].map(tabName => {
                                 return (
                                     <div
                                         className={`tab ${checkActive(tabName, activeInfoTab)}`}
@@ -188,9 +188,8 @@ export default function TrailPage() {
                         </div>
                         <div className="tab-content">
                             { trail && activeInfoTab === "Description" && trail.description }
-                            { trail && activeInfoTab === "Waypoints" && <div>Waypoints</div> }
-                            { trail && activeInfoTab === "Tips" && <div>Tips</div> }
-                            { trail && activeInfoTab === "Getting There" && <div>Getting There</div> }
+                            { trail && activeInfoTab === "Tips" && trail.tips }
+                            { trail && activeInfoTab === "Getting There" && trail.getting_there }
                         </div>
                     </div>
 

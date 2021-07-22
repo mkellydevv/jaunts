@@ -54,6 +54,7 @@
     box-sizing: border-box;
     justify-self: center;
     align-self: center;
+    cursor: pointer;
 }
 
 .jaunt-row__gallery-img-container > img {
