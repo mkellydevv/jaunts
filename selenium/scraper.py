@@ -30,7 +30,7 @@ options = wd.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
 options.add_experimental_option("useAutomationExtension", False)
 options.add_argument("disable-blink-features=AutomationControlled")
-# options.add_argument("disable-extensions")
+options.add_argument("disable-extensions")
 options.add_argument("disable-infobars")
 options.add_argument("incognito")
 options.add_argument(f"user-agent={userAgent}")
@@ -122,124 +122,6 @@ def scrape_trail_links(driver, state="virginia", amount=10):
     with open(f'./states/{state}/links.txt', 'w') as file:
         file.writelines(lst)
 
-# Saves trail info from a list of trail links to a text file
-def scrape_trail_info(driver, state="virginia", start_index=0, limit=1):
-    # Load trail data from files
-    links = load_trail_links(state)
-    info = load_trail_info(state)
-    img_links = load_trail_img_links(state)
-
-    i = start_index
-    end = min(start_index + limit, len(links))
-    while i < end:
-        link = links[i]
-        # Skip to next unscraped trail
-        if link in info:
-            print("skipped", i, info[link]["name"])
-            i += 1
-            end = min(end + 1, len(links))
-            continue
-
-        # Navigate to link
-        driver.get(link)
-
-        # Wait for trail page to load
-        loop = True
-        while loop:
-            try:
-                WebDriverWait(driver, 3) \
-                    .until(EC.presence_of_element_located((By.ID, 'text-container-description')))
-                loop = False
-            except:
-                time.sleep(3)
-                pass
-
-        # Clean data before inserting into txt file
-        name = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/h1').text
-        region = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/a').text
-        overview = driver.find_element(By.XPATH, '//*[@id="auto-overview"]').text
-        description = driver.find_element(By.ID, 'text-container-description').text
-
-        try:
-            driver.find_element(By.XPATH, '//*[text()="Tips"]').click()
-            tips = driver.find_element(By.ID, 'text-container-tips').text
-        except:
-            tips = ""
-
-        try:
-            driver.find_element(By.XPATH, '//*[text()="Getting There"]').click()
-            getting_there = driver.find_element(By.ID, 'text-container-getting_there').text
-        except:
-            getting_there = ""
-
-        difficulty = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/div/span[1]').text
-
-        length = driver.find_element(By.XPATH, '//*[@id="main"]/div[2]/div[1]/article/section[2]/div/span[1]/span[2]').text
-        length = float(length.split(' ')[0])
-
-        elevation_gain = driver.find_element(By.XPATH, '//*[@id="main"]/div[2]/div[1]/article/section[2]/div/span[2]/span[2]').text
-        elevation_gain = int(elevation_gain.split(' ')[0].replace(',', ''))
-
-        route_type = driver.find_element(By.XPATH, '//*[@id="main"]/div[2]/div[1]/article/section[2]/div/span[3]/span[2]').text
-
-        duration = calculate_duration(length, elevation_gain)
-
-        default_rating = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/div/span[2]/meta[1]').get_attribute("content")
-
-        default_weighting = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/div/span[2]/meta[4]').get_attribute("content")
-
-        tags = driver.find_elements_by_class_name('big.rounded.active')
-        for j in range(len(tags)):
-            tags[j] = tags[j].text
-
-        review_eles = driver.find_elements_by_class_name('styles-module__details___1QPxR.xlate-google > p')
-        reviews = []
-        for j in range(10):
-            reviews.append(review_eles[j].text)
-
-        # Package data into an object
-        info[link] = {
-            "link": link,
-            "name": name,
-            "region": region,
-            "overview": overview,
-            "description": description,
-            "tips": tips,
-            "getting_there": getting_there,
-            "difficulty": difficulty,
-            "length": length,
-            "elevation_gain": elevation_gain,
-            "route_type": route_type,
-            "duration_hours": duration[0],
-            "duration_minutes": duration[1],
-            "default_rating": default_rating,
-            "default_weighting": default_weighting,
-            "tags": tags,
-            "reviews": reviews
-        }
-
-        # Scrape current trail images and track data
-        driver.get(link.replace("?ref=result-card", "/photos"))
-        time.sleep(8)
-        urls = []
-        photos = driver.find_elements_by_class_name("photo-item.gallery.sm")
-        for j in range(10):
-            urls.append(photos[j].get_attribute("href"))
-        img_links.append(urls)
-
-        print("    scraped", i, info[link]["name"])
-        i += 1
-
-    # Insert packaged info data into txt file
-    with open(f'./states/{state}/info.txt', 'w') as file:
-        for trail in info:
-            file.write(str(info[trail]) + "\n")
-
-    # Insert packaged image links into txt file
-    with open(f'./states/{state}/img_links.txt', 'w') as file:
-        for lst in img_links:
-            file.write(str(lst) + "\n")
-
 
 def download_trail_route_data(driver):
     # Hover more button
@@ -309,17 +191,21 @@ def scrape_trail_data(driver, state, limit=1):
         driver.get(link)
 
         # Wait for page to load
-        waitForIt(driver, 3, 'text-container-description')
+        waitForIt(driver, 3, 'review-fileupload-button')
 
         # Scrape trail data
         name = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/h1').text
         region = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/a').text
         overview = driver.find_element(By.XPATH, '//*[@id="auto-overview"]').text
-        description = driver.find_element(By.ID, 'text-container-description').text
         difficulty = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/div/span[1]').text
         route_type = driver.find_element(By.XPATH, '//*[@id="main"]/div[2]/div[1]/article/section[2]/div/span[3]/span[2]').text
         default_rating = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/div/span[2]/meta[1]').get_attribute("content")
         default_weighting = driver.find_element(By.XPATH, '//*[@id="title-and-menu-box"]/div[1]/div/div/span[2]/meta[4]').get_attribute("content")
+
+        try:
+            description = driver.find_element(By.ID, 'text-container-description').text
+        except:
+            description = ""
 
         try:
             driver.find_element(By.XPATH, '//*[text()="Tips"]').click()
@@ -386,10 +272,10 @@ def scrape_trail_data(driver, state, limit=1):
         with open(f'./states/{state}/trails.json', 'w') as f:
             json.dump(trails, f)
 
-        i += 1
         print("scraped", i, trails[link]["name"])
+        i += 1
 
 
 # scrape_trail_links(driver, STATES["va"])
 # login(driver)
-scrape_trail_data(driver, STATES["va"], 2)
+scrape_trail_data(driver, STATES["va"], 4)

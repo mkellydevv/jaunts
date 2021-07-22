@@ -26,6 +26,8 @@ class Trail(db.Model):
     curated = db.Column(db.Boolean, nullable=False)
     overview = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
+    tips = db.Column(db.Text, nullable=False)
+    getting_there = db.Column(db.Text, nullable=False)
     difficulty = db.Column(db.Enum(DifficultyEnum), nullable=False)
     length = db.Column(db.Float, nullable=False)
     elevation_gain = db.Column(db.Integer, nullable=False)
@@ -61,6 +63,8 @@ class Trail(db.Model):
             "curated": self.curated,
             "overview": self.overview,
             "description": self.description,
+            "tips": self.tips,
+            "getting_there": self.getting_there,
             "difficulty": self.difficulty.value,
             "length": self.length,
             "elevation_gain": self.elevation_gain,

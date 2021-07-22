@@ -1,8 +1,8 @@
 """create tables
 
-Revision ID: b8791370ab7a
+Revision ID: 08bef99da673
 Revises: 
-Create Date: 2021-07-12 15:41:42.789426
+Create Date: 2021-07-21 21:37:30.254164
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b8791370ab7a'
+revision = '08bef99da673'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -36,8 +36,9 @@ def upgrade():
     op.create_table('lists',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(), nullable=False),
     sa.Column('blurb', sa.Text(), nullable=True),
+    sa.Column('name', sa.String(), nullable=False),
+    sa.Column('private', sa.Boolean(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -49,6 +50,8 @@ def upgrade():
     sa.Column('curated', sa.Boolean(), nullable=False),
     sa.Column('overview', sa.Text(), nullable=False),
     sa.Column('description', sa.Text(), nullable=False),
+    sa.Column('tips', sa.Text(), nullable=False),
+    sa.Column('getting_there', sa.Text(), nullable=False),
     sa.Column('difficulty', sa.Enum('easy', 'moderate', 'hard', name='difficultyenum'), nullable=False),
     sa.Column('length', sa.Float(), nullable=False),
     sa.Column('elevation_gain', sa.Integer(), nullable=False),
@@ -77,6 +80,7 @@ def upgrade():
     sa.Column('list_id', sa.Integer(), nullable=True),
     sa.Column('trail_id', sa.Integer(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('private', sa.Boolean(), nullable=False),
     sa.Column('url', sa.String(), nullable=False),
     sa.ForeignKeyConstraint(['list_id'], ['lists.id'], ),
     sa.ForeignKeyConstraint(['trail_id'], ['trails.id'], ),

@@ -1,16 +1,13 @@
-# Postman
-{
-    "trail_id": 15,
-    "user_id": 1,
-    "rating": 9,
-    "blurb": "Blurb",
-    "date": "2021-6-9"
-}
-
 from app.models import db, Review, Trail
+import json
 import random
 
+# reviews.json utilizes bicycle ipsum from https://cogdog.github.io/bicycle-ipsum/
+
 def seed_reviews():
+    with open("selenium/states/virginia/reviews.json", "r") as f:
+        data = json.load(f)
+        reviews = data['reviews_3']
     trails = Trail.query.all()
 
     for trail in trails:
@@ -18,8 +15,8 @@ def seed_reviews():
             review = Review(
                 trail_id=trail.id,
                 user_id=random.randint(1,50),
-                rating=random.randint(1, 5),
-                blurb="Lorem ipsum blurbem sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                rating=random.randint(2, 5),
+                blurb=random.choice(reviews),
                 date=f"2021-0{random.randint(1,9)}-0{random.randint(1,9)}"
             )
             db.session.add(review)

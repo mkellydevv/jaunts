@@ -8,7 +8,7 @@ class Photo(db.Model):
     list_id = db.Column(db.Integer, db.ForeignKey("lists.id"))
     trail_id = db.Column(db.Integer, db.ForeignKey("trails.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    # private = db.Column(db.Boolean, nullable=False, default=False)
+    private = db.Column(db.Boolean, nullable=False, default=False)
     url = db.Column(db.String, nullable=False)
 
     _list = db.relationship("List", back_populates="photos")
@@ -21,7 +21,7 @@ class Photo(db.Model):
             "list_id": self.list_id,
             "trail_id": self.trail_id,
             "user_id": self.user_id,
-            # "private": self.private,
+            "private": self.private,
             "url": self.url
         }
 
