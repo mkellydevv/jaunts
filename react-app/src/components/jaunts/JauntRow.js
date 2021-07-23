@@ -29,6 +29,8 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     const [blurb, setBlurb] = useState(jaunt.blurb ? jaunt.blurb : blurbDefault);
     const [showBlurbInput, setShowBlurbInput] = useState(blurb ? false : true);
 
+    const [limit, setLimit] = useState(6);
+
     const handleEditBlurb = (val) => {
         const query = jauntQuery({
             fromListId: jaunt.list_id
@@ -73,18 +75,44 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
         dispatch(editJaunt(jaunt.id, query, { order: jaunt.order + 1 }));
     }
 
+    const handleSliderImagesLeftClick = () => {
+        if (photosKey === "all") {
+            const allPhotoQuery = photoQuery({
+                fromTrailId: trail.id,
+                limit: limit,
+                offset: 0
+            });
+            dispatch(getPhotos(allPhotoQuery, `all-trail-${trail.id}`));
+        }
+    }
+
+    const handleSliderImagesRightClick = () => {
+        if (photosKey === "all") {
+            const allPhotoQuery = photoQuery({
+                fromTrailId: trail.id,
+                limit: limit,
+                offset: 1
+            });
+            dispatch(getPhotos(allPhotoQuery, `all-trail-${trail.id}`));
+        }
+    }
+
+    const handleSliderImagesHover = () => {
+
+    }
+
     useEffect(() => {
         const userPhotoQuery = photoQuery({
             fromTrailId: trail.id,
             fromUserId: user.id,
         });
-        const trailPhotoQuery = photoQuery({
+        const allPhotoQuery = photoQuery({
             fromTrailId: trail.id,
-            limit: 5
+            limit: limit,
         });
 
         dispatch(getPhotos(userPhotoQuery, `user-trail-${trail.id}`));
-        dispatch(getPhotos(trailPhotoQuery, `all-trail-${trail.id}`));
+        dispatch(getPhotos(allPhotoQuery, `all-trail-${trail.id}`));
 
         return () => dispatch(clearPhotos());
     }, [dispatch]);
@@ -115,24 +143,39 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
                 </div>
             </div>
 
-            <div className="jaunt-row__gallery">
-                <div className="jaunt-row__gallery-main">
+            <div className="jaunt-row__slider">
+
+                <div className="jaunt-row__slider-main">
                     {mainPhoto && <img src={mainPhoto.url} alt="Main Photo" />}
                 </div>
-                <div className="jaunt-row__gallery-imgages" >
-                    {photosArr.length && photosArr.map(photo => {
-                        return (
-                            <div className="jaunt-row__gallery-img-container">
-                                <img
-                                    src={photo.url.replace("extra_", "")}
-                                    alt={` photo`}
-                                    key={photo.id}
-                                    onClick={() => handleImageClick(photo.id)}
-                                />
-                            </div>
-                        )
-                    })}
+
+                <div className="jaunt-row__slider-images">
+
+                    <div className="jaunt-row__slider-images-container" >
+                        {photosArr.length && photosArr.map(photo => {
+                            return (
+                                <div className="jaunt-row__slider-img-container">
+                                    <img
+                                        src={photo.url.replace("extra_", "")}
+                                        alt={` photo`}
+                                        key={photo.id}
+                                        onClick={() => handleImageClick(photo.id)}
+                                    />
+                                </div>
+                            )
+                        })}
+                    </div>
+
+                    <div className="jaunt-row__slider-images-left" onMouseEnter={handleSliderImagesHover}>
+                        <i className="fas fa-angle-left" onClick={handleSliderImagesLeftClick} />
+                    </div>
+
+                    <div className="jaunt-row__slider-images-right">
+                        <i className="fas fa-angle-right" onClick={handleSliderImagesRightClick} />
+                    </div>
+
                 </div>
+
             </div>
 
             <div className="jaunt-row__content">
