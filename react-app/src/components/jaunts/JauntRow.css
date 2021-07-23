@@ -24,30 +24,79 @@
     border-bottom: solid #428a13 3px;
 }
 
-.jaunt-row__gallery {
+.jaunt-row__slider {
     margin: 0 32px 24px 32px;
 }
 
-.jaunt-row__gallery-main {
+.jaunt-row__slider-main {
     height: 480px;
 }
 
-.jaunt-row__gallery-main > img {
+.jaunt-row__slider-main > img {
     object-fit: cover;
     height: 100%;
     width: 100%;
 }
 
-.jaunt-row__gallery-imgages {
-    height: 160px;
-    background-color: black;
-    padding: 16px;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-gap: 16px;
+.jaunt-row__slider-images {
+    height: 10rem;
+    position: relative;
+    overflow-x: overlay;
+}
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
-.jaunt-row__gallery-img-container {
+.jaunt-row__slider-images-container {
+    background-color: black;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: 1rem;
+    height: 100%;
+    width: 200%;
+    box-sizing: border-box;
+}
+
+.jaunt-row__slider-images-left, .jaunt-row__slider-images-right {
+    z-index: 2;
+    position: absolute;
+    font-size: 2em;
+    top: 0;
+    color: red;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.jaunt-row__slider-images-left > i, .jaunt-row__slider-images-right > i {
+    padding: 0.2rem;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.jaunt-row__slider-images-left {
+    left: 0;
+}
+
+.jaunt-row__slider-images-right {
+    right: 0;
+}
+
+.jaunt-row__slider-images:hover .jaunt-row__slider-images-left > i,
+.jaunt-row__slider-images:hover .jaunt-row__slider-images-right > i {
+    opacity: 0.5;
+}
+
+.jaunt-row__slider-images .jaunt-row__slider-images-left > i:hover,
+.jaunt-row__slider-images .jaunt-row__slider-images-right > i:hover {
+    opacity: 1;
+}
+
+.jaunt-row__slider-img-container {
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -57,7 +106,7 @@
     cursor: pointer;
 }
 
-.jaunt-row__gallery-img-container > img {
+.jaunt-row__slider-img-container > img {
     object-fit: cover;
     height: 100%;
     width: 100%;
@@ -93,6 +142,7 @@
     line-height: 1.44;
     overflow-wrap: break-word;
     box-sizing: border-box;
+    width: 100%;
 }
 
 .jaunt-row__date, .jaunt-row__blurb {
