@@ -28,34 +28,41 @@
     margin: 0 32px 24px 32px;
 }
 
-.jaunt-row__slider-main {
+.jaunt-row__slider-header {
     height: 480px;
 }
 
-.jaunt-row__slider-main > img {
+.jaunt-row__slider-header > img {
     object-fit: cover;
     height: 100%;
     width: 100%;
 }
 
-.jaunt-row__slider-images {
-    height: 10rem;
+.jaunt-row__slider-body {
     position: relative;
-    overflow-x: overlay;
+    height: 10rem;
 }
-::-webkit-scrollbar {
-    width: 0;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
+
+.jaunt-row__slider-images {
+    height: 100%;
+    overflow-x: overlay;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.jaunt-row__slider-images::-webkit-scrollbar {
+    display: none;
 }
 
 .jaunt-row__slider-images-container {
+    --num: 10;
     background-color: black;
     padding: 1rem;
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(max(5,var(--num)), 1fr);
     grid-gap: 1rem;
     height: 100%;
-    width: 200%;
+    width: calc(max(20% * var(--num), 100%));
     box-sizing: border-box;
 }
 
@@ -64,11 +71,11 @@
     position: absolute;
     font-size: 2em;
     top: 0;
-    color: red;
+    color: #CCCCCC;
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    width: 8%;
 }
 
 .jaunt-row__slider-images-left > i, .jaunt-row__slider-images-right > i {
@@ -80,19 +87,21 @@
 
 .jaunt-row__slider-images-left {
     left: 0;
+    justify-content: flex-start;
 }
 
 .jaunt-row__slider-images-right {
     right: 0;
+    justify-content: flex-end;
 }
 
-.jaunt-row__slider-images:hover .jaunt-row__slider-images-left > i,
-.jaunt-row__slider-images:hover .jaunt-row__slider-images-right > i {
-    opacity: 0.5;
+.jaunt-row__slider-body:hover .jaunt-row__slider-images-left > i,
+.jaunt-row__slider-body:hover .jaunt-row__slider-images-right > i {
+    opacity: 0.75;
 }
 
-.jaunt-row__slider-images .jaunt-row__slider-images-left > i:hover,
-.jaunt-row__slider-images .jaunt-row__slider-images-right > i:hover {
+.jaunt-row__slider-body .jaunt-row__slider-images-left > i:hover,
+.jaunt-row__slider-body .jaunt-row__slider-images-right > i:hover {
     opacity: 1;
 }
 
@@ -104,6 +113,12 @@
     justify-self: center;
     align-self: center;
     cursor: pointer;
+    box-sizing: content-box;
+    transition: border 0.1s ease-in-out;
+}
+
+.jaunt-row__slider-img-container.active {
+    border:#CCCCCC solid 2px;
 }
 
 .jaunt-row__slider-img-container > img {
