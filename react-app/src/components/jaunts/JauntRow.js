@@ -30,6 +30,8 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     const [showBlurbInput, setShowBlurbInput] = useState(blurb ? false : true);
 
     const [limit, setLimit] = useState(6);
+    const [scrollInterval, setScrollInterval] = useState(null);
+    const [headerImgLoaded, setHeaderImgLoaded] = useState(false);
 
     const handleEditBlurb = (val) => {
         const query = jauntQuery({
@@ -97,8 +99,22 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
         }
     }
 
-    const handleSliderImagesHover = () => {
-
+    const handleSliderImagesHover = (dir, doScroll) => {
+        const container = document.getElementById(`jaunt-row__slider-images-${jaunt.id}`);
+        if (doScroll) {
+            if (dir === "right") {
+                setScrollInterval(setInterval(() => {
+                    container.scrollLeft += 1;
+                }, 1000 / 240));
+            }
+            else {
+                setScrollInterval(setInterval(() => {
+                    container.scrollLeft -= 1;
+                }, 1000 / 240));
+            }
+        }
+        else
+            clearInterval(scrollInterval);
     }
 
     useEffect(() => {
@@ -119,11 +135,13 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
 
     useEffect(() => {
         if (!allPhotos && !userPhotos) return;
+        const container = document.querySelector('.jaunt-row__slider-images-container');
         if (allPhotosArr.length) {
             setPhotos(allPhotos);
             setPhotosArr(allPhotosArr);
             setPhotosKey("all");
             setMainPhoto(allPhotosArr[0]);
+            container.style.setProperty('--num', allPhotosArr.length);
         }
         else if (userPhotosArr.length) {
             setPhotos(userPhotos);
@@ -131,6 +149,7 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
             setPhotosKey("user");
             setMainPhoto(userPhotosArr[0]);
         }
+
         return () => {};
     }, [userPhotos, allPhotos]);
 
@@ -145,33 +164,52 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
 
             <div className="jaunt-row__slider">
 
-                <div className="jaunt-row__slider-main">
-                    {mainPhoto && <img src={mainPhoto.url} alt="Main Photo" />}
+                <div className="jaunt-row__slider-header">
+                    {mainPhoto &&
+                    <img
+                        src={mainPhoto.url}
+                        alt="Main Photo"
+                    />}
                 </div>
 
-                <div className="jaunt-row__slider-images">
+                <div className="jaunt-row__slider-body">
 
-                    <div className="jaunt-row__slider-images-container" >
-                        {photosArr.length && photosArr.map(photo => {
-                            return (
-                                <div className="jaunt-row__slider-img-container">
-                                    <img
-                                        src={photo.url.replace("extra_", "")}
-                                        alt={` photo`}
-                                        key={photo.id}
-                                        onClick={() => handleImageClick(photo.id)}
-                                    />
-                                </div>
-                            )
-                        })}
+                    <div
+                        id={`jaunt-row__slider-images-${jaunt.id}`}
+                        className="jaunt-row__slider-images"
+                    >
+
+                        <div className="jaunt-row__slider-images-container" >
+                            {photosArr.length && photosArr.map(photo => {
+                                return (
+                                    <div className={`jaunt-row__slider-img-container ${mainPhoto.id === photo.id ?'active':''}`}>
+                                        <img
+                                            src={photo.url.replace("extra_", "")}
+                                            alt={` photo`}
+                                            key={photo.id}
+                                            onClick={() => handleImageClick(photo.id)}
+                                        />
+                                    </div>
+                                )
+                            })}
+                        </div>
+
                     </div>
 
-                    <div className="jaunt-row__slider-images-left" onMouseEnter={handleSliderImagesHover}>
-                        <i className="fas fa-angle-left" onClick={handleSliderImagesLeftClick} />
+                    <div
+                        className="jaunt-row__slider-images-left"
+                        onMouseEnter={()=>handleSliderImagesHover('left', true)}
+                        onMouseLeave={()=>handleSliderImagesHover('left', false)}
+                    >
+                        <i className="fas fa-chevron-left" onClick={handleSliderImagesLeftClick} />
                     </div>
 
-                    <div className="jaunt-row__slider-images-right">
-                        <i className="fas fa-angle-right" onClick={handleSliderImagesRightClick} />
+                    <div
+                        className="jaunt-row__slider-images-right"
+                        onMouseEnter={()=>handleSliderImagesHover('right', true)}
+                        onMouseLeave={()=>handleSliderImagesHover('right', false)}
+                    >
+                        <i className="fas fa-chevron-right" onClick={handleSliderImagesRightClick} />
                     </div>
 
                 </div>
