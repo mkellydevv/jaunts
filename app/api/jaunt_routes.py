@@ -56,7 +56,7 @@ def post_jaunt():
     jaunt = Jaunt(
         list_id=data["listId"],
         trail_id=data["trailId"],
-        order=count+1,
+        order=count,
         rating=0,
     )
 

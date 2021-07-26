@@ -93,7 +93,7 @@ export default function TrailPage() {
             dispatch(clearPhotos());
             dispatch(clearTrails());
         }
-    }, [dispatch])
+    }, [dispatch, history.location])
 
     return (
     <>

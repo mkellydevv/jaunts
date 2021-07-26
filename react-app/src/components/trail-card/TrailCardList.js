@@ -10,7 +10,9 @@ import "./TrailCardList.css";
 
 export default function TrailCardList({ trail }) {
     const dispatch = useDispatch();
-    const trails = useSelector(state => state["trails"]["nearby"])
+    const trails = useSelector(state => state["trails"]["nearby"]);
+    if (trails) delete trails[trail.id];
+    const trailsArr = trails ? Object.values(trails) : [];
 
     useEffect(() => {
         const query = trailQuery({
@@ -27,9 +29,9 @@ export default function TrailCardList({ trail }) {
     return (
         <div className="card-list">
             <div className="card-list__container">
-                {trails && Object.keys(trails).map(key => {
+                {trails && trailsArr.map(trail => {
                     return (
-                        <TrailCard trail={trails[key]} key={`TrailCard__nearby-${key}`}/>
+                        <TrailCard trail={trail} key={`TrailCard__nearby-${trail.id}`}/>
                     )
                 })}
             </div>
