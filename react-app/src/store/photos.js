@@ -50,6 +50,9 @@ export default function reducer(state=initialState, { type, payload, key="defaul
             newState[key] = {};
             for (let item of payload.photos)
                 newState[key][item.id] = item;
+            // Note: The photo reducer would have to be rewritten to handle storing
+            // more than just photos. This is a quick fix.
+            newState[key]['totalCount'] = payload.totalCount;
             return newState;
         case STORE_PHOTO:
             if (newState[key] === undefined)

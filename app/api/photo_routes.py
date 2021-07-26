@@ -21,12 +21,13 @@ def get_photos():
         query = query.filter(Photo.trail_id == args["fromTrailId"])
     if args["fromUserId"]:
         query = query.filter(Photo.user_id == args["fromUserId"])
+    totalCount = query.count()
     query = query.offset(int(args['offset']) * int(args['limit']))
     query = query.limit(int(args['limit']))
 
     photos = query.all()
 
-    return { "photos": [photo.to_dict(joins) for photo in photos] }
+    return { "photos": [photo.to_dict(joins) for photo in photos], "totalCount": totalCount }
 
 
 # DELETE a photo

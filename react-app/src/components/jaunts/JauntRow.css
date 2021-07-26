@@ -30,12 +30,21 @@
 
 .jaunt-row__slider-header {
     height: 480px;
+    background-color: black;
 }
 
-.jaunt-row__slider-header > img {
+.jaunt-row__slider-header-img {
     object-fit: cover;
     height: 100%;
     width: 100%;
+    transition: opacity .1s ease-in-out;
+    -moz-transition: opacity .1s ease-in-out;
+    -webkit-transition: opacity .1s ease-in-out;
+    opacity: 0;
+}
+
+.jaunt-row__slider-header-img:not(.preload) {
+    opacity: 1;
 }
 
 .jaunt-row__slider-body {

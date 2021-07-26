@@ -32,6 +32,7 @@ export default function TrailPage() {
     const trailsArr = trails ? Object.values(trails) : [];
     const trail = trailsArr.length ? trailsArr[0] : null;
     const { default: photos } = useSelector(state => state.photos);
+    if (photos) delete photos['totalCount'];
     const photosArr = photos ? Object.values(photos) : [];
 
     const [review, setReview] = useState(null);

@@ -14,10 +14,17 @@ import "./JauntRow.css";
 export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     const dispatch = useDispatch();
     const history = useHistory();
+
     const userPhotos = useSelector(state => state.photos[`user-trail-${trail.id}`]);
+    const userPhotosTotalCount = userPhotos ? userPhotos["totalCount"] : 0;
+    if (userPhotos) delete userPhotos["totalCount"];
     const userPhotosArr = userPhotos ? Object.values(userPhotos) : [];
+
     const allPhotos = useSelector(state => state.photos[`all-trail-${trail.id}`]);
+    const allPhotosTotalCount = allPhotos ? allPhotos["totalCount"] : 0;
+    if (allPhotos) delete allPhotos["totalCount"];
     const allPhotosArr = allPhotos ? Object.values(allPhotos) : [];
+
     const [photos, setPhotos] = useState(null);
     const [photosKey, setPhotosKey] = useState("");
     const [photosArr, setPhotosArr] = useState([]);
@@ -29,7 +36,8 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     const [blurb, setBlurb] = useState(jaunt.blurb ? jaunt.blurb : blurbDefault);
     const [showBlurbInput, setShowBlurbInput] = useState(blurb ? false : true);
 
-    const [limit, setLimit] = useState(6);
+    const [limit, setLimit] = useState(5);
+    const [offset, setOffset] = useState(0);
     const [scrollInterval, setScrollInterval] = useState(null);
     const [headerImgLoaded, setHeaderImgLoaded] = useState(false);
 
@@ -55,7 +63,9 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     }
 
     const handleImageClick = (photoId=null) => {
+        if (mainPhoto["id"] === photoId) return;
         setMainPhoto(photos[photoId]);
+        setHeaderImgLoaded(false);
     };
 
     const handleTrailLinkClick = () => {
@@ -78,23 +88,27 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     }
 
     const handleSliderImagesLeftClick = () => {
+        if (offset === 0) return;
         if (photosKey === "all") {
             const allPhotoQuery = photoQuery({
                 fromTrailId: trail.id,
                 limit: limit,
-                offset: 0
+                offset: offset - 1
             });
+            setOffset(state => state - 1);
             dispatch(getPhotos(allPhotoQuery, `all-trail-${trail.id}`));
         }
     }
 
     const handleSliderImagesRightClick = () => {
         if (photosKey === "all") {
+            if ((offset + 1) * limit >= allPhotosTotalCount) return;
             const allPhotoQuery = photoQuery({
                 fromTrailId: trail.id,
                 limit: limit,
-                offset: 1
+                offset: offset + 1
             });
+            setOffset(state => state + 1);
             dispatch(getPhotos(allPhotoQuery, `all-trail-${trail.id}`));
         }
     }
@@ -135,12 +149,13 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
 
     useEffect(() => {
         if (!allPhotos && !userPhotos) return;
-        const container = document.querySelector('.jaunt-row__slider-images-container');
+        const container = document.getElementById(`jaunt-row__slider-images-container-${jaunt.id}`);
         if (allPhotosArr.length) {
             setPhotos(allPhotos);
             setPhotosArr(allPhotosArr);
             setPhotosKey("all");
             setMainPhoto(allPhotosArr[0]);
+            setHeaderImgLoaded(false);
             container.style.setProperty('--num', allPhotosArr.length);
         }
         else if (userPhotosArr.length) {
@@ -148,10 +163,20 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
             setPhotosArr(userPhotosArr);
             setPhotosKey("user");
             setMainPhoto(userPhotosArr[0]);
+            setHeaderImgLoaded(false);
+            container.style.setProperty('--num', userPhotosArr.length);
         }
-
         return () => {};
     }, [userPhotos, allPhotos]);
+
+    useEffect(() => {
+        const el = document.getElementById(`jaunt-row__slider-header-img-${jaunt.id}`);
+        if (!el) return;
+        if (headerImgLoaded)
+            el.classList.remove('preload');
+        else
+            el.classList.add('preload');
+    }, [headerImgLoaded]);
 
     return (
         <div className="jaunt-row">
@@ -167,8 +192,11 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
                 <div className="jaunt-row__slider-header">
                     {mainPhoto &&
                     <img
+                        id={`jaunt-row__slider-header-img-${jaunt.id}`}
+                        className={`jaunt-row__slider-header-img preload`}
                         src={mainPhoto.url}
                         alt="Main Photo"
+                        onLoad={() => setHeaderImgLoaded(true)}
                     />}
                 </div>
 
@@ -179,13 +207,17 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
                         className="jaunt-row__slider-images"
                     >
 
-                        <div className="jaunt-row__slider-images-container" >
+                        <div
+                            id={`jaunt-row__slider-images-container-${jaunt.id}`}
+                            className="jaunt-row__slider-images-container"
+                        >
                             {photosArr.length && photosArr.map(photo => {
+
                                 return (
                                     <div className={`jaunt-row__slider-img-container ${mainPhoto.id === photo.id ?'active':''}`}>
                                         <img
                                             src={photo.url.replace("extra_", "")}
-                                            alt={` photo`}
+                                            alt={`photo`}
                                             key={photo.id}
                                             onClick={() => handleImageClick(photo.id)}
                                         />
