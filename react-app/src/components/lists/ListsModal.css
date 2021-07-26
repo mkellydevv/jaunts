@@ -40,3 +40,8 @@
     width: 0;  /* Remove scrollbar space */
     background: transparent;  /* Optional: just make scrollbar invisible */
 }
+
+.lists-modal__star-container > i {
+    color: #428513;
+    font-size: 1.4rem;
+}

@@ -20,16 +20,16 @@
 }
 
 .review-list__header button {
-    width: 188px;
-    height: 40px;
-    font-size: 16px;
+    cursor: pointer;
+    width: 11rem;
+    height: 2rem;
+    font-size: 1rem;
     font-weight: bold;
-    border-radius: 8px;
     border: none;
+    border-radius: .5rem;
     background-color: #428a13;
     color: #fff;
-    transition: background-color .2s ease-in-out;
-    cursor: pointer;
+    transition: .1s ease-in-out;
 }
 
 .review-list__header button:hover {

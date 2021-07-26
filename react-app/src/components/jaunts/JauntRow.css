@@ -17,6 +17,7 @@
 .jaunt-row__name {
     cursor: pointer;
     border-bottom: solid transparent 3px;
+    transition: .1s ease-in-out;
 }
 
 .jaunt-row__name:hover {
@@ -162,11 +163,19 @@
     border-top: solid #e6e6e6 1px;
     border-bottom: solid #e6e6e6 1px;
     margin: 0;
-    padding: 16px;
+    padding: 1rem;
     line-height: 1.44;
     overflow-wrap: break-word;
     box-sizing: border-box;
     width: 100%;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.jaunt-row__overview-info {
+    margin-right: 1rem;
 }
 
 .jaunt-row__date, .jaunt-row__blurb {
@@ -204,4 +213,26 @@
     line-height: 1.44;
     overflow-wrap: break-word;
     box-sizing: border-box;
+}
+
+.jaunt-row__delete {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5.5rem;
+    height: 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #fff;
+    border: 2px solid ;
+    border-radius: .5rem;
+    transition: .1s ease-in-out;
+    box-sizing: border-box;
+
+}
+
+.jaunt-row__delete:hover {
+    border-color: #428a13;
+    color: #428a13;
 }
