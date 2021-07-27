@@ -35,7 +35,7 @@ export default function ReviewList({ trail, open }) {
                     </span>
                 </div>
                 <span>
-                    {trail && <button onClick={() => open()}>
+                    {trail && <button className={"jaunts__btn-1"} onClick={() => open()}>
                         Write Review
                     </button>}
                 </span>

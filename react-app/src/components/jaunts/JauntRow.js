@@ -331,7 +331,7 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
                         </div>
                     </div>
 
-                    <button className="jaunt-row__delete" onClick={handleDelete}>
+                    <button className="jaunt-row__delete jaunts__btn-2" onClick={handleDelete}>
                         Delete
                     </button>
                 </div>

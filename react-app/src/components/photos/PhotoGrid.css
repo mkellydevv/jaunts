@@ -2,12 +2,7 @@
 .photo-grid {
     width: 100%;
     box-sizing: border-box;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: space-around;
-}
-
-.photo-grid > * {
-    padding: 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    grid-gap: 1rem;
 }

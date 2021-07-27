@@ -20,18 +20,6 @@
 }
 
 .review-list__header button {
-    cursor: pointer;
-    width: 11rem;
-    height: 2rem;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: .5rem;
-    background-color: #428a13;
-    color: #fff;
-    transition: .1s ease-in-out;
-}
-
-.review-list__header button:hover {
-    background-color: #529a23;
+    width: 10rem;
+    height: 2.5rem;
 }

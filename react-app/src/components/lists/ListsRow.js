@@ -85,8 +85,8 @@ export default function ListsRow({ list, open }) {
                 <div>Photos: 0</div>
             </div>
             <div className="lists-row__buttons">
-                <button className="lists-row__edit" onClick={handleEdit}>Edit</button>
-                <button className="lists-row__delete" onClick={handleDelete}>Delete</button>
+                <button className="lists-row__edit jaunts__btn-1" onClick={handleEdit}>Edit</button>
+                <button className="lists-row__delete jaunts__btn-2" onClick={handleDelete}>Delete</button>
             </div>
         </div>
     )

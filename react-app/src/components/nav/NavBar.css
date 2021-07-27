@@ -63,26 +63,5 @@
 
 .navbar__auth > * {
     margin-left: 16px;
-    box-sizing:content-box;
-}
-
-.navbar__auth > button {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 5.5rem;
-    height: 2rem;
-    font-size: 1rem;
-    font-weight: bold;
-    background-color: #fff;
-    border: 2px solid ;
-    border-radius: .5rem;
-    transition: .1s ease-in-out;
     box-sizing: border-box;
-}
-
-.navbar__auth > button:hover {
-    border-color: #428a13;
-    color: #428a13;
 }

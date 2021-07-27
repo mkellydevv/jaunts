@@ -5,3 +5,43 @@ body {
     margin: 0px;
     box-sizing: border-box;
 }
+
+.jaunts__btn-1 {
+    cursor: pointer;
+    width: 5rem;
+    height: 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: .5rem;
+    background-color: #428a13;
+    color: #fff;
+    transition: .1s ease-in-out;
+    box-shadow: 0 .25rem .5rem 0 rgb(0, 0, 0, 0.1);
+}
+
+.jaunts__btn-1:hover {
+    background-color: #529a23;
+}
+
+.jaunts__btn-2 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+    height: 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #fff;
+    border: 2px solid;
+    border-radius: .5rem;
+    transition: .1s ease-in-out;
+    box-sizing: border-box;
+    box-shadow: 0 .25rem .5rem 0 rgb(0, 0, 0, 0.1);
+}
+
+.jaunts__btn-2:hover {
+    border-color: #428a13;
+    color: #428a13;
+}

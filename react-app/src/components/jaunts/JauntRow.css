@@ -2,8 +2,8 @@
     background-color: #fff;
     margin-bottom: 16px;
     border: 1px solid #CCCCCC;
-    box-shadow: 0 8px 16px 0 rgb(0 0 0 / 8%);
     box-sizing: border-box;
+    box-shadow: 0 .25rem .5rem 0 rgb(0, 0, 0, 0.1);
 }
 
 .jaunt-row__info {
@@ -213,26 +213,4 @@
     line-height: 1.44;
     overflow-wrap: break-word;
     box-sizing: border-box;
-}
-
-.jaunt-row__delete {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 5.5rem;
-    height: 2rem;
-    font-size: 1rem;
-    font-weight: bold;
-    background-color: #fff;
-    border: 2px solid ;
-    border-radius: .5rem;
-    transition: .1s ease-in-out;
-    box-sizing: border-box;
-
-}
-
-.jaunt-row__delete:hover {
-    border-color: #428a13;
-    color: #428a13;
 }

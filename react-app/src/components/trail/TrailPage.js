@@ -41,7 +41,7 @@ export default function TrailPage() {
     const [showViewPhotoModal, setShowViewPhotoModal] = useState(false);
     const [showListModal, setShowListModal] = useState(false);
     const [activeInfoTab, setActiveInfoTab] = useState("Description");
-    const [activeFeedTab, setActiveFeedTab] = useState("Photos");
+    const [activeFeedTab, setActiveFeedTab] = useState("Reviews");
 
     const checkActive = (tabName, activeTab) => {
         return tabName === activeTab ? "active" : "";
