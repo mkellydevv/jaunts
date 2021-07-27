@@ -44,6 +44,7 @@ export default function ListsPage() {
                 <div className="lists-page__create-list">
                     {user &&
                         <button
+                            className="jaunts__btn-1"
                             onClick={() => openListModal()}
                         >
                             Create List

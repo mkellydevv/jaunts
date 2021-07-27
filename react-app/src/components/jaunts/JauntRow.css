@@ -2,8 +2,8 @@
     background-color: #fff;
     margin-bottom: 16px;
     border: 1px solid #CCCCCC;
-    box-shadow: 0 8px 16px 0 rgb(0 0 0 / 8%);
     box-sizing: border-box;
+    box-shadow: 0 .25rem .5rem 0 rgb(0, 0, 0, 0.1);
 }
 
 .jaunt-row__info {
@@ -17,6 +17,7 @@
 .jaunt-row__name {
     cursor: pointer;
     border-bottom: solid transparent 3px;
+    transition: .1s ease-in-out;
 }
 
 .jaunt-row__name:hover {
@@ -30,12 +31,21 @@
 
 .jaunt-row__slider-header {
     height: 480px;
+    background-color: black;
 }
 
-.jaunt-row__slider-header > img {
+.jaunt-row__slider-header-img {
     object-fit: cover;
     height: 100%;
     width: 100%;
+    transition: opacity .1s ease-in-out;
+    -moz-transition: opacity .1s ease-in-out;
+    -webkit-transition: opacity .1s ease-in-out;
+    opacity: 0;
+}
+
+.jaunt-row__slider-header-img:not(.preload) {
+    opacity: 1;
 }
 
 .jaunt-row__slider-body {
@@ -153,11 +163,19 @@
     border-top: solid #e6e6e6 1px;
     border-bottom: solid #e6e6e6 1px;
     margin: 0;
-    padding: 16px;
+    padding: 1rem;
     line-height: 1.44;
     overflow-wrap: break-word;
     box-sizing: border-box;
     width: 100%;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.jaunt-row__overview-info {
+    margin-right: 1rem;
 }
 
 .jaunt-row__date, .jaunt-row__blurb {

@@ -34,6 +34,7 @@
     font-weight: 700;
     color: #414141;
     border-bottom: solid transparent 3px;
+    transition: .1s ease-in-out;
 }
 
 .navbar__lists > a:hover, .navbar__auth > a:hover {
@@ -62,5 +63,5 @@
 
 .navbar__auth > * {
     margin-left: 16px;
-    box-sizing:content-box;
+    box-sizing: border-box;
 }

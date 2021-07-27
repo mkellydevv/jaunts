@@ -32,6 +32,7 @@ export default function TrailPage() {
     const trailsArr = trails ? Object.values(trails) : [];
     const trail = trailsArr.length ? trailsArr[0] : null;
     const { default: photos } = useSelector(state => state.photos);
+    if (photos) delete photos['totalCount'];
     const photosArr = photos ? Object.values(photos) : [];
 
     const [review, setReview] = useState(null);
@@ -40,7 +41,7 @@ export default function TrailPage() {
     const [showViewPhotoModal, setShowViewPhotoModal] = useState(false);
     const [showListModal, setShowListModal] = useState(false);
     const [activeInfoTab, setActiveInfoTab] = useState("Description");
-    const [activeFeedTab, setActiveFeedTab] = useState("Photos");
+    const [activeFeedTab, setActiveFeedTab] = useState("Reviews");
 
     const checkActive = (tabName, activeTab) => {
         return tabName === activeTab ? "active" : "";
@@ -92,7 +93,7 @@ export default function TrailPage() {
             dispatch(clearPhotos());
             dispatch(clearTrails());
         }
-    }, [dispatch])
+    }, [dispatch, history.location])
 
     return (
     <>
