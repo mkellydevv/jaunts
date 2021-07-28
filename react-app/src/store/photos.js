@@ -28,13 +28,30 @@ const removePhoto = (payload, key) => ({
     key
 });
 
-export const getPhotos = (query={}, key) => async (dispatch) => {
+export const getPhotos = (query, key) => async (dispatch) => {
     const url = appendQueryArgs(query, `/api/photos`);
     const res = await fetch(url);
     if (res.ok) {
         const data = await res.json();
         dispatch(storePhotos(data, key));
     }
+};
+
+export const uploadPhoto = (photo, query, payload) => async (dispatch) => {
+    const url = appendQueryArgs(query, `/api/photos`);
+    const formData = new FormData();
+    formData.append("photo", photo);
+    const res = await fetch(url, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (res.ok) {
+        console.log("OKAY");
+        return {};
+    }
+    return data;
 };
 
 export const clearPhotos = (key) => async (dispatch) => {

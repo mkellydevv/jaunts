@@ -6,7 +6,7 @@ class Photo(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     list_id = db.Column(db.Integer, db.ForeignKey("lists.id"))
-    trail_id = db.Column(db.Integer, db.ForeignKey("trails.id"))
+    trail_id = db.Column(db.Integer, db.ForeignKey("trails.id")) # Make it so this cant be null
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     private = db.Column(db.Boolean, nullable=False, default=False)
     url = db.Column(db.String, nullable=False)

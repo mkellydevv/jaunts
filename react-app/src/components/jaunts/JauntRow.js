@@ -6,6 +6,7 @@ import { clearPhotos, getPhotos } from "../../store/photos";
 import { clearTrails } from "../../store/trails";
 import { getDateString } from "../../utils/helperFuncs";
 import { jauntQuery, photoQuery } from "../../utils/queryObjects";
+import PhotoUpload from "../photos/PhotoUpload";
 
 import StarRating from "../random/StarRating";
 
@@ -331,9 +332,13 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
                         </div>
                     </div>
 
-                    <button className="jaunt-row__delete jaunts__btn-2" onClick={handleDelete}>
-                        Delete
-                    </button>
+                    <div>
+                        <button className="jaunt-row__delete jaunts__btn-2" onClick={handleDelete}>
+                            Delete
+                        </button>
+
+                        <PhotoUpload trail={trail} />
+                    </div>
                 </div>
 
             </div>

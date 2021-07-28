@@ -28,7 +28,6 @@ export default function ListModal({ list, close }) {
         else
             data = await dispatch(createList(query, payload));
 
-        console.log(`data`, data)
         if (data.errors) {
             setErrors(data.errors);
             console.log("Errors:", data.errors)

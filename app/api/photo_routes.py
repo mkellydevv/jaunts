@@ -1,7 +1,8 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
 from app.models import db, Photo
-from .utils import extractJoins
+from app.forms import PhotoForm
+from .utils import validation_errors_to_error_messages, extractJoins
 
 
 bp = Blueprint('photo', __name__)
@@ -29,6 +30,54 @@ def get_photos():
 
     return { "photos": [photo.to_dict(joins) for photo in photos], "totalCount": totalCount }
 
+
+#POST a photo
+@bp.route('', methods=['POST'])
+@login_required
+def post_photo():
+    form = PhotoForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    print(form.data)
+
+    if form.validate_on_submit():
+        args = request.args
+        joins = extractJoins(args, joinList)
+        # data = request.json
+        data = form.data
+
+        if "photo" not in request.json:
+            return {"errors": "photo required"}, 400
+
+        # photo = request.files["photo"]
+        photo = data["photo"]
+
+        if not allowed_file(photo.filename):
+            return {"errors": "file type not permitted"}, 400
+
+        photo.filename = get_unique_filename(photo.filename)
+
+        # upload = upload_file_to_s3(photo)
+
+        # if "url" not in upload:
+        #     # if the dictionary doesn't have a url key
+        #     # it means that there was an error when we tried to upload
+        #     # so we send back that error message
+        #     return upload, 400
+
+        newPhoto = Photo(
+            list_id=data["listId"],
+            trail_id=data["trailId"],
+            user_id=current_user.id,
+            private=data["private"],
+            url=""
+            # url=upload["url"]
+        )
+        db.session.add(newPhoto)
+        db.session.commit()
+
+        return newPhoto.to_dict(joins)
+    return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
 # DELETE a photo
 @bp.route('/<int:id>', methods=['DELETE'])
