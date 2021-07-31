@@ -41,10 +41,13 @@ export const uploadPhoto = (photo, query, payload) => async (dispatch) => {
     const url = appendQueryArgs(query, `/api/photos`);
     const formData = new FormData();
     formData.append("photo", photo);
+    for (let key in payload) {
+        formData.append(key, payload[key]);
+    }
+
     const res = await fetch(url, {
         method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: formData,
     });
     const data = await res.json();
     if (res.ok) {

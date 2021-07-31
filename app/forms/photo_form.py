@@ -7,5 +7,5 @@ class PhotoForm(FlaskForm):
     list_id = IntegerField("list_id")
     trail_id = IntegerField("trail_id", validators=[DataRequired()])
     user_id = IntegerField("user_id", validators=[DataRequired()])
-    _private = BooleanField("private", validators=[DataRequired()])
+    private = BooleanField("private")
     url = StringField("url")

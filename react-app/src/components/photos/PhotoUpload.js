@@ -15,7 +15,7 @@ export default function PhotoUpload({ trail }) {
         const payload = {
             "trail_id": trail.id,
             "user_id": user.id,
-            "_private": _private,
+            "private": _private,
             "photo": photo
         };
 

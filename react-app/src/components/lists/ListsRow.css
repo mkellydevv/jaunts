@@ -13,6 +13,11 @@
     background-color: #fff;
     box-sizing: border-box;
     box-shadow: 0 .25rem .5rem 0 rgb(0, 0, 0, 0.1);
+    transition: .1s ease-in-out;
+}
+
+.lists-row:hover {
+    transform: scale(1.02);
 }
 
 .lists-row__img-container {

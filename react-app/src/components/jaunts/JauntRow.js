@@ -39,7 +39,7 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     const [blurb, setBlurb] = useState(jaunt.blurb ? jaunt.blurb : blurbDefault);
     const [showBlurbInput, setShowBlurbInput] = useState(blurb ? false : true);
 
-    const [limit, setLimit] = useState(5);
+    const [limit, setLimit] = useState(6);
     const [offset, setOffset] = useState(0);
     const [scrollInterval, setScrollInterval] = useState(null);
     const [headerImgLoaded, setHeaderImgLoaded] = useState(false);
