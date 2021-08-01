@@ -39,19 +39,10 @@ def post_photo():
     form = PhotoForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
-    print("      Request", request)
-    print("      JSON", request.json)
-    print("      FILES", request.files)
-    # print("      Cookies", request.cookies)
-    print("      Args", request.args)
-    print("      Form", form)
-
     if form.validate_on_submit():
         args = request.args
         joins = extractJoins(args, joinList)
         data = form.data
-        print("      Data", data)
-
 
         if "photo" not in request.files:
             return {"errors": "photo required"}, 400
@@ -66,9 +57,6 @@ def post_photo():
         upload = upload_file_to_s3(photo)
 
         if "url" not in upload:
-            # if the dictionary doesn't have a url key
-            # it means that there was an error when we tried to upload
-            # so we send back that error message
             return upload, 400
 
         newPhoto = Photo(
@@ -76,7 +64,6 @@ def post_photo():
             trail_id=data["trail_id"],
             user_id=current_user.id,
             private=data["private"],
-            # url=""
             url=upload["url"]
         )
         db.session.add(newPhoto)

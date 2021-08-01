@@ -16,15 +16,14 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const userPhotos = useSelector(state => state.photos[`user-trail-${trail.id}`]);
-    const userPhotosTotalCount = userPhotos ? userPhotos["totalCount"] : 0;
-    if (userPhotos) delete userPhotos["totalCount"];
-    const userPhotosArr = userPhotos ? Object.values(userPhotos) : [];
+    const { photos: photoData } = useSelector(state => state);
 
-    const allPhotos = useSelector(state => state.photos[`all-trail-${trail.id}`]);
-    const allPhotosTotalCount = allPhotos ? allPhotos["totalCount"] : 0;
-    if (allPhotos) delete allPhotos["totalCount"];
-    const allPhotosArr = allPhotos ? Object.values(allPhotos) : [];
+    // const allPhotos = useSelector(state => state.photos[`all-trail-${trail.id}`]);
+    const allPhotos = photoData ? photoData[`all-trail-${trail.id}`] : {};
+    const [allPhotosTotalCount, setAllPhotosTotalCount] = useState(0);
+
+    const userPhotos = useSelector(state => state.photos[`user-trail-${trail.id}`]);
+    const [userPhotosTotalCount, setUserPhotosTotalCount] = useState(0);
 
     const [photos, setPhotos] = useState(null);
     const [photosKey, setPhotosKey] = useState("");
@@ -39,7 +38,7 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     const [blurb, setBlurb] = useState(jaunt.blurb ? jaunt.blurb : blurbDefault);
     const [showBlurbInput, setShowBlurbInput] = useState(blurb ? false : true);
 
-    const [limit, setLimit] = useState(6);
+    const [limit, setLimit] = useState(5);
     const [offset, setOffset] = useState(0);
     const [scrollInterval, setScrollInterval] = useState(null);
     const [headerImgLoaded, setHeaderImgLoaded] = useState(false);
@@ -144,17 +143,18 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     }
 
     useEffect(() => {
-        const userPhotoQuery = photoQuery({
-            fromTrailId: trail.id,
-            fromUserId: user.id,
-        });
         const allPhotoQuery = photoQuery({
             fromTrailId: trail.id,
             limit: limit,
         });
+        const userPhotoQuery = photoQuery({
+            fromTrailId: trail.id,
+            fromUserId: user.id,
+            limit: limit,
+        });
 
-        dispatch(getPhotos(userPhotoQuery, `user-trail-${trail.id}`));
         dispatch(getPhotos(allPhotoQuery, `all-trail-${trail.id}`));
+        //dispatch(getPhotos(userPhotoQuery, `user-trail-${trail.id}`));
 
         return () => dispatch(clearPhotos());
     }, [dispatch]);
@@ -162,24 +162,31 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     useEffect(() => {
         if (!allPhotos && !userPhotos) return;
         const container = document.getElementById(`jaunt-row__slider-images-container-${jaunt.id}`);
-        if (allPhotosArr.length) {
+        if (Object.values(allPhotos).length) {
             setPhotos(allPhotos);
-            setPhotosArr(allPhotosArr);
+            setAllPhotosTotalCount(allPhotos['totalCount']);
+            delete allPhotos["totalCount"];
+            const tmpPhotosArr = Object.values(allPhotos);
+            setPhotosArr(tmpPhotosArr);
             setPhotosKey("all");
-            setMainPhoto(allPhotosArr[0]);
+            setMainPhoto(tmpPhotosArr[0]);
             setHeaderImgLoaded(false);
-            container.style.setProperty('--num', allPhotosArr.length);
+            container.style.setProperty('--num', tmpPhotosArr.length);
+            console.log(`made it`)
         }
-        else if (userPhotosArr.length) {
+        else if (Object.values(userPhotos).length) {
             setPhotos(userPhotos);
-            setPhotosArr(userPhotosArr);
+            setUserPhotosTotalCount(userPhotos['totalCount']);
+            delete userPhotos["totalCount"];
+            const tmpPhotosArr = Object.values(userPhotos)
+            setPhotosArr(tmpPhotosArr);
             setPhotosKey("user");
-            setMainPhoto(userPhotosArr[0]);
+            setMainPhoto(tmpPhotosArr[0]);
             setHeaderImgLoaded(false);
-            container.style.setProperty('--num', userPhotosArr.length);
+            container.style.setProperty('--num', tmpPhotosArr.length);
         }
         return () => {};
-    }, [userPhotos, allPhotos]);
+    }, [allPhotos, userPhotos]);
 
     useEffect(() => {
         const el = document.getElementById(`jaunt-row__slider-header-img-${jaunt.id}`);
@@ -332,12 +339,12 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
                         </div>
                     </div>
 
-                    <div>
+                    <div className={'jaunt-row__buttons'}>
                         <button className="jaunt-row__delete jaunts__btn-2" onClick={handleDelete}>
                             Delete
                         </button>
 
-                        <PhotoUpload trail={trail} />
+                        <PhotoUpload trail={trail} jaunt={jaunt} />
                     </div>
                 </div>
 

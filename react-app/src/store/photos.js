@@ -37,21 +37,18 @@ export const getPhotos = (query, key) => async (dispatch) => {
     }
 };
 
-export const uploadPhoto = (photo, query, payload) => async (dispatch) => {
+export const uploadPhoto = (query, payload, key) => async (dispatch) => {
     const url = appendQueryArgs(query, `/api/photos`);
     const formData = new FormData();
-    formData.append("photo", photo);
-    for (let key in payload) {
-        formData.append(key, payload[key]);
-    }
-
+    for (let k in payload)
+        formData.append(k, payload[k]);
     const res = await fetch(url, {
         method: "POST",
         body: formData,
     });
     const data = await res.json();
     if (res.ok) {
-        console.log("OKAY");
+        dispatch(storePhoto(data, key));
         return {};
     }
     return data;
