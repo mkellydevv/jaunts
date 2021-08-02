@@ -12,6 +12,7 @@ body {
     height: 2rem;
     font-size: 1rem;
     font-weight: bold;
+    font-family: Proxima Nova, Arial, sans-serif;
     border: none;
     border-radius: .5rem;
     background-color: #428a13;
@@ -33,6 +34,7 @@ body {
     height: 2rem;
     font-size: 1rem;
     font-weight: bold;
+    font-family: Proxima Nova, Arial, sans-serif;
     background-color: #fff;
     border: 2px solid;
     border-radius: .5rem;

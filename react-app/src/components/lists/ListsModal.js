@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+
 
 import { getLists, clearLists } from "../../store/lists";
 import { getJaunts, createJaunt, deleteJaunt, clearJaunts } from "../../store/jaunts";
@@ -9,6 +11,7 @@ import "./ListsModal.css";
 
 export default function ListsModal({ trail }) {
     const dispatch = useDispatch();
+    const history = useHistory();
     const { user } = useSelector(state => state.session);
     const { default: lists } = useSelector(state => state.lists);
     const jaunts = useSelector(state => state.jaunts);
@@ -28,6 +31,12 @@ export default function ListsModal({ trail }) {
         else {
             dispatch(deleteJaunt(jaunts[list.id][trail.id].id, list.id, "trail_id"));
         }
+    }
+
+    const handleListClick = (id) => {
+        dispatch(clearLists());
+        dispatch(clearJaunts());
+        history.push(`/lists/${id}`);
     }
 
     useEffect(() => {
@@ -56,27 +65,41 @@ export default function ListsModal({ trail }) {
 
     return (
         <div className="lists-modal" >
+
             <div className="lists-modal__header">
                 Save to List
             </div>
+
             <div className="lists-modal__content">
                 {lists && Object.values(lists).map(list => {
                     return (
                         <div className="lists-modal__row">
-                            <div className="lists-modal__details">
-                                <div className="lists-row__name">{list.name}</div>
-                                {jaunts && jaunts[list.id] && <div>Trails: {Object.values(jaunts[list.id]).length}</div>}
+
+                            <div className="lists-modal__row-details">
+                                <div
+                                    onClick={() => handleListClick(list.id)}
+                                    className="lists-modal__row-name"
+                                >
+                                    {list.name}
+                                </div>
+                                {jaunts && jaunts[list.id] &&
+                                <div className="lists-modal__row-info">
+                                    Trails: {Object.values(jaunts[list.id]).length}
+                                </div>}
                             </div>
+
                             <div className="lists-modal__star-container">
                                 {jaunts && jaunts[list.id] && <i
                                     className={`${jaunts[list.id][trail.id] !== undefined ? "fas" : "far"} fa-star`}
                                     onClick={() => handleClick(list)}
                                 />}
                             </div>
+
                         </div>
                     )})
                 }
             </div>
+
         </div>
     )
 }

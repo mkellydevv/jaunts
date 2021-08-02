@@ -41,7 +41,7 @@ def get_jaunt(id):
 
 # POST a jaunt
 @bp.route('', methods=['POST'])
-# @login_required
+@login_required
 def post_jaunt():
     args = request.args
     joins = extractJoins(args, joinList)
@@ -68,7 +68,7 @@ def post_jaunt():
 
 # PATCH a jaunt
 @bp.route('/<int:id>', methods=['PATCH'])
-# @login_required
+@login_required
 def patch_jaunt(id):
     jaunt = Jaunt.query.get(id)
     otherJaunt = None
@@ -100,7 +100,7 @@ def patch_jaunt(id):
 
 # DELETE a jaunt
 @bp.route('/<int:id>', methods=['DELETE'])
-# @login_required
+@login_required
 def delete_jaunt(id):
     jaunt = Jaunt.query.get(id)
     lst = List.query.get(jaunt.list_id)
