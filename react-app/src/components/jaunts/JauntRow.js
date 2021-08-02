@@ -12,7 +12,7 @@ import StarRating from "../random/StarRating";
 
 import "./JauntRow.css";
 
-export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
+export default function JauntRow({ list, jaunt, jauntsLength, trail, user }) {
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -35,6 +35,13 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     const [offset, setOffset] = useState(0);
     const [scrollInterval, setScrollInterval] = useState(null);
     const [headerImgLoaded, setHeaderImgLoaded] = useState(false);
+
+    const handlePhotosTabClick = (val) => {
+        if (photosKey === val) return;
+        setPhotosKey(val);
+        setOffset(0);
+        setHeaderImgLoaded(false);
+    }
 
     const handleEditBlurb = (val) => {
         const query = jauntQuery({
@@ -147,6 +154,7 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
         }
         else if (photosKey === "user") {
             query = photoQuery({
+                fromListId: list.id,
                 fromTrailId: trail.id,
                 fromUserId: user.id,
                 limit: limit,
@@ -156,7 +164,7 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
         dispatch(getPhotos(query, `trail-${trail.id}`));
 
         return () => dispatch(clearPhotos());
-    }, [dispatch]);
+    }, [dispatch, photosKey]);
 
     useEffect(() => {
         if (photoData[`trail-${trail.id}`] === undefined) return;
@@ -198,6 +206,21 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
 
             <div className="jaunt-row__slider">
 
+                <div className="jaunts-row__slider-tabs">
+                    <button
+                        className={`jaunts-row__slider-tab-all jaunts__btn-1 ${photosKey === "all" ? "active" : ""}`}
+                        onClick={() => handlePhotosTabClick("all")}
+                    >
+                        All
+                    </button>
+                    <button
+                        className={`jaunts-row__slider-tab-user jaunts__btn-1 ${photosKey === "user" ? "active" : ""}`}
+                        onClick={() => handlePhotosTabClick("user")}
+                    >
+                        User
+                    </button>
+                </div>
+
                 <div className="jaunt-row__slider-header">
                     {mainPhoto &&
                     <img
@@ -207,6 +230,7 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
                         alt="Main Photo"
                         onLoad={() => setHeaderImgLoaded(true)}
                     />}
+                    {photosKey === "user" && photosTotalCount === 0 && "No photos uploaded :("}
                 </div>
 
                 <div className="jaunt-row__slider-body">

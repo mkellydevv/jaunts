@@ -65,6 +65,7 @@ export default function ListPage() {
                         return (
                             <JauntRow
                                 key={`jaunt-row-${jaunt.id}`}
+                                list={list}
                                 jaunt={jaunt}
                                 jauntsLength={jauntsArr.length}
                                 trail={trails[jaunt.trail_id]}

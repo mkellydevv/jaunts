@@ -27,11 +27,41 @@
 
 .jaunt-row__slider {
     margin: 0 2rem 1.5rem 2rem;
+    position: relative;
+}
+
+.jaunts-row__slider-tabs {
+    position: absolute;
+    right: 0;
+    top: -2rem;
+    z-index: 2;
+}
+
+.jaunts-row__slider-tabs > button.active {
+    background-color: #529a23;
+}
+
+.jaunts-row__slider-tab-all {
+    border-radius: 0 !important;
+    border-top-left-radius: .5rem !important;
+}
+
+.jaunts-row__slider-tab-user {
+    border-radius: 0 !important;
+    border-top-right-radius: .5rem !important;
 }
 
 .jaunt-row__slider-header {
     height: 480px;
     background-color: black;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: Proxima Nova, Arial, sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .jaunt-row__slider-header-img {
