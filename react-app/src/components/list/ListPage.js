@@ -18,9 +18,8 @@ export default function ListPage() {
     const { user } = useSelector(state => state.session);
     const { default: jaunts } = useSelector(state => state.jaunts);
     const jauntsArr = jaunts ? Object.values(jaunts).sort((a, b) => a.order > b.order ? 1 : -1) : [];
-    console.log(`jauntsArr`, jauntsArr)
     const { default: lists } = useSelector(state => state.lists);
-    const list = lists ? lists[0] : null;
+    const list = lists ? Object.values(lists)[0] : null;
     const { default: trails } = useSelector(state => state.trails);
 
     useEffect(() => {
@@ -53,14 +52,19 @@ export default function ListPage() {
     return (
         <div className="page-content">
             <div className="list-page">
-                <div>
-                    {list && list.blurb}
+                <div className="list-page__header">
+                    <div className="list-page__name">
+                        {list && list.name}
+                    </div>
+                    <div className="list-page__blurb">
+                        {list && list.blurb}
+                    </div>
                 </div>
                 <div className="list-page__jaunt-rows">
                     {jaunts && trails && user && jauntsArr.map(jaunt => {
                         return (
                             <JauntRow
-                                key={jaunt.id}
+                                key={`jaunt-row-${jaunt.id}`}
                                 jaunt={jaunt}
                                 jauntsLength={jauntsArr.length}
                                 trail={trails[jaunt.trail_id]}
@@ -70,18 +74,6 @@ export default function ListPage() {
                     })}
                 </div>
             </div>
-            {/* <div className="list-page__extra">
-                <h2>Trail Info</h2>
-                <div className="card-list">
-                    <div className="card-list__container">
-                        {trails && Object.keys(trails).map(key => {
-                            return (
-                                <TrailCard trail={trails[key]} key={`TrailCard__nearby-${key}`}/>
-                            )
-                        })}
-                    </div>
-                </div>
-            </div> */}
         </div>
     );
 }

@@ -37,6 +37,15 @@ export const getPhotos = (query, key) => async (dispatch) => {
     }
 };
 
+export const getPhoto = (id, query, key) => async (dispatch) => {
+    const url = appendQueryArgs(query, `/api/photos/${id}`);
+    const res = await fetch(url);
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(storePhoto(data, key));
+    }
+};
+
 export const uploadPhoto = (query, payload, key) => async (dispatch) => {
     const url = appendQueryArgs(query, `/api/photos`);
     const formData = new FormData();
@@ -49,7 +58,7 @@ export const uploadPhoto = (query, payload, key) => async (dispatch) => {
     const data = await res.json();
     if (res.ok) {
         dispatch(storePhoto(data, key));
-        return {};
+        return {"success": true};
     }
     return data;
 };

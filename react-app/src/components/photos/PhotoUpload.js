@@ -5,7 +5,7 @@ import { photoQuery } from "../../utils/queryObjects";
 
 import "./PhotoUpload.css";
 
-export default function PhotoUpload({ trail, jaunt }) {
+export default function PhotoUpload({ photosKey, trail, jaunt, setPhotosTotalCount }) {
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.session);
     const [photo, setPhoto] = useState(null);
@@ -22,14 +22,25 @@ export default function PhotoUpload({ trail, jaunt }) {
             "photo": photo
         };
 
-        const query = photoQuery({
-            fromTrailId: trail.id
-        });
+        let query;
+        if (photosKey === "all") {
+            query = photoQuery({
+                fromTrailId: trail.id
+            });
+        }
+        else if (photosKey === "user") {
+            query = photoQuery({
+                fromTrailId: trail.id,
+                fromUserId: user.id
+            });
+        }
 
-        // TODO: Key should be passed to this component
-        const data = await dispatch(uploadPhoto(query, payload, `all-trail-${trail.id}`));
+        const data = await dispatch(uploadPhoto(query, payload, `trail-${trail.id}`));
 
-        if (data.errors) {
+        if (data.success) {
+            setPhotosTotalCount(state => state + 1);
+        }
+        else if (data.errors) {
             setErrors(data.errors);
             console.log("Errors:", data.errors)
         }
@@ -40,14 +51,14 @@ export default function PhotoUpload({ trail, jaunt }) {
     return (
         <form className="photo-upload" onSubmit={handleSubmit}>
             {!photo && <label
-                for={`photo-upload__input-${jaunt.id}`}
+                htmlFor={`photo-upload__input-${jaunt.id}`}
                 className="photo-upload__label jaunts__btn-1"
             >
-                <i class="fa fa-cloud-upload" />
+                <i className="fa fa-cloud-upload" />
                 Upload
             </label>}
             {photo && <label
-                for={`photo-upload__input-${jaunt.id}`}
+                htmlFor={`photo-upload__input-${jaunt.id}`}
                 className="photo-upload__label jaunts__btn-1"
             >
                 {photo.name.length > 8 ? "..." + photo.name.slice(-8) : photo.name}

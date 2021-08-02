@@ -32,6 +32,19 @@ def get_photos():
     return { "photos": [photo.to_dict(joins) for photo in photos], "totalCount": totalCount }
 
 
+# GET a list
+@bp.route('/<int:id>', methods=['GET'])
+def get_photo(id):
+    args = request.args
+    joins = extractJoins(args, joinList)
+    photo = Photo.query.get(id)
+
+    if not photo:
+        return { "errors": "Photo not found" }, 404
+
+    return photo.to_dict(joins)
+
+
 #POST a photo
 @bp.route('', methods=['POST'])
 @login_required
@@ -54,7 +67,10 @@ def post_photo():
 
         photo.filename = get_unique_filename(photo.filename)
 
-        upload = upload_file_to_s3(photo)
+        # upload = upload_file_to_s3(photo)
+        upload = {
+            "url": "https://cdn-assets.alltrails.com/uploads/photo/image/30357109/extra_large_6f087f675229c3e3cb194341514a7ee2.jpg"
+        }
 
         if "url" not in upload:
             return upload, 400

@@ -7,10 +7,10 @@
 }
 
 .jaunt-row__info {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 700;
     font-family: Proxima Nova,Arial,sans-serif;
-    margin: 32px 32px 24px 32px;
+    margin: 1.5rem 2rem 1.5rem 2rem;
     display: flex;
 }
 
@@ -26,7 +26,7 @@
 }
 
 .jaunt-row__slider {
-    margin: 0 32px 24px 32px;
+    margin: 0 2rem 1.5rem 2rem;
 }
 
 .jaunt-row__slider-header {
@@ -145,7 +145,7 @@
 
     font-family: Proxima Nova, Arial, sans-serif;
     color: #414141;
-    font-size: 18px;
+    font-size: 1.2rem;
 }
 
 .jaunt-row__reorder {
@@ -209,7 +209,7 @@
     border: 1px solid black;
     font-family: Proxima Nova, Arial, sans-serif;
     color: #414141;
-    font-size: 18px;
+    font-size: 1.2rem;
     line-height: 1.44;
     overflow-wrap: break-word;
     box-sizing: border-box;
