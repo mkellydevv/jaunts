@@ -4,11 +4,35 @@
 }
 
 .list-page {
-    margin: 16px;
+    margin: 1rem;
+}
+
+.list-page__header {
+    background-color: #fff;
+    margin-bottom: 1rem;
+    border: 1px solid #CCCCCC;
+    box-sizing: border-box;
+    box-shadow: 0 .25rem .5rem 0 rgb(0, 0, 0, 0.1);
+    padding: 1.5rem 2rem 1.5rem 2rem;
+}
+
+.list-page__name {
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: Proxima Nova,Arial,sans-serif;
+    margin-bottom: 1rem;
+    display: flex;
+
+}
+
+.list-page__blurb {
+    font-family: Proxima Nova, Arial, sans-serif;
+    color: #414141;
+    font-size: 1.2rem;
 }
 
 .list-page__jaunt-rows {
     display: flex;
     flex-flow: column nowrap;
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
 }

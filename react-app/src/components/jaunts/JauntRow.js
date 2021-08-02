@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { deleteJaunt, editJaunt } from "../../store/jaunts";
-import { clearPhotos, getPhotos } from "../../store/photos";
+import { clearPhotos, getPhotos, getPhoto } from "../../store/photos";
 import { clearTrails } from "../../store/trails";
 import { getDateString } from "../../utils/helperFuncs";
 import { jauntQuery, photoQuery } from "../../utils/queryObjects";
+import PhotoUpload from "../photos/PhotoUpload";
 
 import StarRating from "../random/StarRating";
 
@@ -15,19 +16,11 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const userPhotos = useSelector(state => state.photos[`user-trail-${trail.id}`]);
-    const userPhotosTotalCount = userPhotos ? userPhotos["totalCount"] : 0;
-    if (userPhotos) delete userPhotos["totalCount"];
-    const userPhotosArr = userPhotos ? Object.values(userPhotos) : [];
-
-    const allPhotos = useSelector(state => state.photos[`all-trail-${trail.id}`]);
-    const allPhotosTotalCount = allPhotos ? allPhotos["totalCount"] : 0;
-    if (allPhotos) delete allPhotos["totalCount"];
-    const allPhotosArr = allPhotos ? Object.values(allPhotos) : [];
-
+    const { photos: photoData } = useSelector(state => state);
     const [photos, setPhotos] = useState(null);
-    const [photosKey, setPhotosKey] = useState("");
+    const [photosTotalCount, setPhotosTotalCount] = useState(0);
     const [photosArr, setPhotosArr] = useState([]);
+    const [photosKey, setPhotosKey] = useState("all"); // all, user
     const [mainPhoto, setMainPhoto] = useState(null);
     const [errors, setErrors] = useState("");
 
@@ -84,6 +77,7 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
         history.push(`/trails/${trail.id}`);
     }
 
+    // Jaunt order handlers
     const handleUpClick = () => {
         const query = jauntQuery({
             fromListId: jaunt.list_id
@@ -98,30 +92,31 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
         dispatch(editJaunt(jaunt.id, query, { order: jaunt.order + 1 }));
     }
 
+    // Slider handlers
     const handleSliderImagesLeftClick = () => {
         if (offset === 0) return;
-        if (photosKey === "all") {
-            const allPhotoQuery = photoQuery({
-                fromTrailId: trail.id,
-                limit: limit,
-                offset: offset - 1
-            });
-            setOffset(state => state - 1);
-            dispatch(getPhotos(allPhotoQuery, `all-trail-${trail.id}`));
-        }
+
+        const query = photoQuery({
+            fromTrailId: trail.id,
+            limit: limit,
+            offset: offset - 1
+        });
+        setOffset(state => state - 1);
+        setHeaderImgLoaded(false);
+        dispatch(getPhotos(query, `trail-${trail.id}`));
     }
 
     const handleSliderImagesRightClick = () => {
-        if (photosKey === "all") {
-            if ((offset + 1) * limit >= allPhotosTotalCount) return;
-            const allPhotoQuery = photoQuery({
-                fromTrailId: trail.id,
-                limit: limit,
-                offset: offset + 1
-            });
-            setOffset(state => state + 1);
-            dispatch(getPhotos(allPhotoQuery, `all-trail-${trail.id}`));
-        }
+        if ((offset + 1) * limit >= photosTotalCount) return;
+
+        const query = photoQuery({
+            fromTrailId: trail.id,
+            limit: limit,
+            offset: offset + 1
+        });
+        setOffset(state => state + 1);
+        setHeaderImgLoaded(false);
+        dispatch(getPhotos(query, `trail-${trail.id}`));
     }
 
     const handleSliderImagesHover = (dir, doScroll) => {
@@ -143,42 +138,45 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
     }
 
     useEffect(() => {
-        const userPhotoQuery = photoQuery({
-            fromTrailId: trail.id,
-            fromUserId: user.id,
-        });
-        const allPhotoQuery = photoQuery({
-            fromTrailId: trail.id,
-            limit: limit,
-        });
+        let query;
+        if (photosKey === "all") {
+            query = photoQuery({
+                fromTrailId: trail.id,
+                limit: limit,
+            });
+        }
+        else if (photosKey === "user") {
+            query = photoQuery({
+                fromTrailId: trail.id,
+                fromUserId: user.id,
+                limit: limit,
+            });
+        }
 
-        dispatch(getPhotos(userPhotoQuery, `user-trail-${trail.id}`));
-        dispatch(getPhotos(allPhotoQuery, `all-trail-${trail.id}`));
+        dispatch(getPhotos(query, `trail-${trail.id}`));
 
         return () => dispatch(clearPhotos());
     }, [dispatch]);
 
     useEffect(() => {
-        if (!allPhotos && !userPhotos) return;
+        if (photoData[`trail-${trail.id}`] === undefined) return;
+
         const container = document.getElementById(`jaunt-row__slider-images-container-${jaunt.id}`);
-        if (allPhotosArr.length) {
-            setPhotos(allPhotos);
-            setPhotosArr(allPhotosArr);
-            setPhotosKey("all");
-            setMainPhoto(allPhotosArr[0]);
-            setHeaderImgLoaded(false);
-            container.style.setProperty('--num', allPhotosArr.length);
+        const tmpPhotos = photoData[`trail-${trail.id}`];
+        let tmpPhotosArr = [];
+
+        setPhotos(tmpPhotos);
+        if (tmpPhotos['totalCount'] !== undefined) {
+            setPhotosTotalCount(tmpPhotos['totalCount']);
+            delete tmpPhotos["totalCount"];
         }
-        else if (userPhotosArr.length) {
-            setPhotos(userPhotos);
-            setPhotosArr(userPhotosArr);
-            setPhotosKey("user");
-            setMainPhoto(userPhotosArr[0]);
-            setHeaderImgLoaded(false);
-            container.style.setProperty('--num', userPhotosArr.length);
-        }
+        tmpPhotosArr = Object.values(tmpPhotos);
+        setPhotosArr(tmpPhotosArr);
+        setMainPhoto(tmpPhotosArr[0]);
+        container.style.setProperty('--num', tmpPhotosArr.length);
+
         return () => {};
-    }, [userPhotos, allPhotos]);
+    }, [photoData]);
 
     useEffect(() => {
         const el = document.getElementById(`jaunt-row__slider-header-img-${jaunt.id}`);
@@ -223,9 +221,11 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
                             className="jaunt-row__slider-images-container"
                         >
                             {photosArr.length && photosArr.map(photo => {
-
                                 return (
-                                    <div className={`jaunt-row__slider-img-container ${mainPhoto.id === photo.id ?'active':''}`}>
+                                    <div
+                                        className={`jaunt-row__slider-img-container ${mainPhoto.id === photo.id ?'active':''}`}
+                                        key={`jaunt-row__slider-img-container-${photo.id}`}
+                                    >
                                         <img
                                             src={photo.url.replace("extra_", "")}
                                             alt={`photo`}
@@ -331,9 +331,19 @@ export default function JauntRow({ jaunt, jauntsLength, trail, user }) {
                         </div>
                     </div>
 
-                    <button className="jaunt-row__delete jaunts__btn-2" onClick={handleDelete}>
-                        Delete
-                    </button>
+                    <div className={'jaunt-row__buttons'}>
+                        <button className="jaunt-row__delete jaunts__btn-2" onClick={handleDelete}>
+                            Delete
+                        </button>
+
+                        <PhotoUpload photosKey={photosKey} trail={trail} jaunt={jaunt} setPhotosTotalCount={setPhotosTotalCount}/>
+
+                        {/* <button onClick={() => {
+                            let query = photoQuery({fromTrailId: trail.id});
+                            dispatch(getPhoto(1008, query, `trail-${trail.id}`));
+                            setPhotosTotalCount(state => state + 1);
+                        }}>Test GetPhoto</button> */}
+                    </div>
                 </div>
 
             </div>

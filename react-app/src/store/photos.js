@@ -28,13 +28,39 @@ const removePhoto = (payload, key) => ({
     key
 });
 
-export const getPhotos = (query={}, key) => async (dispatch) => {
+export const getPhotos = (query, key) => async (dispatch) => {
     const url = appendQueryArgs(query, `/api/photos`);
     const res = await fetch(url);
     if (res.ok) {
         const data = await res.json();
         dispatch(storePhotos(data, key));
     }
+};
+
+export const getPhoto = (id, query, key) => async (dispatch) => {
+    const url = appendQueryArgs(query, `/api/photos/${id}`);
+    const res = await fetch(url);
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(storePhoto(data, key));
+    }
+};
+
+export const uploadPhoto = (query, payload, key) => async (dispatch) => {
+    const url = appendQueryArgs(query, `/api/photos`);
+    const formData = new FormData();
+    for (let k in payload)
+        formData.append(k, payload[k]);
+    const res = await fetch(url, {
+        method: "POST",
+        body: formData,
+    });
+    const data = await res.json();
+    if (res.ok) {
+        dispatch(storePhoto(data, key));
+        return {"success": true};
+    }
+    return data;
 };
 
 export const clearPhotos = (key) => async (dispatch) => {
