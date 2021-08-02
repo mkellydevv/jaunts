@@ -206,6 +206,7 @@
 
 .jaunt-row__overview-info {
     margin-right: 1rem;
+    width: 100%;
 }
 
 .jaunt-row__date, .jaunt-row__blurb {

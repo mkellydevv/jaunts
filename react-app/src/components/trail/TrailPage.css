@@ -177,6 +177,7 @@
     font-family: Proxima Nova,Arial,sans-serif;
     padding: 6px;
     margin-right: 48px;
+    transition: .1s ease-in-out;
 }
 
 .tab:hover {

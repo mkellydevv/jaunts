@@ -161,7 +161,7 @@ export default function TrailPage() {
                         </div>
                     </div>
                     <div className="trail-section__tags trail-section__spacing">
-                        {trail && Object.values(trail.tags).map(tag => {
+                        {trail && trail.tags !== undefined && Object.values(trail.tags).map(tag => {
                             return (
                                 <div
                                     className="trail-section__tag"
