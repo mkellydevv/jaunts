@@ -11,6 +11,7 @@ joinList = ["getJaunts", "getPhotos", "getTrails", "getUser"]
 
 # GET all lists
 @bp.route('', methods=['GET'])
+@login_required
 def get_lists():
     args = request.args
     joins = extractJoins(args, joinList)
@@ -28,6 +29,7 @@ def get_lists():
 
 # GET a list
 @bp.route('/<int:id>', methods=['GET'])
+@login_required
 def get_list(id):
     args = request.args
     joins = extractJoins(args, joinList)
@@ -41,7 +43,7 @@ def get_list(id):
 
 # POST a list
 @bp.route('', methods=['POST'])
-# @login_required
+@login_required
 def post_list():
     form = ListForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -66,7 +68,7 @@ def post_list():
 
 # PATCH a list
 @bp.route('/<int:id>', methods=['PATCH'])
-# @login_required
+@login_required
 def patch_list(id):
     lst = List.query.get(id)
 
@@ -86,7 +88,7 @@ def patch_list(id):
 
 # DELETE a list
 @bp.route('/<int:id>', methods=['DELETE'])
-# @login_required
+@login_required
 def delete_list(id):
     lst = List.query.get(id)
 

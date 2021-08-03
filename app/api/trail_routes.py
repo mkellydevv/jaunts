@@ -53,7 +53,7 @@ def get_trail(id):
 
 # POST a trail
 @bp.route('', methods=['POST'])
-# @login_required
+@login_required
 def post_trail():
     form = TrailForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -89,7 +89,7 @@ def post_trail():
 
 # PATCH a trail
 @bp.route('/<int:id>', methods=['PATCH'])
-# @login_required
+@login_required
 def patch_trail(id):
     trail = Trail.query.get(id)
 
@@ -109,7 +109,7 @@ def patch_trail(id):
 
 # DELETE a trail
 @bp.route('/<int:id>', methods=['DELETE'])
-# @login_required
+@login_required
 def delete_trail(id):
     trail = Trail.query.get(id)
 

@@ -32,7 +32,7 @@ def get_photos():
     return { "photos": [photo.to_dict(joins) for photo in photos], "totalCount": totalCount }
 
 
-# GET a list
+# GET a photo
 @bp.route('/<int:id>', methods=['GET'])
 def get_photo(id):
     args = request.args
@@ -90,7 +90,7 @@ def post_photo():
 
 # DELETE a photo
 @bp.route('/<int:id>', methods=['DELETE'])
-# @login_required
+@login_required
 def delete_photo(id):
     photo = Photo.query.get(id)
 

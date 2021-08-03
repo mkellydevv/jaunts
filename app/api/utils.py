@@ -9,7 +9,9 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 
 def extractJoins(args, joins):
-    """ Extracts the join arguments from the request arguments. """
+    """
+    Extracts the join arguments from the request arguments.
+    """
     dct = {}
     for join in joins:
         if args[join] != "":
