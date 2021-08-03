@@ -1,5 +1,6 @@
 from app.models import db, Trail, Tag
 import json
+import random
 
 dct = {
     "Loop": "loop",
@@ -8,6 +9,11 @@ dct = {
 }
 
 def seed_tags_trails():
+    # Store data for seeding empty table cells
+    description_list = []
+    tips_list = []
+    getting_there_list = []
+
     with open("selenium/states/virginia/trails.json", "r") as f:
         trails = json.load(f)
         tag_dict = {}
@@ -25,15 +31,31 @@ def seed_tags_trails():
 
             db.session.commit()
 
+            if t["description"]:
+                description = t["description"]
+                description_list.append(description)
+            else:
+                description = random.choice(description_list)
+            if t["tips"]:
+                tips = t["tips"]
+                tips_list.append(tips)
+            else:
+                tips = random.choice(tips_list)
+            if t["getting_there"]:
+                getting_there = t["getting_there"]
+                getting_there_list.append(getting_there)
+            else:
+                getting_there = random.choice(getting_there_list)
+
             trail = Trail(
                 user_id=None,
                 name=t["name"],
                 region=t["region"],
                 curated=True,
                 overview=t["overview"],
-                description=t["description"],
-                tips=t["tips"],
-                getting_there=t["getting_there"],
+                description=description,
+                tips=tips,
+                getting_there=getting_there,
                 difficulty=t["difficulty"],
                 length=t["length"],
                 elevation_gain=t["elevation_gain"],

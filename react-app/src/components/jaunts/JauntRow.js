@@ -40,7 +40,6 @@ export default function JauntRow({ list, jaunt, jauntsLength, trail, user }) {
         if (photosKey === val) return;
         setPhotosKey(val);
         setOffset(0);
-        setHeaderImgLoaded(false);
     }
 
     const handleEditBlurb = (val) => {

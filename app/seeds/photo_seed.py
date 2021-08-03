@@ -7,7 +7,7 @@ def seed_photos():
     with open("selenium/states/virginia/trails.json", "r") as f:
         trails_dct = json.load(f)
 
-    list_ids = [None,None,None,None,None,1,2,3,4,5]
+    list_ids = [1,2,3,4,5]
 
     i = 1
     for key in trails_dct:
@@ -17,7 +17,7 @@ def seed_photos():
             photo = Photo(
                 list_id=random.choice(list_ids),
                 trail_id=i,
-                user_id=random.randint(1,50),
+                user_id=1,
                 private=False,
                 url=url,
             )

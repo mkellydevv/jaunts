@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import { getTrails, clearTrails } from "../../store/trails";
-import { trailQuery } from "../../utils/queryObjects";
+import { getUser } from "../../store/users";
+import { trailQuery, userQuery } from "../../utils/queryObjects";
 
 import HeroCarousel from "./HeroCarousel";
 import TrailCardQuad from "../trail-card/TrailCardQuad";
@@ -16,6 +17,9 @@ export default function SplashPage() {
     const dispatch = useDispatch();
     const history = useHistory();
     const searchResults = useSelector(state => state["trails"]["search"]);
+    const { user } = useSelector(state => state["session"]);
+    const { default: users } = useSelector(state => state["users"]);
+    const completedTrails = users ? new Set(Object.values(users)[0]["completed_trails"]) : new Set([]);
 
     const submit = () => {
         history.push(`/trails/${Object.values(searchResults)[0]["id"]}`);
@@ -39,6 +43,13 @@ export default function SplashPage() {
         }
     }, [dispatch]);
 
+    useEffect(() => {
+        const query = userQuery({ getCompletedTrails: 1000 });
+        dispatch(getUser(user.id, query));
+
+        return () => {};
+    }, [user]);
+
     return (
         <div className="splash-page">
             <HeroCarousel />
@@ -59,9 +70,9 @@ export default function SplashPage() {
                     <i className="fas fa-arrow-right" />
                 </button>
             </div>
-            <TrailCardQuad tag={"camping"} />
-            <TrailCardQuad tag={"waterfall"} />
-            <TrailCardQuad tag={"rocky"} />
+            <TrailCardQuad tag={"camping"} completedTrails={completedTrails} />
+            <TrailCardQuad tag={"waterfall"} completedTrails={completedTrails} />
+            <TrailCardQuad tag={"rocky"} completedTrails={completedTrails} />
         </div>
     )
 }

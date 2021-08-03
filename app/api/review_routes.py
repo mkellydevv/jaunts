@@ -40,7 +40,7 @@ def get_review(id):
 
 # POST a review
 @bp.route('', methods=['POST'])
-# @login_required
+@login_required
 def post_review():
     form = ReviewForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -67,7 +67,7 @@ def post_review():
 
 # PATCH a review
 @bp.route('/<int:id>', methods=['PATCH'])
-# @login_required
+@login_required
 def patch_review(id):
     review = Review.query.get(id)
 
@@ -87,7 +87,7 @@ def patch_review(id):
 
 # DELETE a review
 @bp.route('/<int:id>', methods=['DELETE'])
-# @login_required
+@login_required
 def delete_review(id):
     review = Review.query.get(id)
 

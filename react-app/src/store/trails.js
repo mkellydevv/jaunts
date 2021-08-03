@@ -37,7 +37,7 @@ export const getTrails = (query={}, key) => async (dispatch) => {
     }
 };
 
-export const getTrail = (id, query={}, key) => async (dispatch) => {
+export const getTrail = (id, query, key) => async (dispatch) => {
     const url = appendQueryArgs(query, `/api/trails/${id}`);
     const res = await fetch(url);
     if (res.ok) {

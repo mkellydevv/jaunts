@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import StarRating from "../random/StarRating";
@@ -11,8 +12,9 @@ const map = {
     Hard: "hard"
 }
 
-export default function TrailCard({ trail }) {
+export default function TrailCard({ trail, completed=false }) {
     const history = useHistory();
+
 
     const navigateToTrail = () => {
         history.push(`/trails/${trail.id}`);
@@ -28,6 +30,8 @@ export default function TrailCard({ trail }) {
                 <img className="trail-card__img" src={Object.values(trail.photos)[0].url.replace("extra_", "")} />
             </div>
             <div className="trail-card__content">
+                {/* TODO: START HERE */}
+                <div>Completed: {completed ? "True" : "False"}</div>
                 <div className="trail-card__name trail-card__font">{trail.name}</div>
                 <div className=".trail-card__font">{trail.region}</div>
                 <div className="trail-card__info">
