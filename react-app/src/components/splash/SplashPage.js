@@ -46,7 +46,6 @@ export default function SplashPage() {
     useEffect(() => {
         const query = userQuery({ getCompletedTrails: 1000 });
         dispatch(getUser(user.id, query));
-
         return () => {};
     }, [user]);
 

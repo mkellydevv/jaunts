@@ -47,3 +47,20 @@ body {
     border-color: #428a13;
     color: #428a13;
 }
+
+.trail-completed {
+    background-color: #428a13;
+    color: #fff;
+    font-family: Proxima Nova, Arial, sans-serif;
+    font-size: 1rem;
+
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-bottom-left-radius: .5rem;
+    padding: .3rem;
+
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: .3rem;
+}

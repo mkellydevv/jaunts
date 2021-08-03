@@ -8,7 +8,7 @@ import TrailCard from "./TrailCard";
 
 import "./TrailCardList.css";
 
-export default function TrailCardList({ trail }) {
+export default function TrailCardList({ trail, completedTrails }) {
     const dispatch = useDispatch();
     const trails = useSelector(state => state["trails"]["nearby"]);
     if (trails) delete trails[trail.id];
@@ -31,7 +31,11 @@ export default function TrailCardList({ trail }) {
             <div className="card-list__container">
                 {trails && trailsArr.map(trail => {
                     return (
-                        <TrailCard trail={trail} key={`TrailCard__nearby-${trail.id}`}/>
+                        <TrailCard
+                            trail={trail}
+                            key={`TrailCard__nearby-${trail.id}`}
+                            completed={completedTrails.has(trail.id) ? true : false}
+                        />
                     )
                 })}
             </div>

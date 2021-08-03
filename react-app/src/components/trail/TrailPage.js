@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getTrail, clearTrails } from "../../store/trails";
 import { getPhotos, clearPhotos } from "../../store/photos";
-import { photoQuery, trailQuery } from "../../utils/queryObjects";
+import { getTrail, clearTrails } from "../../store/trails";
+import { getUser, markTrailComplete, markTrailIncomplete } from "../../store/users";
+import { photoQuery, trailQuery, userQuery } from "../../utils/queryObjects";
 
 import ReviewList from "../review/ReviewList";
 import TrailCardList from "../trail-card/TrailCardList";
@@ -27,6 +28,10 @@ export default function TrailPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const { id } = useParams();
+
+    const { user } = useSelector(state => state["session"]);
+    const { default: users } = useSelector(state => state["users"]);
+    const completedTrails = users ? new Set(Object.values(users)[0]["completed_trails"]) : new Set([]);
 
     const { default: trails } = useSelector(state => state.trails);
     const trailsArr = trails ? Object.values(trails) : [];
@@ -77,6 +82,19 @@ export default function TrailPage() {
         setShowListModal(false);
     }
 
+    const handleMarkComplete = () => {
+        const query = userQuery({ getCompletedTrails: 1000 });
+        if (completedTrails.has(trail.id)) {
+            dispatch(markTrailIncomplete(user.id, trail.id, query));
+        }
+        else {
+            const formData = new FormData();
+            formData.append("trail_id", trail.id);
+            formData.append("user_id", user.id);
+            dispatch(markTrailComplete(user.id, query, formData));
+        }
+    }
+
     useEffect(() => {
         const _photoQuery = photoQuery({
             fromTrailId: id,
@@ -95,11 +113,25 @@ export default function TrailPage() {
         }
     }, [dispatch, history.location])
 
+    useEffect(() => {
+        const query = userQuery({ getCompletedTrails: 1000 });
+        dispatch(getUser(user.id, query));
+        return () => {};
+    }, [user]);
+
+
+
     return (
     <>
         <div className="trail-page">
             <div className="trail-page__content">
                 <section className="trail-section">
+
+                    {trail && completedTrails.has(trail.id) &&
+                    <div className="trail-completed">
+                        <i className="fas fa-check" />Completed
+                    </div>}
+
                     <div className="trail-section__header">
                         {trail && <>
                             {photos && <img
@@ -125,6 +157,7 @@ export default function TrailPage() {
                             </div>
                         </>}
                     </div>
+
                     <div className="trail-section__action-bar">
                         <div className="trail-section__action-tab" onClick={openListModal}>
                             <div className="trail-section__action-btn">
@@ -134,18 +167,20 @@ export default function TrailPage() {
                                 Add to List
                             </div>
                         </div>
-                        <div className="trail-section__action-tab" >
+                        <div className="trail-section__action-tab" onClick={handleMarkComplete}>
                             <div className="trail-section__action-btn">
                                 <i className="fas fa-check" />
                             </div>
                             <div className="trail-section__action-name">
-                                Mark Complete
+                                {trail && completedTrails.has(trail.id) ? "Mark Incomplete" : "Mark Complete"}
                             </div>
                         </div>
                     </div>
+
                     <div className="trail-section__overview trail-section__spacing">
                         {trail && trail.overview}
                     </div>
+
                     <div className="trail-section__details trail-section__spacing">
                         <div>
                             <div>Length</div>
@@ -160,6 +195,7 @@ export default function TrailPage() {
                             <div>{trail && trail.route_type}</div>
                         </div>
                     </div>
+
                     <div className="trail-section__tags trail-section__spacing">
                         {trail && trail.tags !== undefined && Object.values(trail.tags).map(tag => {
                             return (
@@ -222,18 +258,22 @@ export default function TrailPage() {
 
                 <div className="trail-page__extra">
                     <h2>Nearby Trails</h2>
-                    {trail && <TrailCardList trail={trail} />}
+                    {trail && <TrailCardList trail={trail} completedTrails={completedTrails} />}
                 </div>
+
             </div>
         </div>
+
         {showReviewModal && trail &&
             <Modal close={closeReviewModal}>
                 <ReviewModal trail={trail} review={review} close={closeReviewModal} />
             </Modal>
         }
+
         {showViewPhotoModal && photos &&
             <ViewPhotoModal photosArr={photosArr} photoId={photoId} close={closeViewPhotoModal} />
         }
+
         {showListModal && trail &&
             <Modal close={closeListModal}>
                 <ListsModal trail={trail} />

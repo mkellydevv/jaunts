@@ -14,6 +14,7 @@
     background-color: #fff;
     margin: 1rem 0 1rem 1rem;
     border: 1px solid #CCCCCC;
+    position: relative
 }
 
 .trail-section__header {
@@ -30,20 +31,20 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    bottom: 103px;
-    margin: 0 24px;
+    bottom: 8rem;
+    margin: 0 1.5rem;
     color: #fff;
 }
 
 .trail-section__header-name {
     font-family: Proxima Nova,Arial,sans-serif;
-    font-size: 30px;
+    font-size: 2rem;
     font-weight: 700;
     font-stretch: normal;
     font-style: normal;
     line-height: normal;
     letter-spacing: normal;
-    margin-bottom: 6px;
+    margin-bottom: .5rem;
 }
 
 .trail-section__header-info {
@@ -74,15 +75,15 @@
 }
 
 .trail-section__action-btn {
-    width: 48px;
-    height: 48px;
+    width: 3rem;
+    height: 3rem;
     background-color: white;
     border-radius: 100%;
     color: #428A13;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
+    font-size: 1.25rem;
     position: relative;
     top: -24px;
 }
@@ -90,7 +91,7 @@
 .trail-section__action-name {
     color: white;
     font-family: Proxima Nova, Arial, sans-serif;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 22px;
     font-weight: 500;
     position: relative;
@@ -108,7 +109,7 @@
     border-bottom: solid #e6e6e6 1px;
 
     color: #414141;
-    font-size: 18px;
+    font-size: 1.2rem;
     line-height: 1.44;
     white-space: pre-wrap;
     overflow-wrap: break-word;
@@ -125,7 +126,7 @@
 
 .trail-section__details > div > div:first-child {
     color: #5a5a5a;
-    font-size: 12px;
+    font-size: 1rem;
     line-height: 1.42;
     display: block;
     width: auto;
@@ -147,14 +148,13 @@
 
 .trail-section__tag {
     padding: 5.5px 12px;
-    font-size: 14px;
+    font-size: 1rem;
     margin-right: 5px;
     margin-bottom: 5px;
     border-radius: 8px;
     font-weight: 500;
     color: #428A13;
     border: solid 1px #428A13;
-    font-size: 14px;
 }
 
 .tab-navigation {
@@ -172,10 +172,10 @@
 
 .tab {
     cursor: pointer;
-    font-size: 18px;
+    font-size: 1.2rem;
     font-weight: 700;
     font-family: Proxima Nova,Arial,sans-serif;
-    padding: 6px;
+
     margin-right: 48px;
     transition: .1s ease-in-out;
 }
@@ -198,7 +198,7 @@
 
 
     color: #414141;
-    font-size: 18px;
+    font-size: 1.2rem;
     line-height: 1.44;
     white-space: pre-wrap;
     overflow-wrap: break-word;
