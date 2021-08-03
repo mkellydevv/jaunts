@@ -8,3 +8,4 @@ from .photo_model import Photo
 
 from .tag_trail_model import tags_trails
 from .jaunt_model import Jaunt
+from .completed_model import Completed

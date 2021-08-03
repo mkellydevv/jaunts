@@ -64,6 +64,7 @@ export function trailQuery(args={}) {
         searchTags: [],
         offset: 0,
         limit: 25,
+        getCompletedUsers: "",
         getJaunts: "",
         getLists: "",
         getPhotos: "",
@@ -71,6 +72,15 @@ export function trailQuery(args={}) {
         getTags: "",
         getUser: "",
     };
+    for (let key in args)
+        query[key] = args[key];
+    return query;
+}
+
+export function userQuery(args={}) {
+    const query = {
+        getCompletedTrails: "",
+    }
     for (let key in args)
         query[key] = args[key];
     return query;

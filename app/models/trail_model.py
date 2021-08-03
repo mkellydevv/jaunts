@@ -1,6 +1,7 @@
 from .db import db
 from .jaunt_model import Jaunt
 from .tag_trail_model import tags_trails
+from .completed_model import Completed
 import enum
 
 
@@ -42,6 +43,12 @@ class Trail(db.Model):
     reviews = db.relationship("Review", back_populates="trail")
     user = db.relationship("User", back_populates="trails")
 
+    completed_users = db.relationship(
+        "User",
+        secondary=Completed,
+        back_populates="completed_trails"
+    )
+
     lists = db.relationship(
         "List",
         secondary="jaunts",
@@ -74,6 +81,9 @@ class Trail(db.Model):
             "default_rating": self.default_rating,
             "default_weighting": self.default_weighting,
         }
+
+        if "getCompletedUsers" in joins:
+            dct["completed_users"] = {user.id: user.to_dict() for user in self.completed_users[:int(joins["getCompletedUsers"])]}
 
         if "getJaunts" in joins:
             dct["jaunts"] = {jaunt.id: jaunt.to_dict() for jaunt in self.jaunts[:int(joins["getJaunts"])]}
