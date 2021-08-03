@@ -80,7 +80,7 @@ export function trailQuery(args={}) {
 export function userQuery(args={}) {
     const query = {
         getCompletedTrails: "",
-    }
+    };
     for (let key in args)
         query[key] = args[key];
     return query;

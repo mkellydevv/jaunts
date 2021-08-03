@@ -1,10 +1,11 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
-from app.models import User, Completed, Trail
+from app.models import User, completed, Trail
 from .utils import extractJoins
 
 bp = Blueprint('users', __name__)
 joinList = ["getCompletedTrails"]
+
 
 @bp.route('/')
 @login_required
@@ -13,15 +14,9 @@ def users():
     return {"users": [user.to_dict() for user in users]}
 
 
-@bp.route('/<int:id>')
-@login_required
-def user(id):
-    user = User.query.get(id)
-    return user.to_dict()
-
 # GET a user
-@bp.route('/<int:id>', methods=["Get"])
-def get_user():
+@bp.route('/<int:id>', methods=["GET"])
+def get_user(id):
     args = request.args
     joins = extractJoins(args, joinList)
     user = User.query.get(id)

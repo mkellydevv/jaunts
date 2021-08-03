@@ -8,7 +8,7 @@ import TrailCard from "./TrailCard";
 
 import "./TrailCardQuad.css";
 
-export default function TrailCardQuad({ tag }) {
+export default function TrailCardQuad({ tag, completedTrails }) {
     const dispatch = useDispatch();
     const trails = useSelector(state => state["trails"][tag]);
 
@@ -28,7 +28,11 @@ export default function TrailCardQuad({ tag }) {
             <div className="card-quad__container">
                 {trails && Object.keys(trails).map(key => {
                     return (
-                        <TrailCard trail={trails[key]} key={`TrailCard__${tag}-${key}`}/>
+                        <TrailCard
+                            trail={trails[key]}
+                            key={`TrailCard__${tag}-${key}`}
+                            completed={completedTrails.has(trails[key].id) ? true : false}
+                        />
                     )
                 })}
             </div>

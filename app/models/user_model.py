@@ -1,7 +1,7 @@
 from .db import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from .completed_model import Completed
+from .completed_model import completed
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -18,7 +18,7 @@ class User(db.Model, UserMixin):
 
     completed_trails = db.relationship(
         "Trail",
-        secondary=Completed,
+        secondary=completed,
         back_populates="completed_users"
     )
 
@@ -44,6 +44,6 @@ class User(db.Model, UserMixin):
         }
 
         if "getCompletedTrails" in joins:
-            dct["completed_trails"] = {trail.id: trail.to_dict() for trail in self.completed_trails[:int(joins["getCompletedTrails"])]}
+            dct["completed_trails"] = [trail.id for trail in self.completed_trails[:int(joins["getCompletedTrails"])]]
 
         return dct

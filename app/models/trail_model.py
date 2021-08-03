@@ -1,7 +1,7 @@
 from .db import db
 from .jaunt_model import Jaunt
 from .tag_trail_model import tags_trails
-from .completed_model import Completed
+from .completed_model import completed
 import enum
 
 
@@ -45,7 +45,7 @@ class Trail(db.Model):
 
     completed_users = db.relationship(
         "User",
-        secondary=Completed,
+        secondary=completed,
         back_populates="completed_trails"
     )
 
