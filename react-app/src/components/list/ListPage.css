@@ -19,14 +19,12 @@
 .list-page__name {
     font-size: 2rem;
     font-weight: 700;
-    font-family: Proxima Nova,Arial,sans-serif;
     margin-bottom: 1rem;
     display: flex;
 
 }
 
 .list-page__blurb {
-    font-family: Proxima Nova, Arial, sans-serif;
     color: #414141;
     font-size: 1.2rem;
 }

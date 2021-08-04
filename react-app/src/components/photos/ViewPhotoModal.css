@@ -27,14 +27,13 @@
 
 .view-photo-modal__details > div {
     background-color: black;
-    height: 36px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #fff;
-    font-family: Proxima Nova, Arial, sans-serif;
-    font-size: 18px;
+    color: white;
+    font-size: 1.2rem;
+    padding: .5rem 0;
 }
 
 .view-photo-modal__img {

@@ -3,12 +3,12 @@
     display: grid;
     grid-template-columns: 1fr 7fr 1fr 1fr;
     grid-gap: 1rem;
-    border-radius: 8px;
+    border-radius: .5rem;
     border: 1px solid #e6e6e6;
-    margin: 16px;
-    padding: 16px;
-    font-family: Proxima Nova,Arial,sans-serif;
-    line-height: 1.5;
+    margin: 1rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+    line-height: 1.44;
     color: #414141;
     background-color: white;
     box-sizing: border-box;

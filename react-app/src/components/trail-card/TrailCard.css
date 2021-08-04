@@ -1,13 +1,15 @@
 
 .trail-card {
-    background-color: #fff;
-    max-width: 19rem;
+    height: 100%;
+    max-height: 18rem;
+    width: 100%;
+    max-width: 20rem;
+    background-color: white;
     border-radius: .5rem;
-    box-shadow: 0 .25rem .5rem 0 rgb(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-1);
     cursor: pointer;
     transition: .1s ease-in-out;
     position: relative;
-    overflow: hidden;
 }
 
 .trail-card:hover {
@@ -15,10 +17,10 @@
 }
 
 .trail-card__img-container {
-    height: 128px;
-    min-height: 128px;
+    height: 100%;
+    max-height: 9rem;
     width: 100%;
-    min-width: 100%;
+    max-width: 20rem;
 }
 
 .trail-card__img {
@@ -30,16 +32,18 @@
 }
 
 .trail-card__content {
-    padding: 10px 16px;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
     max-width: 100%;
-    overflow: hidden;
+    margin: 1rem;
+
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    align-items: center;
 }
 
-.trail-card__font {
-    font-family: Proxima Nova,Arial,sans-serif;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
+.trail-card__content > div {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -47,22 +51,25 @@
 
 .trail-card__name {
     color: #414141;
-    font-size: 18px;
+    font-size: 1.2rem;
     font-weight: 700;
-    height: 24px;
-    line-height: 24px;
-    width: 100%;
+    line-height: 1.44
+}
+
+.trail-card__region {
+    font-size: 1rem;
+    color: #414141;
+    line-height: 1.44;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
 }
 
 .trail-card__info {
-    margin-top: 2px;
-    height: 18px;
-    line-height: 18px;
+    font-size: 1rem;
+    line-height: 1.44;
     display: flex;
     align-items: center;
-    font-family: Proxima Nova,Arial,sans-serif;
-    font-size: 14px;
-    font-weight: 400;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
@@ -70,19 +77,15 @@
 }
 
 .trail-card__difficulty {
-    color: #fff;
-    width: 72px;
-    height: 18px;
+    color: white;
     border-radius: 6px;
     display: inline-block;
-    font-family: Proxima Nova,Arial,sans-serif;
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.44;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
     text-align: center;
-    line-height: 1.42;
 }
 
 .difficulty-easy { background-color: #69a041; }
@@ -95,4 +98,8 @@
 
 .trail-card__count {
     margin-left: 8px;
+}
+
+.trail-card__length {
+    font-size: 1rem;
 }

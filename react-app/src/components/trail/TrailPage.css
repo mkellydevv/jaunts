@@ -1,7 +1,7 @@
 
 .trail-page__content {
     display: grid;
-    grid-template-columns: 5fr 1fr;
+    grid-template-columns: 4fr 1fr;
     grid-gap: 1rem;
 }
 
@@ -37,7 +37,6 @@
 }
 
 .trail-section__header-name {
-    font-family: Proxima Nova,Arial,sans-serif;
     font-size: 2rem;
     font-weight: 700;
     font-stretch: normal;
@@ -85,14 +84,13 @@
     align-items: center;
     font-size: 1.25rem;
     position: relative;
-    top: -24px;
+    top: -1.5rem;
 }
 
 .trail-section__action-name {
     color: white;
-    font-family: Proxima Nova, Arial, sans-serif;
     font-size: 1rem;
-    line-height: 22px;
+    line-height: 1.44;
     font-weight: 500;
     position: relative;
     top: -22px;
@@ -100,14 +98,13 @@
 }
 
 .trail-section__spacing {
-    padding: 24px 0;
+    padding: 1.5rem 0;
     margin: 0 24px;
     font-family: Proxima Nova, Arial, sans-serif;
 }
 
 .trail-section__overview {
     border-bottom: solid #e6e6e6 1px;
-
     color: #414141;
     font-size: 1.2rem;
     line-height: 1.44;
@@ -174,29 +171,23 @@
     cursor: pointer;
     font-size: 1.2rem;
     font-weight: 700;
-    font-family: Proxima Nova,Arial,sans-serif;
-
     margin-right: 48px;
     transition: .1s ease-in-out;
 }
 
 .tab:hover {
-    color: #428a13;
+    color: var(--green-2);
 }
 
 .tab.active {
-    color: #428a13;
-    border-bottom: solid #428a13 3px;
+    color: var(--green-2);
+    border-bottom: solid var(--green-2) 3px;
 }
 
 .tab-content {
-    background-color: #fff;
-
-    padding: 24px 0;
-    margin: 0 24px;
-    font-family: Proxima Nova, Arial, sans-serif;
-
-
+    background-color: white;
+    padding: 1.5rem 0;
+    margin: 0 1.5rem;
     color: #414141;
     font-size: 1.2rem;
     line-height: 1.44;
