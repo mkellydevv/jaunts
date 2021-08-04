@@ -44,6 +44,7 @@ export default function SplashPage() {
     }, [dispatch]);
 
     useEffect(() => {
+        if (!user) return;
         const query = userQuery({ getCompletedTrails: 1000 });
         dispatch(getUser(user.id, query));
         return () => {};
@@ -52,6 +53,7 @@ export default function SplashPage() {
     return (
         <div className="splash-page">
             <HeroCarousel />
+
             <div className="search-bar">
                 <i className="fas fa-search" />
                 <input
@@ -69,7 +71,16 @@ export default function SplashPage() {
                     <i className="fas fa-arrow-right" />
                 </button>
             </div>
+
             <TrailCardQuad tag={"camping"} completedTrails={completedTrails} />
+
+            <div>
+                <img
+                    src="https://cdn-assets.alltrails.com/assets/images/homepage/pro_upsell/bg_desktop_en.jpg"
+
+                />
+            </div>
+
             <TrailCardQuad tag={"waterfall"} completedTrails={completedTrails} />
             <TrailCardQuad tag={"rocky"} completedTrails={completedTrails} />
         </div>

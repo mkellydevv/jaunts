@@ -9,7 +9,7 @@ export default function Modal(props) {
             <div className="modal__overlay" onClick={props.close} />
             <div className="modal__content">
                 <button
-                    className="modal__close-btn jaunts__btn-2"
+                    className="modal__close-btn jaunts__btn jaunts__btn-3"
                     onClick={props.close}
                 >
                     <i className="fas fa-times"></i>

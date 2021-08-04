@@ -52,20 +52,20 @@ export default function PhotoUpload({ photosKey, trail, jaunt, setPhotosTotalCou
         <form className="photo-upload" onSubmit={handleSubmit}>
             {!photo && <label
                 htmlFor={`photo-upload__input-${jaunt.id}`}
-                className="photo-upload__label jaunts__btn-1"
+                className="photo-upload__label jaunts__btn jaunts__btn-1"
             >
                 <i className="fa fa-cloud-upload" />
                 Upload
             </label>}
             {photo && <label
                 htmlFor={`photo-upload__input-${jaunt.id}`}
-                className="photo-upload__label jaunts__btn-1"
+                className="photo-upload__label jaunts__btn jaunts__btn-1"
             >
                 {photo.name.length > 8 ? "..." + photo.name.slice(-8) : photo.name}
             </label>}
             <input
                 id={`photo-upload__input-${jaunt.id}`}
-                className="photo-upload__input jaunts__btn-1"
+                className="photo-upload__input jaunts__btn jaunts__btn-1"
                 type="file"
                 accept="image/*"
                 onChange={e => setPhoto(e.target.files[0])}

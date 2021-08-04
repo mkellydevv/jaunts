@@ -207,13 +207,13 @@ export default function JauntRow({ list, jaunt, jauntsLength, trail, user }) {
 
                 <div className="jaunts-row__slider-tabs">
                     <button
-                        className={`jaunts-row__slider-tab-all jaunts__btn-1 ${photosKey === "all" ? "active" : ""}`}
+                        className={`jaunts-row__slider-tab-all jaunts__btn jaunts__btn-1 ${photosKey === "all" ? "active" : ""}`}
                         onClick={() => handlePhotosTabClick("all")}
                     >
                         All
                     </button>
                     <button
-                        className={`jaunts-row__slider-tab-user jaunts__btn-1 ${photosKey === "user" ? "active" : ""}`}
+                        className={`jaunts-row__slider-tab-user jaunts__btn jaunts__btn-1 ${photosKey === "user" ? "active" : ""}`}
                         onClick={() => handlePhotosTabClick("user")}
                     >
                         User
@@ -355,7 +355,7 @@ export default function JauntRow({ list, jaunt, jauntsLength, trail, user }) {
                     </div>
 
                     <div className={'jaunt-row__buttons'}>
-                        <button className="jaunt-row__delete jaunts__btn-2" onClick={handleDelete}>
+                        <button className="jaunt-row__delete jaunts__btn jaunts__btn-3" onClick={handleDelete}>
                             Delete
                         </button>
 

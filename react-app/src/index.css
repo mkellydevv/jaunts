@@ -1,57 +1,68 @@
 /* TODO Add site wide styles */
 
+:root {
+    --blue-2: #219ad8;
+    --blue-3: #4bafe1;
+    --green-1: #1e4304;
+    --green-2: #428a13;
+    --green-3: #529a23;
+    --font-1: Proxima Nova, Arial, sans-serif;
+    --shadow-1: .25rem .25rem .5rem rgb(0, 0, 0, 0.15);
+}
+
 body {
     background-color: #f2f2f2;
     margin: 0px;
     box-sizing: border-box;
 }
 
-.jaunts__btn-1 {
-    cursor: pointer;
-    width: 6rem;
-    height: 2rem;
-    font-size: 1rem;
-    font-weight: bold;
-    font-family: Proxima Nova, Arial, sans-serif;
-    border: none;
-    border-radius: .5rem;
-    background-color: #428a13;
-    color: #fff;
-    transition: .1s ease-in-out;
-    box-shadow: 0 .25rem .5rem 0 rgb(0, 0, 0, 0.1);
-}
-
-.jaunts__btn-1:hover {
-    background-color: #529a23;
-}
-
-.jaunts__btn-2 {
-    cursor: pointer;
+.jaunts__btn {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    font-family: var(--font-1);
+    font-size: 1rem;
+    font-weight: 700;
     width: 6rem;
     height: 2rem;
-    font-size: 1rem;
-    font-weight: bold;
-    font-family: Proxima Nova, Arial, sans-serif;
-    background-color: #fff;
-    border: 2px solid;
-    border-radius: .5rem;
-    transition: .1s ease-in-out;
     box-sizing: border-box;
-    box-shadow: 0 .25rem .5rem 0 rgb(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-1);
+    border: none;
+    border-radius: 5rem;
+    transition: .1s ease-in-out;
+}
+
+.jaunts__btn-1 {
+    background-color: var(--green-2);
+    color: white;
+}
+
+.jaunts__btn-1:hover {
+    background-color: var(--green-3);
+}
+
+.jaunts__btn-2 {
+    background-color: var(--blue-2);
+    color: white;
 }
 
 .jaunts__btn-2:hover {
-    border-color: #428a13;
-    color: #428a13;
+    background-color: var(--blue-3);
+}
+
+.jaunts__btn-3 {
+    background-color: white;
+}
+
+.jaunts__btn-3:hover {
+    color: var(--green-3);
 }
 
 .trail-completed {
-    background-color: #428a13;
-    color: #fff;
-    font-family: Proxima Nova, Arial, sans-serif;
+    background-color: var(--green-2);
+    color: white;
+    font-family: var(--font-1);
     font-size: 1rem;
 
     position: absolute;
