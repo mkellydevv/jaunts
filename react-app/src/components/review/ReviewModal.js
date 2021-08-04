@@ -39,10 +39,14 @@ export default function ReviewModal({ trail, review, close }) {
 
     return (
         <>
-            <div className="review-modal__name">{trail.name}</div>
+            <div className="review-modal__name">
+                {trail.name}
+            </div>
+
             <div>
                 <StarRating fixed={false} setRating={setRating} rating={rating}/>
             </div>
+
             <div>
                 <textarea
                     className="review-modal__blurb"
@@ -53,6 +57,7 @@ export default function ReviewModal({ trail, review, close }) {
                     onChange={e => setBlurb(e.target.value)}
                 />
             </div>
+
             <div>
                 <span>Date</span>
                 <input
@@ -62,9 +67,10 @@ export default function ReviewModal({ trail, review, close }) {
                     onChange={e => setDate(e.target.value)}
                 />
             </div>
-            <div>
+
+            <div className="review-modal__submit">
                 <button
-                    className="review-modal__submit"
+                    className="jaunts__btn jaunts__btn-1"
                     onClick={handleSubmit}
                 >
                     Submit

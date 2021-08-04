@@ -48,10 +48,10 @@ export default function Review({ review, open }) {
             </div>
             {user && user.id === review.user_id &&
             <div className="review__buttons">
-                <button className="jaunts__btn-1" onClick={() => open(review)}>
+                <button className="jaunts__btn jaunts__btn-1" onClick={() => open(review)}>
                     Edit
                 </button>
-                <button className="jaunts__btn-2" onClick={handleDelete}>
+                <button className="jaunts__btn jaunts__btn-3" onClick={handleDelete}>
                     Delete
                 </button>
             </div>}

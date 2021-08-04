@@ -26,14 +26,26 @@ export default function TrailCard({ trail, completed=false }) {
             className="trail-card"
             onClick={navigateToTrail}
         >
+
+            {completed &&
+            <div className="trail-completed">
+                <i className="fas fa-check" />Completed
+            </div>}
+
             <div className="trail-card__img-container">
                 <img className="trail-card__img" src={Object.values(trail.photos)[0].url.replace("extra_", "")} />
             </div>
+
             <div className="trail-card__content">
-                {/* TODO: START HERE */}
-                <div>Completed: {completed ? "True" : "False"}</div>
-                <div className="trail-card__name trail-card__font">{trail.name}</div>
-                <div className=".trail-card__font">{trail.region}</div>
+
+                <div className="trail-card__name trail-card__font">
+                    {trail.name}
+                </div>
+
+                <div className=".trail-card__font">
+                    {trail.region}
+                </div>
+
                 <div className="trail-card__info">
                     <span className={`trail-card__difficulty difficulty-${map[trail.difficulty]}`}>
                         {trail.difficulty}
@@ -45,12 +57,15 @@ export default function TrailCard({ trail, completed=false }) {
                         {`(${trail.default_weighting})`}
                     </span>
                 </div>
+
                 <div>
                     <span>Length: {trail.length} mi</span>
                     <span> &#8226; </span>
                     <span>Est. {trail.duration_hours} h {trail.duration_minutes} m</span>
                 </div>
+
             </div>
+
         </div>
     )
 }

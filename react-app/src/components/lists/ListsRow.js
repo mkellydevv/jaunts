@@ -84,8 +84,8 @@ export default function ListsRow({ list, open }) {
                 <div>Trails: {jauntsArr.length}</div>
             </div>
             <div className="lists-row__buttons">
-                <button className="lists-row__edit jaunts__btn-1" onClick={handleEdit}>Edit</button>
-                <button className="lists-row__delete jaunts__btn-2" onClick={handleDelete}>Delete</button>
+                <button className="lists-row__edit jaunts__btn jaunts__btn-1" onClick={handleEdit}>Edit</button>
+                <button className="lists-row__delete jaunts__btn jaunts__btn-3" onClick={handleDelete}>Delete</button>
             </div>
         </div>
     )

@@ -37,6 +37,31 @@ export const getUser = (id, query, key) => async (dispatch) => {
     }
 }
 
+export const markTrailComplete = (userId, query, payload, key) => async (dispatch) => {
+    const url = appendQueryArgs(query, `/api/users/${userId}/trails`);
+    const res = await fetch(url, {
+        method: 'POST',
+        body: payload
+    });
+    const data = await res.json();
+    if (res.ok) {
+        dispatch(storeUser(data, key));
+        return {};
+    }
+    return data;
+}
+
+export const markTrailIncomplete = (userId, trailId, query, key) => async (dispatch) => {
+    const url = appendQueryArgs(query, `/api/users/${userId}/trails/${trailId}`);
+    const res = await fetch(url, { method: 'DELETE' });
+    const data = await res.json();
+    if (res.ok) {
+        dispatch(storeUser(data, key));
+        return {};
+    }
+    return data;
+}
+
 const initialState = {};
 
 export default function reducer(state=initialState, { type, payload, key="default" }) {
