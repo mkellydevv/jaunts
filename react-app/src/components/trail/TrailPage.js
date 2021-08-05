@@ -119,11 +119,10 @@ export default function TrailPage() {
         return () => {};
     }, [user]);
 
-
-
     return (
     <>
         <div className="trail-page">
+            <div className="dummy-nav" />
             <div className="trail-page__content">
                 <section className="trail-section">
 
