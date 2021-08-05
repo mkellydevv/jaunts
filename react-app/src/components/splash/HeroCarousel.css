@@ -19,7 +19,7 @@
 .hero-carousel > h1 {
     position: absolute;
     color: white;
-    text-shadow: var(--shadow-1);
+    text-shadow: var(--shadow-2);
     font-size: 4rem;
     font-weight: 700;
     font-stretch: normal;

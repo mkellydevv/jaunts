@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
@@ -7,21 +8,33 @@ import "./NavBar.css";
 
 export default function NavBar() {
 	const { user } = useSelector(state => state.session);
-	const [navbar, setNavbar] = useState(false);
+	const [active, setActive] = useState(false);
+	const location = useLocation();
 
 	const changeBackground = () => {
 		if (window.scrollY >= 80) {
-			setNavbar(true);
+			setActive(true);
 		}
 		else {
-			setNavbar(false);
+			setActive(false);
 		}
 	}
 
-	window.addEventListener('scroll', changeBackground);
+	useEffect(() => {
+		if (window.location.pathname !== "/")
+			setActive(true);
+		else {
+			setActive(false);
+			window.addEventListener('scroll', changeBackground);
+		}
+
+		return () => {
+			window.removeEventListener('scroll', changeBackground);
+		}
+	}, [location]);
 
 	return (
-		<nav id="navbar" className={navbar ? "active" : ""}>
+		<nav id="navbar" className={active ? "active" : ""}>
 			<div className="navbar__lists">
 				{user &&
 					<NavLink to="/lists" exact={true} activeClassName="active">
@@ -29,11 +42,16 @@ export default function NavBar() {
 					</NavLink>
 				}
 			</div>
-			<div className="navbar__home">
-				<NavLink to="/" exact={true} activeClassName="active">
-					Jaunts
+				<NavLink className="navbar__home-link" to="/" exact={true} activeClassName="active">
+					<div className="navbar__home">
+						<div className="navbar__home-icon">
+							<i className="fas fa-hiking" />
+						</div>
+						<div className="navbar__home-text">
+							Jaunts
+						</div>
+					</div>
 				</NavLink>
-			</div>
 			<div className="navbar__auth">
 				{!user &&
 					<>

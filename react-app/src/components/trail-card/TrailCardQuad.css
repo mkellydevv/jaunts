@@ -1,8 +1,8 @@
 
 .card-quad {
     box-sizing: border-box;
-    padding: 0 1rem;
-    margin-bottom: 1rem;
+
+    margin: 0 1rem;
 }
 
 .card-quad > h2 {
@@ -12,7 +12,7 @@
     font-weight: 700;
     color: #414141;
     max-width: 1240px;
-    margin: 12px auto;
+    margin: 1rem;
     width: calc(100% - 32px);
 }
 

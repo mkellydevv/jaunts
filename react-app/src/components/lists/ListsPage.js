@@ -41,6 +41,7 @@ export default function ListsPage() {
     return (
         <>
             <div className="lists-page">
+                <div className="dummy-nav" />
                 <div className="lists-page__create-list">
                     {user &&
                         <button

@@ -50,8 +50,9 @@ export default function ListPage() {
     }, [user, dispatch]);
 
     return (
-        <div className="page-content">
-            <div className="list-page">
+        <div className="list-page">
+            <div className="dummy-nav" />
+            <div className="list-page__content">
                 <div className="list-page__header">
                     <div className="list-page__name">
                         {list && list.name}
