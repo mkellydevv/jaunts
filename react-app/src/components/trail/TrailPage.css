@@ -44,6 +44,11 @@
     line-height: normal;
     letter-spacing: normal;
     margin-bottom: .5rem;
+    text-shadow: var(--shadow-1);
+}
+
+.trail-section__header-region {
+    text-shadow: var(--shadow-1);
 }
 
 .trail-section__header-info {

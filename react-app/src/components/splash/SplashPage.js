@@ -133,8 +133,26 @@ export default function SplashPage() {
 
             <div className={`splash-page__promo`}>
                 <img
-                    src="https://cdn-assets.alltrails.com/assets/images/homepage/pro_upsell/bg_desktop_en.jpg"
+                    // src="https://cdn-assets.alltrails.com/assets/images/homepage/pro_upsell/bg_desktop_en.jpg"
+                    src="https://cdn.discordapp.com/attachments/415362732561399809/872649311677186048/promo-3.jpg"
                 />
+                <div className="splash-page__promo-text">
+                    <div className="splash-page__promo-title">
+                        Explore trails before ever leaving home
+                    </div>
+                    <div className="splash-page__promo-content">
+                        <div>
+                            Explore the world of trails in 3D. This map viewer utilizes the Mapbox API to
+                            fetch global elevation data as raster images and renders the data as voxels using
+                            the Three.js graphics library.
+                        </div>
+                        <div className="splash-page__promo-btn">
+                            <button className="jaunts__btn jaunts__btn-2">
+                                Explore
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <TrailCardQuad tag={"rocky"} completedTrails={completedTrails} />

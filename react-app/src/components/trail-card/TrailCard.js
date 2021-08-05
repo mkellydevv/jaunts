@@ -18,7 +18,6 @@ export default function TrailCard({ trail, completed=false }) {
 
     const navigateToTrail = () => {
         history.push(`/trails/${trail.id}`);
-        console.log(`history`, history)
     }
 
     return (

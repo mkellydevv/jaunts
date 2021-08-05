@@ -78,12 +78,49 @@
 .splash-page__promo {
     height: 40rem;
     width: 100%;
+    position: relative;
 }
 
 .splash-page__promo > img {
     object-fit: cover;
     width: 100%;
     height: 100%;
+}
+
+.splash-page__promo-text {
+    height: 100%;
+    font-size: 1.2rem;
+    color: white;
+    position: absolute;
+    top: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    align-items: center;
+    text-shadow: var(--shadow-1);
+}
+
+.splash-page__promo-text > div {
+    padding: 20%;
+    text-align: center;
+}
+
+.splash-page__promo-title {
+    font-size: 4rem;
+    font-weight: 700;
+}
+
+.splash-page__promo-content {
+    display: grid;
+    grid-gap: 1rem;
+}
+
+.splash-page__promo-content > button {
+    align-self: flex-end;
+}
+
+.splash-page__promo-btn {
+    display: flex;
+    justify-content: center;
 }
 
 .splash-page__activities {
@@ -117,7 +154,6 @@
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
-
     font-size: 1.2rem;
 }
 
