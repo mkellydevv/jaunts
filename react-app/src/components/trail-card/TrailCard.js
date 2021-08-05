@@ -18,7 +18,6 @@ export default function TrailCard({ trail, completed=false }) {
 
     const navigateToTrail = () => {
         history.push(`/trails/${trail.id}`);
-        console.log(`history`, history)
     }
 
     return (
@@ -38,11 +37,11 @@ export default function TrailCard({ trail, completed=false }) {
 
             <div className="trail-card__content">
 
-                <div className="trail-card__name trail-card__font">
+                <div className="trail-card__name ">
                     {trail.name}
                 </div>
 
-                <div className=".trail-card__font">
+                <div className=".trail-card__region">
                     {trail.region}
                 </div>
 
@@ -58,7 +57,7 @@ export default function TrailCard({ trail, completed=false }) {
                     </span>
                 </div>
 
-                <div>
+                <div className="trail-card__length">
                     <span>Length: {trail.length} mi</span>
                     <span> &#8226; </span>
                     <span>Est. {trail.duration_hours} h {trail.duration_minutes} m</span>

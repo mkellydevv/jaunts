@@ -57,9 +57,9 @@ export default function ListModal({ list, close }) {
                     onChange={e => setBlurb(e.target.value)}
                 />
             </div>
-            <div>
+            <div className="list-modal__submit">
                 <button
-                    className="list-modal__submit"
+                    className="jaunts__btn jaunts__btn-1"
                     onClick={handleSubmit}
                 >
                     Submit

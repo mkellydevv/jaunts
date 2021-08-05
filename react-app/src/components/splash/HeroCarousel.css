@@ -20,7 +20,6 @@
     position: absolute;
     color: white;
     text-shadow: var(--shadow-1);
-    font-family: var(--font-1);
     font-size: 4rem;
     font-weight: 700;
     font-stretch: normal;

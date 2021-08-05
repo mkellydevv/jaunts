@@ -20,6 +20,7 @@ export default function SplashPage() {
     const { user } = useSelector(state => state["session"]);
     const { default: users } = useSelector(state => state["users"]);
     const completedTrails = users ? new Set(Object.values(users)[0]["completed_trails"]) : new Set([]);
+    const [inputFocus, setInputFocus] = useState(false);
 
     const submit = () => {
         history.push(`/trails/${Object.values(searchResults)[0]["id"]}`);
@@ -55,10 +56,14 @@ export default function SplashPage() {
             <HeroCarousel />
 
             <div className="search-bar">
-                <i className="fas fa-search" />
+                <div className="search-bar__icon">
+                    <i className={`fas fa-search ${inputFocus ? "active": ""}`} />
+                </div>
                 <input
                     className="search-bar__input"
                     placeholder="Search by region, state, or trail name"
+                    onFocus={() => setInputFocus(true)}
+                    onBlur={() => setInputFocus(false)}
                     onChange={e => {
                         currSearch.current = e.target.value;
                     }}
@@ -74,15 +79,96 @@ export default function SplashPage() {
 
             <TrailCardQuad tag={"camping"} completedTrails={completedTrails} />
 
-            <div>
-                <img
-                    src="https://cdn-assets.alltrails.com/assets/images/homepage/pro_upsell/bg_desktop_en.jpg"
+            <TrailCardQuad tag={"waterfall"} completedTrails={completedTrails} />
 
-                />
+            <div className="splash-page__activities">
+
+                <div className="splash-page__activities-title">
+                    Browse by activity type
+                </div>
+
+                <div className="splash-page__tags">
+                    <div className="spash-page__tag-cell">
+                        <div className="splash-page__tag-img">
+                            <img src="https://cdn-assets.alltrails.com/assets/images/activities/square/hiking@2x.png" />
+                        </div>
+                        <div>
+                            Hiking
+                        </div>
+                    </div>
+                    <div className="spash-page__tag-cell">
+                        <div className="splash-page__tag-img">
+                            <img src="https://cdn-assets.alltrails.com/assets/images/activities/square/mountain-biking@2x.png" />
+                        </div>
+                        <div>
+                            Mountain Biking
+                        </div>
+                    </div>
+                    <div className="spash-page__tag-cell">
+                        <div className="splash-page__tag-img">
+                            <img src="https://cdn-assets.alltrails.com/assets/images/activities/square/trail-running@2x.png" />
+                        </div>
+                        <div>
+                            Trail Running
+                        </div>
+                    </div>
+                    <div className="spash-page__tag-cell">
+                        <div className="splash-page__tag-img">
+                            <img src="https://cdn-assets.alltrails.com/assets/images/activities/square/backpacking@2x.png" />
+                        </div>
+                        <div>
+                            Backpacking
+                        </div>
+                    </div>
+                    <div className="spash-page__tag-cell">
+                        <div className="splash-page__tag-img">
+                            <img src="https://cdn-assets.alltrails.com/assets/images/activities/square/walking@2x.png" />
+                        </div>
+                        <div>
+                            Walking
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <TrailCardQuad tag={"waterfall"} completedTrails={completedTrails} />
+            <div className={`splash-page__promo`}>
+                <img
+                    // src="https://cdn-assets.alltrails.com/assets/images/homepage/pro_upsell/bg_desktop_en.jpg"
+                    src="https://cdn.discordapp.com/attachments/415362732561399809/872649311677186048/promo-3.jpg"
+                />
+                <div className="splash-page__promo-text">
+                    <div className="splash-page__promo-title">
+                        Explore trails before ever leaving home
+                    </div>
+                    <div className="splash-page__promo-content">
+                        <div>
+                            Explore the world of trails in 3D. This map viewer utilizes the Mapbox API to
+                            fetch global elevation data as raster images and renders the data as voxels using
+                            the Three.js graphics library.
+                        </div>
+                        <div className="splash-page__promo-btn">
+                            <button className="jaunts__btn jaunts__btn-2">
+                                Explore
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <TrailCardQuad tag={"rocky"} completedTrails={completedTrails} />
+
+            <TrailCardQuad tag={"views"} completedTrails={completedTrails} />
+
+            <div className="splash-page__info">
+
+            </div>
+
+            <div className="splash-page__footer">
+                <a href="https://github.com/mkellydevv" target="_blank">
+                    <i className="fab fa-github" /> Github
+                </a>
+            </div>
+
         </div>
     )
 }
