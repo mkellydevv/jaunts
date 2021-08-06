@@ -16,8 +16,7 @@ export default function TrailCardList({ trail, completedTrails }) {
 
     useEffect(() => {
         const query = trailQuery({
-            searchTerm: trail.region,
-            searchCategories: ["region"],
+            searchRegion: trail.region,
             limit: 10,
             getPhotos: 1,
         });
