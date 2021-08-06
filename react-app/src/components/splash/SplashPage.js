@@ -1,48 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 
-import { getTrails, clearTrails } from "../../store/trails";
 import { getUser } from "../../store/users";
-import { trailQuery, userQuery } from "../../utils/queryObjects";
+import { userQuery } from "../../utils/queryObjects";
 
 import HeroCarousel from "./HeroCarousel";
 import TrailCardQuad from "../trail-card/TrailCardQuad";
+import SearchBar from "./SearchBar";
 
 import "./SplashPage.css";
 
 export default function SplashPage() {
-    const currSearch = useRef("");
-    const prevSearch = useRef("");
     const dispatch = useDispatch();
-    const history = useHistory();
-    const searchResults = useSelector(state => state["trails"]["search"]);
     const { user } = useSelector(state => state["session"]);
     const { default: users } = useSelector(state => state["users"]);
     const completedTrails = users ? new Set(Object.values(users)[0]["completed_trails"]) : new Set([]);
-    const [inputFocus, setInputFocus] = useState(false);
-
-    const submit = () => {
-        history.push(`/trails/${Object.values(searchResults)[0]["id"]}`);
-    }
-
-    useEffect(() => {
-        const searchInterval = setInterval(() => {
-            if (currSearch.current.length && prevSearch.current !== currSearch.current) {
-                const query = trailQuery({
-                    searchTerm: currSearch.current,
-                    limit: 1
-                });
-                dispatch(getTrails(query, "search"));
-            }
-            prevSearch.current = currSearch.current;
-        }, 1000);
-
-        return () => {
-            clearInterval(searchInterval);
-            dispatch(clearTrails("search"));
-        }
-    }, [dispatch]);
 
     useEffect(() => {
         if (!user) return;
@@ -55,27 +27,7 @@ export default function SplashPage() {
         <div className="splash-page">
             <HeroCarousel />
 
-            <div className="search-bar">
-                <div className="search-bar__icon">
-                    <i className={`fas fa-search ${inputFocus ? "active": ""}`} />
-                </div>
-                <input
-                    className="search-bar__input"
-                    placeholder="Search by region, state, or trail name"
-                    onFocus={() => setInputFocus(true)}
-                    onBlur={() => setInputFocus(false)}
-                    onChange={e => {
-                        currSearch.current = e.target.value;
-                    }}
-                    onKeyPress={e => {
-                        if (e.key === "Enter" && prevSearch.current === currSearch.current)
-                            submit()
-                    }}
-                />
-                <button className="search-bar__submit" onClick={submit}>
-                    <i className="fas fa-arrow-right" />
-                </button>
-            </div>
+            <SearchBar />
 
             <TrailCardQuad tag={"camping"} completedTrails={completedTrails} />
 
