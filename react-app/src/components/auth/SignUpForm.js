@@ -41,6 +41,8 @@ const SignUpForm = () => {
   }
 
   return (
+  <>
+    <div className="dummy-nav" />
     <form className="sign-up-form" onSubmit={onSignUp}>
       <div>
         <label>User Name</label>
@@ -85,6 +87,7 @@ const SignUpForm = () => {
       </div>
       <button type="submit">Sign Up</button>
     </form>
+  </>
   );
 };
 

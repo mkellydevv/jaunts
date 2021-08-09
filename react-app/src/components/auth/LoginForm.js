@@ -13,8 +13,8 @@ const LoginForm = () => {
   const dispatch = useDispatch();
 
   const handleDemo = () => {
-    setEmail("demo@aa.io");
-    setPassword("password");
+    setEmail("john.demo@aa.io");
+    setPassword("Kvothe1!");
   }
 
   const onLogin = async (e) => {
@@ -38,6 +38,8 @@ const LoginForm = () => {
   }
 
   return (
+  <>
+    <div className="dummy-nav" />
     <form className="login-form" onSubmit={onLogin}>
       <div>
         {errors.map((error) => (
@@ -69,6 +71,7 @@ const LoginForm = () => {
       <button onClick={handleDemo} type="submit">Demo Login</button>
       <button type="submit">Login</button>
     </form>
+  </>
   );
 };
 
