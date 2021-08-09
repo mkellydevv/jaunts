@@ -59,9 +59,10 @@ export function reviewQuery(args={}) {
 export function trailQuery(args={}) {
     const query = {
         fromListId: "",
-        searchTerm: "",
-        searchCategories: ["name"],
+        searchName: "",
+        searchRegion: "",
         searchTags: [],
+        searchDifficulty: "",
         offset: 0,
         limit: 25,
         getCompletedUsers: "",

@@ -16,20 +16,21 @@ def get_trails():
     args = request.args
     joins = extractJoins(args, joinList)
 
-    searchCats = args['searchCategories'].split(",") if args['searchCategories'] else []
-    searchTags = args['searchTags'].split(",") if args['searchTags'] else []
-
     query = Trail.query
+
     if args["fromListId"]:
         query = query.filter(Trail.id == Jaunt.trail_id, Jaunt.list_id == args["fromListId"])
-    query = query.filter(
-        or_(
-            Trail.name.ilike(f"%{args['searchTerm']}%"),
-            Trail.region.ilike(f"%{args['searchTerm']}%") if "region" in searchCats else False
-        )
-    )
+
+    if args["searchName"] != "":
+        query = query.filter(Trail.name.ilike(f"%{args['searchName']}%"))
+
+    if args["searchRegion"] != "":
+        query = query.filter(Trail.region.ilike(f"%{args['searchRegion']}%"))
+
+    searchTags = args['searchTags'].split(",") if args['searchTags'] else []
     for tag in searchTags:
-        query = query.filter(Trail.tags.any(Tag.name.ilike(f"{tag}")))
+        query = query.filter(Trail.tags.any(Tag.name.ilike(f"%{tag}%")))
+
     query = query.offset(int(args['offset']) * int(args['limit']))
     query = query.limit(int(args['limit']))
 

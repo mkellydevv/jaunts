@@ -7,6 +7,7 @@
     --green-1: #1e4304;
     --green-2: #428a13;
     --green-3: #529a23;
+    --text-color-1: #414141;
     --font-1: "Inter", Arial, sans-serif;
     --shadow-1: .25rem .25rem .5rem rgb(0, 0, 0, 0.15);
     --shadow-2: .25rem .25rem .5rem rgb(0, 0, 0, .45);
@@ -17,6 +18,7 @@ body {
     margin: 0px;
     box-sizing: border-box;
     font-family: var(--font-1);
+    color: var(--text-color-1);
 }
 
 input, textarea {
