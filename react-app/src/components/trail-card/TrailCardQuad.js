@@ -8,13 +8,13 @@ import TrailCard from "./TrailCard";
 
 import "./TrailCardQuad.css";
 
-export default function TrailCardQuad({ trailLimit, tag, completedTrails }) {
+export default function TrailCardQuad({ tag, trailLimit, completedTrails }) {
     const dispatch = useDispatch();
     const trails = useSelector(state => state["trails"][tag]);
     const trailsArr = trails ? Object.values(trails) : [];
-    const [loadedChildren, setLoadedChildren] = useState(0);
     const tmp = new Array(trailLimit).fill(false);
     const [activeChildren, setActiveChildren] = useState(tmp);
+    const [loadedChildren, setLoadedChildren] = useState(0);
 
     useEffect(() => {
         const query = trailQuery({
@@ -31,7 +31,7 @@ export default function TrailCardQuad({ trailLimit, tag, completedTrails }) {
         let interval;
         let count = 0;
         let limit = trailLimit;
-        if (loadedChildren === 4) {
+        if (loadedChildren === trailLimit) {
             interval = setInterval(() => {
                 if (count !== limit){
                     setActiveChildren(state => {

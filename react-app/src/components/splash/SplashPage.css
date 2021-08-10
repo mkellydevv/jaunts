@@ -145,10 +145,16 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    font-size: 1.2rem;
 }
 
 .splash-page__footer > a {
-    padding: 1rem;
+    margin: 1rem;
     text-decoration: none;
-    font-size: 1.2rem;
+    border-bottom: 2px solid transparent;
+}
+
+.splash-page__footer > a:hover {
+    color: var(--green-3);
+    border-bottom: 2px solid var(--green-3);
 }

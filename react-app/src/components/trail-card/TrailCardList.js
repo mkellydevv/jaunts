@@ -8,9 +8,9 @@ import TrailCard from "./TrailCard";
 
 import "./TrailCardList.css";
 
-export default function TrailCardList({ trail, completedTrails }) {
+export default function TrailCardList({ trail, tag, trailLimit, completedTrails }) {
     const dispatch = useDispatch();
-    const trails = useSelector(state => state["trails"]["nearby"]);
+    const trails = useSelector(state => state["trails"][tag]);
     if (trails) delete trails[trail.id];
     const trailsArr = trails ? Object.values(trails) : [];
     const [childrenCount, setChildrenCount] = useState(trailsArr.length);
@@ -21,12 +21,11 @@ export default function TrailCardList({ trail, completedTrails }) {
     useEffect(() => {
         const query = trailQuery({
             searchRegion: trail.region,
-            limit: 10,
+            limit: trailLimit,
             getPhotos: 1,
         });
-        dispatch(getTrails(query, "nearby"));
-
-        return () => dispatch(clearTrails("nearby"));
+        dispatch(getTrails(query, tag));
+        return () => dispatch(clearTrails(tag));
     }, [dispatch]);
 
     useEffect(() => {
@@ -38,7 +37,7 @@ export default function TrailCardList({ trail, completedTrails }) {
         let interval;
         let count = 0;
         let limit = childrenCount;
-        if (loadedChildren === 4) {
+        if (loadedChildren === childrenCount) {
             interval = setInterval(() => {
                 if (count !== limit){
                     setActiveChildren(state => {
@@ -61,7 +60,7 @@ export default function TrailCardList({ trail, completedTrails }) {
                     return (
                         <TrailCard
                             trail={trail}
-                            tag={"nearby"}
+                            tag={tag}
                             active={activeChildren[i]}
                             key={`TrailCard__nearby-${trail.id}`}
                             completed={completedTrails.has(trail.id) ? true : false}

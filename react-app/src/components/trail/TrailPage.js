@@ -258,7 +258,7 @@ export default function TrailPage() {
 
                 <div className="trail-page__extra">
                     <h2>Nearby Trails</h2>
-                    {trail && <TrailCardList trail={trail} completedTrails={completedTrails} />}
+                    {trail && <TrailCardList trail={trail} tag={"nearby"} trailLimit={10} completedTrails={completedTrails} />}
                 </div>
 
             </div>

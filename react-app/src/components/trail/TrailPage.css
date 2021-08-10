@@ -1,7 +1,7 @@
 
 .trail-page__content {
     display: grid;
-    grid-template-columns: 4fr 1fr;
+    grid-template-columns: 1fr 20rem;
     grid-gap: 1rem;
 }
 
