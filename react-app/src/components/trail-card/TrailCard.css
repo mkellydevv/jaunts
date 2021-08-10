@@ -16,6 +16,15 @@
     display: grid;
     grid-template-rows: repeat(2, 50%);
     overflow: hidden;
+    opacity: 0;
+}
+
+.trail-card.animating {
+    transition: .75s ease-in-out !important;
+}
+
+.trail-card.active {
+    opacity: 1;
 }
 
 .trail-card:hover {
@@ -25,6 +34,7 @@
 .trail-card__img-container {
     height: 100%;
     width: 100%;
+    background-color: #e0e0e0;
 }
 
 .trail-card__img {

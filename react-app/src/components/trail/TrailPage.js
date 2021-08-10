@@ -114,6 +114,7 @@ export default function TrailPage() {
     }, [dispatch, history.location])
 
     useEffect(() => {
+        if (!user) return;
         const query = userQuery({ getCompletedTrails: 1000 });
         dispatch(getUser(user.id, query));
         return () => {};

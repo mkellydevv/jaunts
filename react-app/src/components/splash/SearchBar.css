@@ -76,6 +76,8 @@
     transition: .1s ease-in-out;
     visibility: hidden;
     opacity: 0;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
 }
 
 .search-bar__results.active {

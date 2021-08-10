@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -12,9 +12,17 @@ const map = {
     Hard: "hard"
 }
 
-export default function TrailCard({ trail, completed=false }) {
+export default function TrailCard({ trail, tag, active, completed=false, setLoadedChildren }) {
     const history = useHistory();
 
+    const handleTransitionEnd = () => {
+        const el = document.getElementById(`TrailCard__${tag}-${trail.id}`);
+        el.classList.remove("animating");
+    }
+
+    const setLoaded = () => {
+        setLoadedChildren(state => state + 1);
+    };
 
     const navigateToTrail = () => {
         history.push(`/trails/${trail.id}`);
@@ -22,8 +30,11 @@ export default function TrailCard({ trail, completed=false }) {
 
     return (
         <div
-            className="trail-card"
+            id={`TrailCard__${tag}-${trail.id}`}
+            className={`trail-card ${active ? "active" : ""} animating`}
             onClick={navigateToTrail}
+            onLoad={setLoaded}
+            onTransitionEnd={handleTransitionEnd}
         >
 
             {completed &&

@@ -15,6 +15,7 @@ export default function SplashPage() {
     const { user } = useSelector(state => state["session"]);
     const { default: users } = useSelector(state => state["users"]);
     const completedTrails = users ? new Set(Object.values(users)[0]["completed_trails"]) : new Set([]);
+    const trailLimit = 4;
 
     useEffect(() => {
         if (!user) return;
@@ -29,9 +30,9 @@ export default function SplashPage() {
 
             <SearchBar />
 
-            <TrailCardQuad tag={"camping"} completedTrails={completedTrails} />
+            <TrailCardQuad trailLimit={trailLimit} tag={"camping"} completedTrails={completedTrails} />
 
-            <TrailCardQuad tag={"waterfall"} completedTrails={completedTrails} />
+            <TrailCardQuad trailLimit={trailLimit} tag={"waterfall"} completedTrails={completedTrails} />
 
             <div className="splash-page__activities">
 
@@ -108,9 +109,9 @@ export default function SplashPage() {
                 </div>
             </div>
 
-            <TrailCardQuad tag={"rocky"} completedTrails={completedTrails} />
+            <TrailCardQuad trailLimit={trailLimit} tag={"rocky"} completedTrails={completedTrails} />
 
-            <TrailCardQuad tag={"views"} completedTrails={completedTrails} />
+            <TrailCardQuad trailLimit={trailLimit} tag={"views"} completedTrails={completedTrails} />
 
             <div className="splash-page__info">
                 <div>

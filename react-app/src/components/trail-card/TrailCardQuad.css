@@ -1,7 +1,6 @@
 
 .card-quad {
     box-sizing: border-box;
-
     margin: 0 1rem;
 }
 
@@ -20,4 +19,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 1rem;
+
+    height: 100%;
+    max-height: 18rem;
 }
