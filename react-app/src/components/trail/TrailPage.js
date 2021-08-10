@@ -82,7 +82,13 @@ export default function TrailPage() {
         setShowListModal(false);
     }
 
+    const handleAddToList = () => {
+        if (!user) return;
+        openListModal();
+    }
+
     const handleMarkComplete = () => {
+        if (!user) return;
         const query = userQuery({ getCompletedTrails: 1000 });
         if (completedTrails.has(trail.id)) {
             dispatch(markTrailIncomplete(user.id, trail.id, query));
@@ -159,7 +165,7 @@ export default function TrailPage() {
                     </div>
 
                     <div className="trail-section__action-bar">
-                        <div className="trail-section__action-tab" onClick={openListModal}>
+                        <div className="trail-section__action-tab" onClick={handleAddToList}>
                             <div className="trail-section__action-btn">
                                 <i className="fas fa-star" />
                             </div>

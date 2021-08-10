@@ -12,6 +12,7 @@ import "./ReviewList.css";
 export default function ReviewList({ trail, open }) {
     const dispatch = useDispatch();
     const reviews = useSelector(state => state["reviews"]);
+    const { user } = useSelector(state => state["session"]);
 
     useEffect(() => {
         const query = reviewQuery({
@@ -35,7 +36,7 @@ export default function ReviewList({ trail, open }) {
                     </span>
                 </div>
                 <span>
-                    {trail && <button className={"jaunts__btn jaunts__btn-1"} onClick={() => open()}>
+                    {trail && user && <button className={"jaunts__btn jaunts__btn-1"} onClick={() => open()}>
                         Write Review
                     </button>}
                 </span>
