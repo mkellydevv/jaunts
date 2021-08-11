@@ -1,7 +1,6 @@
 
 .trail-page__content {
-    display: grid;
-    grid-template-columns: 1fr 20rem;
+    display: flex;
     grid-gap: 1rem;
 }
 
@@ -221,4 +220,8 @@
     left: 0;
     margin: 12px;
     border-radius: 4px;
+}
+
+.trail-page__test {
+
 }

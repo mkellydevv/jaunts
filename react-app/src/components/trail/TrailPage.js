@@ -9,22 +9,22 @@ import { getUser, markTrailComplete, markTrailIncomplete } from "../../store/use
 import { photoQuery, routeQuery, trailQuery, userQuery } from "../../utils/queryObjects";
 
 import ReviewList from "../review/ReviewList";
-import TrailCardList from "../trail-card/TrailCardList";
 import Modal from "../Modal";
 import ReviewModal from "../review/ReviewModal";
 import StarRating from "../random/StarRating";
 import PhotoGrid from "../photos/PhotoGrid";
 import ViewPhotoModal from "../photos/ViewPhotoModal";
 import ListsModal from "../lists/ListsModal";
+import Divider from "./Divider";
 
 import { unpackCoordinates } from "../../utils/helperFuncs";
 
-import "./TrailPage.css"
+import "./TrailPage.css";
 
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 mapboxgl.accessToken = 'pk.eyJ1IjoibWtlbGx5ZGV2diIsImEiOiJja3BmcXZuY3YwNzg0MnFtd3Rra3M3amI4In0.h8HRrZ2xGNP-aq7EwO0YVA';
 
-const map = {
+const difficultyMap = {
     Easy: "easy",
     Moderate: "moderate",
     Hard: "hard"
@@ -57,62 +57,65 @@ export default function TrailPage() {
     const [activeInfoTab, setActiveInfoTab] = useState("Description");
     const [activeFeedTab, setActiveFeedTab] = useState("Reviews");
 
+    // Divider
+    const [leftPanelWidth, setLeftPanelWidth] = useState(872);
+
     const mapContainer = useRef(null);
     const map = useRef(null);
     const [lng, setLng] = useState(-78.2875100);
     const [lat, setLat] = useState(38.57103000);
     const [zoom, setZoom] = useState(13);
 
-    useEffect(() => {
-        if (map.current) return; // initialize map only once
-        map.current = new mapboxgl.Map({
-            container: mapContainer.current,
-            style: 'mapbox://styles/mapbox/outdoors-v11',
-            center: [lng, lat],
-            zoom: zoom
-        });
-        map.current.addControl(new mapboxgl.NavigationControl());
+    // useEffect(() => {
+    //     if (map.current) return; // initialize map only once
+    //     map.current = new mapboxgl.Map({
+    //         container: mapContainer.current,
+    //         style: 'mapbox://styles/mapbox/outdoors-v11',
+    //         center: [lng, lat],
+    //         zoom: zoom
+    //     });
+    //     map.current.addControl(new mapboxgl.NavigationControl());
 
-    });
+    // });
 
-    useEffect(() => {
-        if (!routes) return;
-        map.current.on('load', () => {
-            map.current.addSource('route', {
-                type: 'geojson',
-                data: {
-                    type: 'Feature',
-                    properties: {},
-                    geometry: {
-                        type: 'LineString',
-                        coordinates: coordinates
-                    }
-                }
-            });
-            map.current.addLayer({
-                id: 'route',
-                type: 'line',
-                source: 'route',
-                layout: {
-                    'line-join': 'round',
-                    'line-cap': 'round'
-                },
-                paint: {
-                    'line-color': '#ff0000',
-                    'line-width': 5
-                }
-            });
-        });
-    }, [routes]);
+    // useEffect(() => {
+    //     if (!routes) return;
+    //     map.current.on('load', () => {
+    //         map.current.addSource('route', {
+    //             type: 'geojson',
+    //             data: {
+    //                 type: 'Feature',
+    //                 properties: {},
+    //                 geometry: {
+    //                     type: 'LineString',
+    //                     coordinates: coordinates
+    //                 }
+    //             }
+    //         });
+    //         map.current.addLayer({
+    //             id: 'route',
+    //             type: 'line',
+    //             source: 'route',
+    //             layout: {
+    //                 'line-join': 'round',
+    //                 'line-cap': 'round'
+    //             },
+    //             paint: {
+    //                 'line-color': '#ff0000',
+    //                 'line-width': 5
+    //             }
+    //         });
+    //     });
+    // }, [routes]);
 
-    useEffect(() => {
-        if (!map.current) return; // wait for map to initialize
-        map.current.on('move', () => {
-            setLng(map.current.getCenter().lng.toFixed(4));
-            setLat(map.current.getCenter().lat.toFixed(4));
-            setZoom(map.current.getZoom().toFixed(2));
-        });
-    });
+    // useEffect(() => {
+    //     if (!map.current) return; // wait for map to initialize
+    //     map.current.on('move', () => {
+    //         setLng(map.current.getCenter().lng.toFixed(4));
+    //         setLat(map.current.getCenter().lat.toFixed(4));
+    //         setZoom(map.current.getZoom().toFixed(2));
+    //     });
+    // });
 
     const checkActive = (tabName, activeTab) => {
         return tabName === activeTab ? "active" : "";
@@ -203,7 +206,7 @@ export default function TrailPage() {
         <div className="trail-page">
             <div className="dummy-nav" />
             <div className="trail-page__content">
-                <section className="trail-section">
+                <section className="trail-section" style={{width: leftPanelWidth}}>
 
                     {trail && completedTrails.has(trail.id) &&
                     <div className="trail-completed">
@@ -221,7 +224,7 @@ export default function TrailPage() {
                                     {trail.name}
                                 </div>
                                 <div className="trail-section__header-info">
-                                    <span className={`trail-card__difficulty difficulty-${map[trail.difficulty]}`}>
+                                    <span className={`trail-card__difficulty difficulty-${difficultyMap[trail.difficulty]}`}>
                                         {trail.difficulty}
                                     </span>
                                     <span className="trail-card__rating">
@@ -255,12 +258,12 @@ export default function TrailPage() {
                         </div>
                     </div>
 
-                    <div className="trail-section__mapbox">
+                    {/* <div className="trail-section__mapbox">
                         <div className="map-sidebar">
                             Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
                         </div>
                         <div ref={mapContainer} className="map-container" />
-                    </div>
+                    </div> */}
 
                     <div className="trail-section__overview trail-section__spacing">
                         {trail && trail.overview}
@@ -341,9 +344,10 @@ export default function TrailPage() {
                     </div>
                 </section>
 
-                <div className="trail-page__extra">
-                    <h2>Nearby Trails</h2>
-                    {trail && <TrailCardList trail={trail} tag={"nearby"} trailLimit={10} completedTrails={completedTrails} />}
+                <Divider trail={trail} completedTrails={completedTrails} setLeftPanelWidth={setLeftPanelWidth} />
+
+                <div className="trail-page__test">
+                    Test Area
                 </div>
 
             </div>
