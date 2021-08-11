@@ -3,9 +3,10 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getPhotos, clearPhotos } from "../../store/photos";
+import { getRoutes, clearRoutes } from "../../store/routes";
 import { getTrail, clearTrails } from "../../store/trails";
 import { getUser, markTrailComplete, markTrailIncomplete } from "../../store/users";
-import { photoQuery, trailQuery, userQuery } from "../../utils/queryObjects";
+import { photoQuery, routeQuery, trailQuery, userQuery } from "../../utils/queryObjects";
 
 import ReviewList from "../review/ReviewList";
 import TrailCardList from "../trail-card/TrailCardList";
@@ -16,7 +17,12 @@ import PhotoGrid from "../photos/PhotoGrid";
 import ViewPhotoModal from "../photos/ViewPhotoModal";
 import ListsModal from "../lists/ListsModal";
 
+import { unpackCoordinates } from "../../utils/helperFuncs";
+
 import "./TrailPage.css"
+
+import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+mapboxgl.accessToken = 'pk.eyJ1IjoibWtlbGx5ZGV2diIsImEiOiJja3BmcXZuY3YwNzg0MnFtd3Rra3M3amI4In0.h8HRrZ2xGNP-aq7EwO0YVA';
 
 const map = {
     Easy: "easy",
@@ -39,6 +45,9 @@ export default function TrailPage() {
     const { default: photos } = useSelector(state => state.photos);
     if (photos) delete photos['totalCount'];
     const photosArr = photos ? Object.values(photos) : [];
+    const { default: routes } = useSelector(state => state.routes);
+    const route = routes ? Object.values(routes)[0] : null;
+    const coordinates = route ? unpackCoordinates(route) : [];
 
     const [review, setReview] = useState(null);
     const [showReviewModal, setShowReviewModal] = useState(false);
@@ -47,6 +56,63 @@ export default function TrailPage() {
     const [showListModal, setShowListModal] = useState(false);
     const [activeInfoTab, setActiveInfoTab] = useState("Description");
     const [activeFeedTab, setActiveFeedTab] = useState("Reviews");
+
+    const mapContainer = useRef(null);
+    const map = useRef(null);
+    const [lng, setLng] = useState(-78.2875100);
+    const [lat, setLat] = useState(38.57103000);
+    const [zoom, setZoom] = useState(13);
+
+    useEffect(() => {
+        if (map.current) return; // initialize map only once
+        map.current = new mapboxgl.Map({
+            container: mapContainer.current,
+            style: 'mapbox://styles/mapbox/outdoors-v11',
+            center: [lng, lat],
+            zoom: zoom
+        });
+        map.current.addControl(new mapboxgl.NavigationControl());
+
+    });
+
+    useEffect(() => {
+        if (!routes) return;
+        map.current.on('load', () => {
+            map.current.addSource('route', {
+                type: 'geojson',
+                data: {
+                    type: 'Feature',
+                    properties: {},
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: coordinates
+                    }
+                }
+            });
+            map.current.addLayer({
+                id: 'route',
+                type: 'line',
+                source: 'route',
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': '#ff0000',
+                    'line-width': 5
+                }
+            });
+        });
+    }, [routes]);
+
+    useEffect(() => {
+        if (!map.current) return; // wait for map to initialize
+        map.current.on('move', () => {
+            setLng(map.current.getCenter().lng.toFixed(4));
+            setLat(map.current.getCenter().lat.toFixed(4));
+            setZoom(map.current.getZoom().toFixed(2));
+        });
+    });
 
     const checkActive = (tabName, activeTab) => {
         return tabName === activeTab ? "active" : "";
@@ -113,9 +179,15 @@ export default function TrailPage() {
         dispatch(getPhotos(_photoQuery));
         dispatch(getTrail(id, _trailQuery));
 
+        const _routeQuery = routeQuery({
+            fromTrailId: id,
+        });
+        dispatch(getRoutes(_routeQuery));
+
         return () => {
             dispatch(clearPhotos());
             dispatch(clearTrails());
+            dispatch(clearRoutes());
         }
     }, [dispatch, history.location])
 
@@ -181,6 +253,13 @@ export default function TrailPage() {
                                 {trail && completedTrails.has(trail.id) ? "Mark Incomplete" : "Mark Complete"}
                             </div>
                         </div>
+                    </div>
+
+                    <div className="trail-section__mapbox">
+                        <div className="map-sidebar">
+                            Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+                        </div>
+                        <div ref={mapContainer} className="map-container" />
                     </div>
 
                     <div className="trail-section__overview trail-section__spacing">

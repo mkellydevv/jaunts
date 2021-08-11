@@ -7,7 +7,7 @@ from .utils import validation_errors_to_error_messages, extractJoins
 
 
 bp = Blueprint('trails', __name__)
-joinList = ["getCompletedUsers", "getJaunts", "getLists", "getPhotos", "getReviews", "getTags", "getUser"]
+joinList = ["getCompletedUsers", "getJaunts", "getLists", "getPhotos", "getReviews", "getRoutes", "getTags", "getUser"]
 
 
 # GET all trails
