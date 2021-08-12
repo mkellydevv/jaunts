@@ -1,0 +1,37 @@
+.divider {
+  cursor: pointer;
+  width: 3rem;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-color: grey;
+  z-index: 3;
+}
+
+.divider.active {
+  width: 22rem;
+}
+
+.divider.active .divider__nav {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.divider__nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: .5rem;
+}
+
+.divider__nav-btn {
+  width: 2rem !important;
+}
+/*# sourceMappingURL=TrailDivider.css.map */

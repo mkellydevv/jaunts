@@ -1,0 +1,25 @@
+.divider {
+    cursor: pointer;
+    width: 3rem;
+    user-select: none;
+    background-color: grey;
+    z-index: 3;
+
+    &.active {
+        width: 22rem;
+
+        & .divider__nav {
+            flex-direction: row;
+        }
+    }
+
+    &__nav {
+        display: flex;
+        flex-direction: column;
+        margin: .5rem;
+
+        &-btn {
+            width: 2rem !important;
+        }
+    }
+}
