@@ -1,7 +1,7 @@
 
 .trailInfo {
-    overflow: hidden;
-
+    overflow-y: scroll;
+    flex-grow: 1000;
 
     &__container {
         background-color: #fff;

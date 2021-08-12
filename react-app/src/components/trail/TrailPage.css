@@ -1,10 +1,11 @@
-
-.trail-page__content {
-    display: flex;
-    overflow-x: hidden;
+.trailPage {
+  overflow-y: hidden;
 }
 
-.trail-page__details {
-    display: flex;
-    justify-content: space-evenly;
+.trailPage__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: calc(100vh - 4rem);
 }
+/*# sourceMappingURL=TrailPage.css.map */

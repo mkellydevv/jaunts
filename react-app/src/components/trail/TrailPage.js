@@ -26,8 +26,7 @@ export default function TrailPage() {
     const trail = trailsArr.length ? trailsArr[0] : null;
 
     // Divider
-    const [leftPanelWidth, setLeftPanelWidth] = useState(872);
-    const [rightPanelWidth, setRightPanelWidth] = useState(109);
+    const [leftPanelWidth, setLeftPanelWidth] = useState(null);
 
     useEffect(() => {
         const _photoQuery = photoQuery({
@@ -61,11 +60,11 @@ export default function TrailPage() {
     }, [user]);
 
     return (
-        <div className="trail-page">
+        <div className="trailPage">
 
             <div className="dummy-nav" />
 
-            <div className="trail-page__content">
+            <div className="trailPage__content">
 
                 <TrailInfo
                     trail={trail}
@@ -75,14 +74,11 @@ export default function TrailPage() {
 
                 <TrailDivider
                     trail={trail}
-                    leftPanelWidth={leftPanelWidth}
                     setLeftPanelWidth={setLeftPanelWidth}
-                    setRightPanelWidth={setRightPanelWidth}
                 />
 
                 <TrailMap
                     trail={trail}
-                    rightPanelWidth={rightPanelWidth}
                 />
 
             </div>

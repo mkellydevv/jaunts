@@ -1,5 +1,8 @@
 .trailInfo {
-  overflow: hidden;
+  overflow-y: scroll;
+  -webkit-box-flex: 1000;
+      -ms-flex-positive: 1000;
+          flex-grow: 1000;
 }
 
 .trailInfo__container {

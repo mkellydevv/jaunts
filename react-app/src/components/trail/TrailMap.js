@@ -74,7 +74,6 @@ export default function TrailMap({ trail, rightPanelWidth }) {
     return (
         <div
             className="trailMap"
-            style={{width:rightPanelWidth}}
         >
             <div className="trailMap__container">
                 Test Map Panel

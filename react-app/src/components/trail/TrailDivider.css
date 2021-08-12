@@ -1,6 +1,8 @@
-.divider {
-  cursor: pointer;
+.trailDivider {
   width: 3rem;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -9,18 +11,35 @@
   z-index: 3;
 }
 
-.divider.active {
+.trailDivider.active {
   width: 22rem;
+  overflow-y: scroll;
 }
 
-.divider.active .divider__nav {
+.trailDivider.active .trailDivider__nav {
+  height: unset;
+  -ms-grid-rows: unset;
+      grid-template-rows: unset;
+  -ms-grid-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+}
+
+.trailDivider.active .trailDivider__nav-btns {
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
 }
 
-.divider__nav {
+.trailDivider__nav {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+  height: 100%;
+}
+
+.trailDivider__nav-btns {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -29,9 +48,41 @@
       -ms-flex-direction: column;
           flex-direction: column;
   margin: .5rem;
+  grid-gap: .5rem;
 }
 
-.divider__nav-btn {
+.trailDivider__nav-btn {
   width: 2rem !important;
+}
+
+.trailDivider__drag {
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.trailDivider__drag-handle {
+  cursor: -webkit-grab;
+  cursor: grab;
+  height: 3rem;
+  width: 3rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 /*# sourceMappingURL=TrailDivider.css.map */

@@ -1,13 +1,12 @@
 .trailMap {
-  min-width: 0;
-  -ms-flex-negative: 3;
-      flex-shrink: 3;
-  -ms-flex-preferred-size: 20rem;
-      flex-basis: 20rem;
+  -ms-flex-negative: 1000;
+      flex-shrink: 1000;
+  overflow: hidden;
 }
 
 .trailMap__container {
-  width: 20rem;
+  width: 100%;
+  min-width: 20rem;
 }
 
 .trail-section__mapbox {

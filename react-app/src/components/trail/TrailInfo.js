@@ -94,7 +94,8 @@ export default function TrailInfo({ trail, leftPanelWidth }) {
     }
 
     return (<>
-        <div className="trailInfo" style={{width: `${leftPanelWidth}%`}}>
+        <div className="trailInfo" style={{width: leftPanelWidth === null ? "100%" : leftPanelWidth}}>
+        {/* <div className="trailInfo" style={{width: `${leftPanelWidth}%`}}> */}
             <div className="trailInfo__container">
 
                 {trail && completedTrails.has(trail.id) &&

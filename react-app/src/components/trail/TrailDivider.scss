@@ -1,25 +1,61 @@
-.divider {
-    cursor: pointer;
+
+.trailDivider {
     width: 3rem;
+    flex: 0 0 auto;
     user-select: none;
     background-color: grey;
     z-index: 3;
 
+
     &.active {
         width: 22rem;
+        overflow-y: scroll;
 
-        & .divider__nav {
-            flex-direction: row;
+        & .trailDivider {
+            &__nav {
+                height: unset;
+                grid-template-rows: unset;
+                grid-template-columns: 1fr 1fr 1fr;
+
+                &-btns {
+                    flex-direction: row;
+                }
+            }
         }
     }
 
     &__nav {
-        display: flex;
-        flex-direction: column;
-        margin: .5rem;
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        height: 100%;
+
+        &-btns {
+            display: flex;
+            flex-direction: column;
+            margin: .5rem;
+            grid-gap: .5rem;
+        }
 
         &-btn {
             width: 2rem !important;
+        }
+    }
+
+    &__drag {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        color: white;
+
+        &-handle {
+            cursor: grab;
+            height: 3rem;
+            width: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 }
