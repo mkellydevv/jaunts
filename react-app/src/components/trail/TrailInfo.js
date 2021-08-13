@@ -192,7 +192,11 @@ export default function TrailInfo({ trail, leftPanelWidth }) {
                                     onClick={() => setActiveInfoTab(tabName)}
                                     key={`${tabName}`}
                                 >
-                                    {tabName}
+                                    <div
+                                        className={`trailInfo__info-btn ${checkActive(tabName, activeInfoTab)}`}
+                                    >
+                                        {tabName}
+                                    </div>
                                 </div>
                             )
                         })}
@@ -214,7 +218,11 @@ export default function TrailInfo({ trail, leftPanelWidth }) {
                                     onClick={() => setActiveFeedTab(tabName)}
                                     key={`${tabName}`}
                                 >
-                                    {tabName}
+                                    <div
+                                        className={`trailInfo__info-btn ${checkActive(tabName, activeFeedTab)}`}
+                                    >
+                                        {tabName}
+                                    </div>
                                 </div>
                             )
                         })}

@@ -1,0 +1,50 @@
+
+.review {
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e6e6e6;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+
+
+}
+
+.review__user {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 16px;
+}
+
+.review__user > * {
+    margin-right: 16px;
+}
+
+.review__user-img {
+    height: 64px;
+    width: 64px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.review img {
+    width: 48px;
+    height: 48px;
+    margin: auto;
+    border-radius: 50%;
+}
+
+.review__blurb {
+    margin-bottom: 16px;
+}
+
+.review__buttons {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.review__buttons > button:first-child {
+    margin-bottom: 1rem;
+}
