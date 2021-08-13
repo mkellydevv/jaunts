@@ -28,7 +28,9 @@ export default function SplashPage() {
         <div className="splash-page">
             <HeroCarousel />
 
-            <SearchBar />
+            <div className="splash-page__search">
+                <SearchBar />
+            </div>
 
             <TrailCardQuad trailLimit={trailLimit} tag={"camping"} completedTrails={completedTrails} />
 

@@ -6,6 +6,7 @@ import { getTrail, clearTrails } from "../../store/trails";
 import { photoQuery, routeQuery, trailQuery, userQuery } from "../../utils/queryObjects";
 import { getUser, markTrailComplete, markTrailIncomplete } from "../../store/users";
 
+import SearchBar from "../splash/SearchBar";
 import TrailCardList from "../trail-card/TrailCardList";
 
 import "./TrailDivider.css";
@@ -104,6 +105,9 @@ export default function TrailDivider({ trail, setLeftPanelWidth }) {
             </div>
             {active &&
             <>
+                <div className="trailDivider__search">
+                    <SearchBar tiny={true} />
+                </div>
                 <h2>Nearby Trails</h2>
                 {trail && <TrailCardList trail={trail} tag={"nearby"} trailLimit={10} completedTrails={completedTrails} />}
             </>

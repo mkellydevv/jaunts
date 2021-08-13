@@ -5,11 +5,11 @@ import { useHistory } from 'react-router-dom';
 import { getTrails, clearTrails } from "../../store/trails";
 import { trailQuery } from "../../utils/queryObjects";
 
-import SearchBarResult from './SearchBarResult';
+import SearchResult from './SearchResult';
 
 import "./SearchBar.css";
 
-export default function SearchBar() {
+export default function SearchBar({ tiny }) {
     const dispatch = useDispatch();
     const history = useHistory();
     const currSearch = useRef("");
@@ -86,14 +86,14 @@ export default function SearchBar() {
     }, [currSearch.current]);
 
     return (
-        <div className="search-bar">
+        <div className={`searchBar ${tiny ? "tiny" : ""}`}>
 
-            <div className="search-bar__input">
-                <div className={`search-bar__input-icon ${inputFocus ? "active": ""}`}>
+            <div className="searchBar__input">
+                <div className={`searchBar__input-icon ${inputFocus ? "active": ""}`}>
                     <i className='fas fa-search' />
                 </div>
                 <input
-                    className="search-bar__input-inp"
+                    className="searchBar__input-inp"
                     placeholder="Search by name, region, or tag"
                     onFocus={() => setInputFocus(true)}
                     onBlur={() => setInputFocus(false)}
@@ -103,33 +103,36 @@ export default function SearchBar() {
                     }}
                     onKeyDown={handleKeyDown}
                 />
-                <button className="search-bar__input-submit" onClick={handleSubmit}>
+                <button className="searchBar__input-submit" onClick={handleSubmit}>
                     <i className="fas fa-arrow-right" />
                 </button>
             </div>
 
-            <div className={`search-bar__results ${showResults ? "active" : ""}`}>
+            <div className={`searchBar__results ${showResults ? "active" : ""}`}>
 
-                <div className="search-bar__results-tabs">
+                <div className={`searchBar__results-tabs ${tiny ? "tiny" : ""}`}>
                     {tabs.map(tabName => {
                         return (
                             <div
-                                className={`search-bar__results-tab ${checkActive(tabName)}`}
+                                className={`searchBar__results-tab ${checkActive(tabName)}`}
                                 onClick={() => setActiveTab(tabName)}
                                 key={`${tabName}`}
                             >
-                                {tabName} {tabMap[tabName] && `(${tabMap[tabName].length})`}
+                                {tabName} {tabMap[tabName] && !tiny && `(${tabMap[tabName].length})`}
                             </div>
                         )
                     })}
                 </div>
 
-                <div className="search-bar__results-content">
+                <div className="searchBar__results-content">
                     {tabs.map(tabName => (
-                        <div className={`search-bar__results-list ${checkActive(tabName)}`}>
-                            {tabMap[tabName] && tabMap[tabName].map(trail => (
-                                <SearchBarResult trail={trail} />
-                            ))}
+                        <div className={`searchBar__results-list ${checkActive(tabName)}`}>
+                            {tabMap[tabName] && tabMap[tabName].map(trail => {
+                                console.log(`trail`, trail);
+                                return (
+                                    <SearchResult trail={trail} tiny={tiny} />
+                                )
+                            })}
                         </div>
                     ))}
                 </div>

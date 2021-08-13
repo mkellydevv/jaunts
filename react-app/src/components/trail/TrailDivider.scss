@@ -6,7 +6,6 @@
     background-color: grey;
     z-index: 3;
 
-
     &.active {
         width: 22rem;
         overflow-y: scroll;
@@ -57,5 +56,10 @@
             justify-content: center;
             align-items: center;
         }
+    }
+
+    &__search {
+        display: flex;
+        justify-content: center;
     }
 }

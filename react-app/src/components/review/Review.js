@@ -29,8 +29,11 @@ export default function Review({ review, open }) {
 
                 <div className="review__user">
 
-                    <div className="review__user-img">
-                        <img src="https://d185jh8djxl1sd.cloudfront.net/assets/placeholder/person_placeholder.png" />
+                    <div className="review__user-avatar">
+                        <img
+                            className="review__user-img"
+                            src="https://d185jh8djxl1sd.cloudfront.net/assets/placeholder/person_placeholder.png"
+                        />
                     </div>
 
                     <div className="review__user-info">
@@ -49,27 +52,27 @@ export default function Review({ review, open }) {
 
                 </div>
 
-                <div className="review__blurb">
-                    {review.blurb}
-                </div>
+                {user && user.id === review.user_id &&
+                <div className="review__btns">
+                    <button
+                        className="jaunts__btn jaunts__btn-1"
+                        onClick={() => open(review)}
+                    >
+                        Edit
+                    </button>
+                    <button
+                        className="jaunts__btn jaunts__btn-3"
+                        onClick={handleDelete}
+                    >
+                        Delete
+                    </button>
+                </div>}
 
             </div>
 
-            {user && user.id === review.user_id &&
-            <div className="review__buttons">
-                <button
-                    className="jaunts__btn jaunts__btn-1"
-                    onClick={() => open(review)}
-                >
-                    Edit
-                </button>
-                <button
-                    className="jaunts__btn jaunts__btn-3"
-                    onClick={handleDelete}
-                >
-                    Delete
-                </button>
-            </div>}
+            <div className="review__blurb">
+                {review.blurb}
+            </div>
 
         </div>
     )

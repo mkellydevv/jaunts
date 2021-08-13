@@ -85,4 +85,13 @@
       -ms-flex-align: center;
           align-items: center;
 }
+
+.trailDivider__search {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
 /*# sourceMappingURL=TrailDivider.css.map */
