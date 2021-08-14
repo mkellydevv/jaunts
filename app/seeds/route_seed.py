@@ -8,9 +8,9 @@ def seed_routes():
         # Extract trail name from url
         for i in range(len(urls)):
             s = urls[i]
-            urls[i] = s[slice(44, len(s) - 1)].split('?')[0]
+            urls[i] = s.split('/')[6].split('?')[0]
 
-    for i in range(1):
+    for i in range(100):
         trail_name = urls[i]
         with open(f"selenium/states/virginia/routes/{trail_name}.csv") as f:
             # Latitude Longitude Elevation
@@ -33,27 +33,6 @@ def seed_routes():
             db.session.add(route)
             db.session.commit()
 
-
-
-
-
-
-
-
-
-    # with open("selenium/states/virginia/reviews.csv", "r") as f:
-    #     data = json.load(f)
-    #     reviews = data['reviews_3']
-
-    # for i in range(5):
-    #     lst = List(
-    #         user_id=1,
-    #         blurb=random.choice(reviews),
-    #         name=f"VA List 202{i}",
-    #         private=False
-    #     )
-    #     db.session.add(lst)
-    # db.session.commit()
 
 def undo_routes():
     db.session.execute('TRUNCATE routes RESTART IDENTITY CASCADE;')

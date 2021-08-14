@@ -7,8 +7,14 @@
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  background-color: grey;
+  background-color: #e2e2e2;
   z-index: 3;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.trailDivider::-webkit-scrollbar {
+  display: none;
 }
 
 .trailDivider.active {

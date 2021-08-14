@@ -3,8 +3,14 @@
     width: 3rem;
     flex: 0 0 auto;
     user-select: none;
-    background-color: grey;
+    background-color: #e2e2e2;
     z-index: 3;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 
     &.active {
         width: 22rem;

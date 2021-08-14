@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { getTrails, clearTrails } from "../../store/trails";
 import { trailQuery } from "../../utils/queryObjects";
@@ -12,6 +12,7 @@ import "./SearchBar.css";
 export default function SearchBar({ tiny }) {
     const dispatch = useDispatch();
     const history = useHistory();
+    const location = useLocation();
     const currSearch = useRef("");
     const prevSearch = useRef("");
     const nameResults = useSelector(state => state["trails"]["searchByName"]);
@@ -34,7 +35,7 @@ export default function SearchBar({ tiny }) {
         "Tags": tagResultsArr,
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
         let id = null;
         if (nameResultsArr.length)
             id = nameResultsArr[0]["id"];
@@ -43,9 +44,17 @@ export default function SearchBar({ tiny }) {
         else if (tagResultsArr.length)
             id = tagResultsArr[0]["id"];
 
-        if (id !== null)
+        if (id !== null) {
             history.push(`/trails/${id}`);
+        }
     }
+
+    useEffect(() => {
+       const inp = document.getElementsByClassName("searchBar__input-inp")[0];
+       inp.value = "";
+       currSearch.current = "";
+       prevSearch.current = "";
+    }, [location]);
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter" && prevSearch.current === currSearch.current)
@@ -103,7 +112,10 @@ export default function SearchBar({ tiny }) {
                     }}
                     onKeyDown={handleKeyDown}
                 />
-                <button className="searchBar__input-submit" onClick={handleSubmit}>
+                <button
+                    className="searchBar__input-submit"
+                    onClick={handleSubmit}
+                >
                     <i className="fas fa-arrow-right" />
                 </button>
             </div>
@@ -115,7 +127,9 @@ export default function SearchBar({ tiny }) {
                         return (
                             <div
                                 className={`searchBar__results-tab ${checkActive(tabName)}`}
-                                onClick={() => setActiveTab(tabName)}
+                                onClick={() => {
+                                    setActiveTab(tabName);
+                                }}
                                 key={`${tabName}`}
                             >
                                 {tabName} {tabMap[tabName] && !tiny && `(${tabMap[tabName].length})`}

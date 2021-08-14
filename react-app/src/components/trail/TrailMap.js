@@ -14,77 +14,102 @@ export default function TrailMap({ trail, rightPanelWidth }) {
     const route = routes ? Object.values(routes)[0] : null;
     const coordinates = route ? unpackCoordinates(route) : [];
 
-    // const mapContainer = useRef(null);
-    // const map = useRef(null);
-    // const [lng, setLng] = useState(-78.2875100);
-    // const [lat, setLat] = useState(38.57103000);
-    // const [zoom, setZoom] = useState(13);
+    const mapContainer = useRef(null);
+    const map = useRef(null);
+    const [loaded, setLoaded] = useState(false);
+    const [lng, setLng] = useState(-78.2875100);
+    const [lat, setLat] = useState(38.57103000);
+    const [zoom, setZoom] = useState(13);
 
-    // useEffect(() => {
-    //     if (map.current) return; // initialize map only once
-    //     map.current = new mapboxgl.Map({
-    //         container: mapContainer.current,
-    //         style: 'mapbox://styles/mapbox/outdoors-v11',
-    //         center: [lng, lat],
-    //         zoom: zoom
-    //     });
-    //     map.current.addControl(new mapboxgl.NavigationControl());
+    useEffect(() => {
+        if (map.current) return;
 
-    // });
+        map.current = new mapboxgl.Map({
+            container: mapContainer.current,
+            style: 'mapbox://styles/mapbox/outdoors-v11',
+            center: [lng, lat],
+            zoom: zoom,
+        });
 
-    // useEffect(() => {
-    //     if (!routes) return;
-    //     map.current.on('load', () => {
-    //         map.current.addSource('route', {
-    //             type: 'geojson',
-    //             data: {
-    //                 type: 'Feature',
-    //                 properties: {},
-    //                 geometry: {
-    //                     type: 'LineString',
-    //                     coordinates: coordinates
-    //                 }
-    //             }
-    //         });
-    //         map.current.addLayer({
-    //             id: 'route',
-    //             type: 'line',
-    //             source: 'route',
-    //             layout: {
-    //                 'line-join': 'round',
-    //                 'line-cap': 'round'
-    //             },
-    //             paint: {
-    //                 'line-color': '#ff0000',
-    //                 'line-width': 5
-    //             }
-    //         });
-    //     });
-    // }, [routes]);
+        map.current.addControl(new mapboxgl.NavigationControl(),'top-right');
 
-    // useEffect(() => {
-    //     if (!map.current) return; // wait for map to initialize
-    //     map.current.on('move', () => {
-    //         setLng(map.current.getCenter().lng.toFixed(4));
-    //         setLat(map.current.getCenter().lat.toFixed(4));
-    //         setZoom(map.current.getZoom().toFixed(2));
-    //     });
-    // });
+        map.current.on('move', () => {
+            setLng(map.current.getCenter().lng.toFixed(4));
+            setLat(map.current.getCenter().lat.toFixed(4));
+            setZoom(map.current.getZoom().toFixed(2));
+        });
+
+        map.current.on('load', () => {
+            setLoaded(true);
+        });
+    }, []);
+
+    useEffect(() => {
+        if (!loaded) return;
+
+        if (map.current.getLayer("route"))
+            map.current.removeLayer("route");
+        if (map.current.getSource("route"))
+            map.current.removeSource("route");
+
+        map.current.addSource('route', {
+            type: 'geojson',
+            data: {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                    type: 'LineString',
+                    coordinates: coordinates
+                }
+            }
+        });
+
+        map.current.addLayer({
+            id: 'route',
+            type: 'line',
+            source: 'route',
+            layout: {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            paint: {
+                'line-color': '#ff0000',
+                'line-width': 5
+            }
+        });
+
+        map.current.easeTo({
+            center: coordinates[0],
+            zoom: zoom,
+            duration: 1500
+        });
+
+    }, [loaded, routes]);
 
     return (
         <div
             className="trailMap"
         >
             <div className="trailMap__container">
-                Test Map Panel
-                Jones Run Falls Trail is a 4.5 mile heavily trafficked out and back trail located near Crozet, Virginia that features a waterfall and is rated as moderate. The trail is primarily used for hiking and walking and is best used from March until November. Dogs are also able to use this trail but must be kept on leash.
-            </div>
-            {/* <div className="trail-section__mapbox">
-                    <div className="map-sidebar">
-                        Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+
+                    <div className="trailMap__info">
+                        <div>
+                            Longitude: {lng}
+                        </div>
+                        <div>
+                            Latitude: {lat}
+                        </div>
+                        <div>
+                            Zoom: {zoom}
+                        </div>
                     </div>
-                    <div ref={mapContainer} className="map-container" />
-                </div> */}
+
+                    <div
+                        ref={mapContainer}
+                        className="trailMap__map"
+                    />
+
+            </div>
         </div>
     )
 }

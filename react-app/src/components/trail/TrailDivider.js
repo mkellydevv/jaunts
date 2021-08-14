@@ -19,12 +19,12 @@ export default function TrailDivider({ trail, setLeftPanelWidth }) {
     const mouseDown = useRef(false);
     const mouseStart = useRef(null);
 
-    const [active, setActive] = useState(false);
-    const width = useRef(24);
+    const [active, setActive] = useState(true);
+    const openWidth = 22 * 16 / 2;
+    const closedWidth = 3 * 16 / 2;
+    const width = useRef(active ? openWidth : closedWidth);
 
     const handleResize = (e) => {
-        const el = document.getElementsByClassName("trailMap")[0];
-
         if (!active)
             width.current = 22 * 16 / 2;
         else
@@ -56,6 +56,8 @@ export default function TrailDivider({ trail, setLeftPanelWidth }) {
 
         mouseStart.current = Infinity;
 
+        window.dispatchEvent(new Event('resize'));
+
         setLeftPanelWidth(Math.max(0, e.clientX - width.current));
     };
 
@@ -65,6 +67,10 @@ export default function TrailDivider({ trail, setLeftPanelWidth }) {
 
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+
+    useEffect(() => {
+        window.dispatchEvent(new Event('resize'));
+    }, [active]);
 
     return (
         <div

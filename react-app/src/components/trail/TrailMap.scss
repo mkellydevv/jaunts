@@ -1,32 +1,41 @@
 .trailMap {
     flex-shrink: 1000;
     overflow: hidden;
-
+    width: 100%;
 
     &__container {
+        height: 100%;
         width: 100%;
         min-width: 20rem;
+        position: relative;
+    }
+
+
+    &__info {
+        background-color: rgba(35, 55, 75, 0.9);
+        color: #ffffff;
+        padding: 6px 12px;
+        font-family: monospace;
+        z-index: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 1rem;
+        border-radius: 4px;
+    }
+
+    &__map {
+        height: 100%;
+        width: 100%;
+        position: unset;
     }
 }
 
-.trail-section__mapbox {
-    height: 30rem;
-    position: relative;
+.mapboxgl-control-container {
+
 }
 
-.map-container {
-    height: 100%;
-}
+.mapboxgl-ctrl.mapboxgl-ctrl-group {
+    margin: 1rem;
 
-.map-sidebar {
-    background-color: rgba(35, 55, 75, 0.9);
-    color: #ffffff;
-    padding: 6px 12px;
-    font-family: monospace;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 12px;
-    border-radius: 4px;
 }

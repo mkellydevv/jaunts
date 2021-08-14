@@ -4,6 +4,12 @@
   -webkit-box-flex: 1000;
       -ms-flex-positive: 1000;
           flex-grow: 1000;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.trailInfo::-webkit-scrollbar {
+  display: none;
 }
 
 .trailInfo__container {
