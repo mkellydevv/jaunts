@@ -35,6 +35,7 @@ export default function TrailPage() {
 
         const _routeQuery = routeQuery({
             fromTrailId: id,
+            getCoordinates: 1,
         });
 
         const _trailQuery = trailQuery({
@@ -74,6 +75,7 @@ export default function TrailPage() {
 
                 <TrailDivider
                     trail={trail}
+                    leftPanelWidth={leftPanelWidth}
                     setLeftPanelWidth={setLeftPanelWidth}
                 />
 

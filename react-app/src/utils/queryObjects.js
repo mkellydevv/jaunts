@@ -59,8 +59,11 @@ export function reviewQuery(args={}) {
 export function routeQuery(args={}) {
     const query = {
         fromTrailId: "",
+        nw: "",
+        se: "",
         offset: 0,
         limit: 25,
+        getCoordinates: "",
     };
     for (let key in args)
         query[key] = args[key];

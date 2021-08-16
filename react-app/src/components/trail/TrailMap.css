@@ -5,6 +5,10 @@
   width: 100%;
 }
 
+.trailMap__options {
+  height: 3rem;
+}
+
 .trailMap__container {
   height: 100%;
   width: 100%;

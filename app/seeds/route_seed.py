@@ -28,7 +28,9 @@ def seed_routes():
 
             route = Route(
                 trail_id=i+1,
-                coordinates=coordinates
+                coordinates=coordinates,
+                lat=coordinates[0],
+                lng=coordinates[1],
             )
             db.session.add(route)
             db.session.commit()

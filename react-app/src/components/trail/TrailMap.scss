@@ -3,13 +3,16 @@
     overflow: hidden;
     width: 100%;
 
+    &__options {
+        height: 3rem;
+    }
+
     &__container {
         height: 100%;
         width: 100%;
         min-width: 20rem;
         position: relative;
     }
-
 
     &__info {
         background-color: rgba(35, 55, 75, 0.9);
@@ -31,9 +34,9 @@
     }
 }
 
-.mapboxgl-control-container {
+// .mapboxgl-control-container {
 
-}
+// }
 
 .mapboxgl-ctrl.mapboxgl-ctrl-group {
     margin: 1rem;

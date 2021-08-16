@@ -11,7 +11,7 @@ import TrailCardList from "../trail-card/TrailCardList";
 
 import "./TrailDivider.css";
 
-export default function TrailDivider({ trail, setLeftPanelWidth }) {
+export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth }) {
     const dispatch = useDispatch();
     const { default: users } = useSelector(state => state["users"]);
     const completedTrails = users ? new Set(Object.values(users)[0]["completed_trails"]) : new Set([]);
@@ -19,7 +19,7 @@ export default function TrailDivider({ trail, setLeftPanelWidth }) {
     const mouseDown = useRef(false);
     const mouseStart = useRef(null);
 
-    const [active, setActive] = useState(true);
+    const [active, setActive] = useState(false);
     const openWidth = 22 * 16 / 2;
     const closedWidth = 3 * 16 / 2;
     const width = useRef(active ? openWidth : closedWidth);
@@ -70,7 +70,7 @@ export default function TrailDivider({ trail, setLeftPanelWidth }) {
 
     useEffect(() => {
         window.dispatchEvent(new Event('resize'));
-    }, [active]);
+    }, [active, leftPanelWidth]);
 
     return (
         <div

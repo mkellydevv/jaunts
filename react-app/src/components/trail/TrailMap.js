@@ -3,16 +3,21 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
+import { getRoutes } from "../../store/routes";
 import { unpackCoordinates } from "../../utils/helperFuncs";
+import { routeQuery } from "../../utils/queryObjects";
 
 import "./TrailMap.css";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWtlbGx5ZGV2diIsImEiOiJja3BmcXZuY3YwNzg0MnFtd3Rra3M3amI4In0.h8HRrZ2xGNP-aq7EwO0YVA';
 
 export default function TrailMap({ trail, rightPanelWidth }) {
+    const dispatch = useDispatch();
     const { default: routes } = useSelector(state => state.routes);
     const route = routes ? Object.values(routes)[0] : null;
     const coordinates = route ? unpackCoordinates(route) : [];
+    const { trailHeads } = useSelector(state => state.routes);
+
 
     const mapContainer = useRef(null);
     const map = useRef(null);
@@ -20,6 +25,29 @@ export default function TrailMap({ trail, rightPanelWidth }) {
     const [lng, setLng] = useState(-78.2875100);
     const [lat, setLat] = useState(38.57103000);
     const [zoom, setZoom] = useState(13);
+
+    const unpackTrailHeads = (trailHeads) => {
+        const features = [];
+        for (let key in trailHeads) {
+            const t = trailHeads[key];
+            features.push({
+                type: 'Feature',
+                properties: {
+                    "title": t.name,
+                },
+                geometry: {
+                    type: 'Point',
+                    coordinates: [t.lng, t.lat]
+                }
+            });
+        }
+        return {
+            type: "FeatureCollection",
+            features: features
+        }
+    }
+    const geojson = trailHeads ? unpackTrailHeads(trailHeads) : {};
+    console.log(`geojson`, geojson)
 
     useEffect(() => {
         if (map.current) return;
@@ -40,8 +68,28 @@ export default function TrailMap({ trail, rightPanelWidth }) {
         });
 
         map.current.on('load', () => {
-            setLoaded(true);
+            // setLoaded(true);
+            map.current.loadImage(
+                'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
+                (err, image) => {
+                    if (err) return console.error(err);
+                    map.current.addImage('custom-marker', image);
+                    setLoaded(true);
+                }
+            )
         });
+
+        map.current.on("mouseup", () => {
+            const bounds = map.current.getBounds();
+            const nw = bounds.getNorthWest();
+            const se = bounds.getSouthEast();
+
+            const query = routeQuery({
+                nw: [nw.lat, nw.lng],
+                se: [se.lat, se.lng],
+            });
+            dispatch(getRoutes(query, "trailHeads"));
+        })
     }, []);
 
     useEffect(() => {
@@ -86,18 +134,56 @@ export default function TrailMap({ trail, rightPanelWidth }) {
 
     }, [loaded, routes]);
 
+    useEffect(() => {
+        if (!loaded) return;
+
+        if (map.current.getLayer("markers"))
+            map.current.removeLayer("markers");
+        if (map.current.getSource("markers"))
+            map.current.removeSource("markers");
+
+        map.current.addSource('markers', {
+            type: 'geojson',
+            data: geojson
+        });
+
+        map.current.addLayer({
+            'id': 'markers',
+            'type': 'symbol',
+            'source': 'markers',
+            'layout': {
+                'icon-image': 'custom-marker',
+                // get the title name from the source's "title" property
+                'text-field': ['get', 'title'],
+                'text-font': [
+                    'Open Sans Semibold',
+                    'Arial Unicode MS Bold'
+                ],
+                'text-offset': [0, 1.25],
+                'text-anchor': 'top'
+            }
+        });
+
+    }, [trailHeads]);
+
     return (
         <div
             className="trailMap"
         >
+            <div className="trailMap__options">
+
+
+
+            </div>
+
             <div className="trailMap__container">
 
                     <div className="trailMap__info">
                         <div>
-                            Longitude: {lng}
+                            Latitude: {lat}
                         </div>
                         <div>
-                            Latitude: {lat}
+                            Longitude: {lng}
                         </div>
                         <div>
                             Zoom: {zoom}
