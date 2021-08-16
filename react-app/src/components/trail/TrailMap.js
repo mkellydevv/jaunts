@@ -11,13 +11,37 @@ import "./TrailMap.css";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWtlbGx5ZGV2diIsImEiOiJja3BmcXZuY3YwNzg0MnFtd3Rra3M3amI4In0.h8HRrZ2xGNP-aq7EwO0YVA';
 
+const unpackTrailHeads = (trailHeads) => {
+    const features = [];
+    for (let key in trailHeads) {
+        const t = trailHeads[key];
+        features.push({
+            type: 'Feature',
+            properties: {
+                "title": t.name,
+            },
+            geometry: {
+                type: 'Point',
+                coordinates: [t.lng, t.lat]
+            }
+        });
+    }
+    return features;
+}
+
 export default function TrailMap({ trail, rightPanelWidth }) {
     const dispatch = useDispatch();
     const { default: routes } = useSelector(state => state.routes);
     const route = routes ? Object.values(routes)[0] : null;
     const coordinates = route ? unpackCoordinates(route) : [];
     const { trailHeads } = useSelector(state => state.routes);
-
+    const markers = useRef({
+        type: 'geojson',
+        data: {
+            type: "FeatureCollection",
+            features: []
+        }
+    });
 
     const mapContainer = useRef(null);
     const map = useRef(null);
@@ -25,29 +49,6 @@ export default function TrailMap({ trail, rightPanelWidth }) {
     const [lng, setLng] = useState(-78.2875100);
     const [lat, setLat] = useState(38.57103000);
     const [zoom, setZoom] = useState(13);
-
-    const unpackTrailHeads = (trailHeads) => {
-        const features = [];
-        for (let key in trailHeads) {
-            const t = trailHeads[key];
-            features.push({
-                type: 'Feature',
-                properties: {
-                    "title": t.name,
-                },
-                geometry: {
-                    type: 'Point',
-                    coordinates: [t.lng, t.lat]
-                }
-            });
-        }
-        return {
-            type: "FeatureCollection",
-            features: features
-        }
-    }
-    const geojson = trailHeads ? unpackTrailHeads(trailHeads) : {};
-    console.log(`geojson`, geojson)
 
     useEffect(() => {
         if (map.current) return;
@@ -75,6 +76,23 @@ export default function TrailMap({ trail, rightPanelWidth }) {
                     if (err) return console.error(err);
                     map.current.addImage('custom-marker', image);
                     setLoaded(true);
+                    map.current.addSource('markers', markers.current);
+                    map.current.addLayer({
+                        'id': 'markers',
+                        'type': 'symbol',
+                        'source': 'markers',
+                        'layout': {
+                            'icon-image': 'custom-marker',
+                            // get the title name from the source's "title" property
+                            'text-field': ['get', 'title'],
+                            'text-font': [
+                                'Open Sans Semibold',
+                                'Arial Unicode MS Bold'
+                            ],
+                            'text-offset': [0, 1.25],
+                            'text-anchor': 'top'
+                        }
+                    });
                 }
             )
         });
@@ -136,33 +154,11 @@ export default function TrailMap({ trail, rightPanelWidth }) {
 
     useEffect(() => {
         if (!loaded) return;
+        console.log(`trailHeads`, trailHeads)
+        markers.current.data.features = unpackTrailHeads(trailHeads);
 
-        if (map.current.getLayer("markers"))
-            map.current.removeLayer("markers");
-        if (map.current.getSource("markers"))
-            map.current.removeSource("markers");
-
-        map.current.addSource('markers', {
-            type: 'geojson',
-            data: geojson
-        });
-
-        map.current.addLayer({
-            'id': 'markers',
-            'type': 'symbol',
-            'source': 'markers',
-            'layout': {
-                'icon-image': 'custom-marker',
-                // get the title name from the source's "title" property
-                'text-field': ['get', 'title'],
-                'text-font': [
-                    'Open Sans Semibold',
-                    'Arial Unicode MS Bold'
-                ],
-                'text-offset': [0, 1.25],
-                'text-anchor': 'top'
-            }
-        });
+        map.current.getSource("markers")
+            .setData(markers.current.data);
 
     }, [trailHeads]);
 
