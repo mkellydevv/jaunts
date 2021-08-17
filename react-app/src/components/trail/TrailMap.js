@@ -4,36 +4,30 @@ import { useDispatch, useSelector } from "react-redux";
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
 import { getRoutes } from "../../store/routes";
-import { unpackCoordinates } from "../../utils/helperFuncs";
+import { unpackCoordinates, unpackTrailHeads } from "../../utils/helperFuncs";
 import { routeQuery } from "../../utils/queryObjects";
 
+import markerImg from "../../assets/marker.png";
 import "./TrailMap.css";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWtlbGx5ZGV2diIsImEiOiJja3BmcXZuY3YwNzg0MnFtd3Rra3M3amI4In0.h8HRrZ2xGNP-aq7EwO0YVA';
 
-const unpackTrailHeads = (trailHeads) => {
-    const features = [];
-    for (let key in trailHeads) {
-        const t = trailHeads[key];
-        features.push({
-            type: 'Feature',
-            properties: {
-                "title": t.name,
-            },
-            geometry: {
-                type: 'Point',
-                coordinates: [t.lng, t.lat]
-            }
-        });
-    }
-    return features;
-}
-
 export default function TrailMap({ trail, rightPanelWidth }) {
     const dispatch = useDispatch();
+    const history = useHistory();
     const { default: routes } = useSelector(state => state.routes);
     const route = routes ? Object.values(routes)[0] : null;
-    const coordinates = route ? unpackCoordinates(route) : [];
+    const routeSource = useRef({
+        type: 'geojson',
+        data: {
+            type: 'Feature',
+            geometry: {
+                type: 'LineString',
+                coordinates: []
+            }
+        }
+    });
+
     const { trailHeads } = useSelector(state => state.routes);
     const markers = useRef({
         type: 'geojson',
@@ -43,12 +37,24 @@ export default function TrailMap({ trail, rightPanelWidth }) {
         }
     });
 
+    // Mapbox specific
     const mapContainer = useRef(null);
     const map = useRef(null);
     const [loaded, setLoaded] = useState(false);
     const [lng, setLng] = useState(-78.2875100);
     const [lat, setLat] = useState(38.57103000);
     const [zoom, setZoom] = useState(13);
+
+    const getTrailHeads = () => {
+        const bounds = map.current.getBounds();
+        const nw = bounds.getNorthWest();
+        const se = bounds.getSouthEast();
+        const query = routeQuery({
+            nw: [nw.lat, nw.lng],
+            se: [se.lat, se.lng],
+        });
+        dispatch(getRoutes(query, "trailHeads"));
+    }
 
     useEffect(() => {
         if (map.current) return;
@@ -68,98 +74,92 @@ export default function TrailMap({ trail, rightPanelWidth }) {
             setZoom(map.current.getZoom().toFixed(2));
         });
 
+        map.current.on("mouseup", getTrailHeads);
+        map.current.on("moveend", getTrailHeads);
+
         map.current.on('load', () => {
-            // setLoaded(true);
+            getTrailHeads();
+            setLoaded(true);
+
+            map.current.addSource('markersSource', markers.current);
+            map.current.addSource('routeSource', routeSource.current);
+
+            map.current.addLayer({
+                id: 'routeLayer',
+                type: 'line',
+                source: 'routeSource',
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': '#ff0000',
+                    'line-width': 5
+                }
+            });
+
+            map.current.on("click", "markersLayer", (e) => {
+                console.log(`e`, e.features[0]);
+                history.push(`/trails/${e.features[0].properties.id}`);
+            });
+
             map.current.loadImage(
-                'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
+                markerImg,
                 (err, image) => {
                     if (err) return console.error(err);
                     map.current.addImage('custom-marker', image);
-                    setLoaded(true);
-                    map.current.addSource('markers', markers.current);
+
                     map.current.addLayer({
-                        'id': 'markers',
+                        'id': 'markersLayer',
                         'type': 'symbol',
-                        'source': 'markers',
+                        'source': 'markersSource',
                         'layout': {
                             'icon-image': 'custom-marker',
-                            // get the title name from the source's "title" property
-                            'text-field': ['get', 'title'],
-                            'text-font': [
-                                'Open Sans Semibold',
-                                'Arial Unicode MS Bold'
-                            ],
-                            'text-offset': [0, 1.25],
-                            'text-anchor': 'top'
+                            'icon-size': .075,
+                            'icon-anchor': "bottom",
+                            'icon-allow-overlap': true,
+                            // 'text-field': ['get', 'title'],
+                            // 'text-font': [
+                            //     'Open Sans Semibold',
+                            //     'Arial Unicode MS Bold'
+                            // ],
+                            // 'text-offset': [0, 1.25],
+                            // 'text-anchor': 'top',
                         }
                     });
                 }
-            )
+            );
         });
-
-        map.current.on("mouseup", () => {
-            const bounds = map.current.getBounds();
-            const nw = bounds.getNorthWest();
-            const se = bounds.getSouthEast();
-
-            const query = routeQuery({
-                nw: [nw.lat, nw.lng],
-                se: [se.lat, se.lng],
-            });
-            dispatch(getRoutes(query, "trailHeads"));
-        })
     }, []);
 
     useEffect(() => {
-        if (!loaded) return;
+        if (!loaded || !route) return;
 
-        if (map.current.getLayer("route"))
-            map.current.removeLayer("route");
-        if (map.current.getSource("route"))
-            map.current.removeSource("route");
+        routeSource.current.data.geometry.coordinates = unpackCoordinates(route);
 
-        map.current.addSource('route', {
-            type: 'geojson',
-            data: {
-                type: 'Feature',
-                properties: {},
-                geometry: {
-                    type: 'LineString',
-                    coordinates: coordinates
-                }
-            }
-        });
-
-        map.current.addLayer({
-            id: 'route',
-            type: 'line',
-            source: 'route',
-            layout: {
-                'line-join': 'round',
-                'line-cap': 'round'
-            },
-            paint: {
-                'line-color': '#ff0000',
-                'line-width': 5
-            }
-        });
+        const src = map.current.getSource("routeSource");
+        if (src)
+            src.setData(routeSource.current.data);
 
         map.current.easeTo({
-            center: coordinates[0],
+            center: routeSource.current.data.geometry.coordinates[0],
             zoom: zoom,
             duration: 1500
         });
 
-    }, [loaded, routes]);
+        return () => {};
+    }, [loaded, route]);
 
     useEffect(() => {
-        if (!loaded) return;
-        console.log(`trailHeads`, trailHeads)
+        if (!loaded || !trailHeads) return;
+
         markers.current.data.features = unpackTrailHeads(trailHeads);
 
-        map.current.getSource("markers")
-            .setData(markers.current.data);
+        const src = map.current.getSource("markersSource");
+        if (src)
+            src.setData(markers.current.data);
 
+        return () => {};
     }, [trailHeads]);
 
     return (

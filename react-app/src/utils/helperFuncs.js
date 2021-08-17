@@ -32,3 +32,22 @@ export const unpackCoordinates = (route) => {
     }
     return coordinates;
 }
+
+export const unpackTrailHeads = (trailHeads) => {
+    const features = [];
+    for (let key in trailHeads) {
+        const t = trailHeads[key];
+        features.push({
+            type: 'Feature',
+            properties: {
+                "id": t.id,
+                "title": t.name,
+            },
+            geometry: {
+                type: 'Point',
+                coordinates: [t.lng, t.lat]
+            }
+        });
+    }
+    return features;
+}

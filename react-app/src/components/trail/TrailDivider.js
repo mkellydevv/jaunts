@@ -56,13 +56,14 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth 
 
         mouseStart.current = Infinity;
 
-        window.dispatchEvent(new Event('resize'));
+        // window.dispatchEvent(new Event('resize'));
 
         setLeftPanelWidth(Math.max(0, e.clientX - width.current));
     };
 
     const handleMouseUp = (e) => {
         mouseDown.current = false;
+        window.dispatchEvent(new Event('resize'));
     };
 
     document.addEventListener("mousemove", handleMouseMove);
