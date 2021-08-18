@@ -1,0 +1,41 @@
+.trailMap {
+  -ms-flex-negative: 1000;
+      flex-shrink: 1000;
+  overflow: hidden;
+  width: 100%;
+}
+
+.trailMap__options {
+  height: 3rem;
+}
+
+.trailMap__container {
+  height: 100%;
+  width: 100%;
+  min-width: 20rem;
+  position: relative;
+}
+
+.trailMap__info {
+  width: 10.5rem;
+  background-color: var(--green-1);
+  color: white;
+  padding: .5rem;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 1rem;
+  border-radius: .25rem;
+}
+
+.trailMap__map {
+  height: 100%;
+  width: 100%;
+  position: unset;
+}
+
+.mapboxgl-ctrl.mapboxgl-ctrl-group {
+  margin: 1rem;
+}
+/*# sourceMappingURL=TrailMap.css.map */

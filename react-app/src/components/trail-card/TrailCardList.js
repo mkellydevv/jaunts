@@ -54,8 +54,8 @@ export default function TrailCardList({ trail, tag, trailLimit, completedTrails 
     }, [loadedChildren]);
 
     return (
-        <div className="card-list">
-            <div className="card-list__container">
+        <div className="cardList">
+            <div className="cardList__container">
                 {trails && trailsArr.map((trail, i) => {
                     return (
                         <TrailCard

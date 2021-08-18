@@ -1,0 +1,10 @@
+
+.cardList {
+    margin: 1rem;
+}
+
+.cardList__container {
+    display: flex;
+    flex-flow: column nowrap;
+    grid-gap: 1rem;
+}

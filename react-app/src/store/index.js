@@ -7,6 +7,7 @@ import lists from "./lists";
 import jaunts from "./jaunts";
 import photos from "./photos";
 import users from "./users";
+import routes from "./routes";
 
 const rootReducer = combineReducers({
     session,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     lists,
     jaunts,
     photos,
-    users
+    users,
+    routes
 });
 
 let enhancer;

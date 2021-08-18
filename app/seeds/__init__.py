@@ -6,6 +6,7 @@ from .list_seed import seed_lists, undo_lists
 from .jaunt_seed import seed_jaunts, undo_jaunts
 from .review_seed import seed_reviews, undo_reviews
 from .completed_seed import seed_completed, undo_completed
+from .route_seed import seed_routes, undo_routes
 
 # Creates a seed group to hold our commands
 # So we can type `flask seed --help`
@@ -21,6 +22,7 @@ def seed():
     seed_photos()
     seed_reviews()
     seed_completed()
+    seed_routes()
 
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')
@@ -32,3 +34,4 @@ def undo():
     undo_photos()
     undo_reviews()
     undo_completed()
+    undo_routes()

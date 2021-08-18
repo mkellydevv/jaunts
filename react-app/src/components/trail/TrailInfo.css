@@ -1,0 +1,277 @@
+.trailInfo {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -webkit-box-flex: 1000;
+      -ms-flex-positive: 1000;
+          flex-grow: 1000;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.trailInfo::-webkit-scrollbar {
+  display: none;
+}
+
+.trailInfo__container {
+  background-color: #fff;
+  border: 1px solid #CCCCCC;
+  position: relative;
+  overflow: hidden;
+  min-width: 20rem;
+  margin: 1rem 0 1rem 1rem;
+}
+
+.trailInfo__header {
+  height: 312px;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.trailInfo__header-img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.trailInfo__header-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: relative;
+  margin: 0 1.5rem 2rem 1.5rem;
+  color: #fff;
+}
+
+.trailInfo__header-name {
+  font-size: 2rem;
+  font-weight: 700;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  margin-bottom: .5rem;
+  text-shadow: var(--shadow-1);
+}
+
+.trailInfo__header-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  margin-bottom: 6px;
+}
+
+.trailInfo__header-region {
+  text-shadow: var(--shadow-1);
+}
+
+.trailInfo__btnBar {
+  height: 55px;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.trailInfo__btnBar-tab {
+  background-color: #428a13;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  cursor: pointer;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
+}
+
+.trailInfo__btnBar-tab:hover {
+  background-color: #529a23;
+}
+
+.trailInfo__btnBar-btn {
+  width: 3rem;
+  height: 3rem;
+  background-color: white;
+  border-radius: 100%;
+  color: #428A13;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 1.25rem;
+  position: relative;
+  top: -1.5rem;
+}
+
+.trailInfo__btnBar-name {
+  color: white;
+  font-size: 1rem;
+  line-height: 1.44;
+  font-weight: 500;
+  position: relative;
+  top: -22px;
+  height: 0px;
+}
+
+.trailInfo__overview {
+  border-bottom: solid #e6e6e6 1px;
+  color: #414141;
+  font-size: 1.2rem;
+  line-height: 1.44;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  padding: 1.5rem 0;
+  margin: 0 1.5rem;
+}
+
+.trailInfo__details {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
+  border-bottom: solid #e6e6e6 1px;
+  padding: 1.5rem 0;
+  margin: 0 1.5rem;
+}
+
+.trailInfo__details-category {
+  display: block;
+  width: auto;
+  color: #5a5a5a;
+  font-size: 1rem;
+  line-height: 1.42;
+}
+
+.trailInfo__details-data {
+  display: block;
+  width: auto;
+  color: #414141;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.38;
+}
+
+.trailInfo__tags {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  padding: 1.5rem 0;
+  margin: 0 1.5rem;
+}
+
+.trailInfo__tags-tag {
+  padding: 5.5px 12px;
+  font-size: 1rem;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #428A13;
+  border: solid 1px #428A13;
+}
+
+.trailInfo__info-tabs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  background: #f2f2f2;
+  border-top: solid #e2e2e2 1px;
+  border-bottom: solid #e2e2e2 1px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.trailInfo__info-tab {
+  width: 100%;
+  padding: .9rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
+}
+
+.trailInfo__info-tab:hover {
+  background: #e2e2e2;
+  color: var(--green-2);
+}
+
+.trailInfo__info-tab.active {
+  background: #e2e2e2;
+}
+
+.trailInfo__info-btn {
+  margin: 0 .9rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
+  border-bottom: 3px solid transparent;
+}
+
+.trailInfo__info-btn.active {
+  color: var(--green-2);
+  border-bottom: 3px solid var(--green-2);
+}
+
+.trailInfo__info-content {
+  background-color: white;
+  padding: 1.5rem 0;
+  margin: 0 1.5rem;
+  color: #414141;
+  font-size: 1.2rem;
+  line-height: 1.44;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+/*# sourceMappingURL=TrailInfo.css.map */

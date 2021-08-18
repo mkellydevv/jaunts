@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { getTrails, clearTrails } from "../../store/trails";
 import { trailQuery } from "../../utils/queryObjects";
 
-import SearchBarResult from './SearchBarResult';
+import SearchResult from './SearchResult';
 
 import "./SearchBar.css";
 
-export default function SearchBar() {
+export default function SearchBar({ tiny }) {
     const dispatch = useDispatch();
     const history = useHistory();
+    const location = useLocation();
     const currSearch = useRef("");
     const prevSearch = useRef("");
     const nameResults = useSelector(state => state["trails"]["searchByName"]);
@@ -34,7 +35,7 @@ export default function SearchBar() {
         "Tags": tagResultsArr,
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
         let id = null;
         if (nameResultsArr.length)
             id = nameResultsArr[0]["id"];
@@ -43,9 +44,17 @@ export default function SearchBar() {
         else if (tagResultsArr.length)
             id = tagResultsArr[0]["id"];
 
-        if (id !== null)
+        if (id !== null) {
             history.push(`/trails/${id}`);
+        }
     }
+
+    useEffect(() => {
+       const inp = document.getElementsByClassName("searchBar__input-inp")[0];
+       inp.value = "";
+       currSearch.current = "";
+       prevSearch.current = "";
+    }, [location]);
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter" && prevSearch.current === currSearch.current)
@@ -86,14 +95,14 @@ export default function SearchBar() {
     }, [currSearch.current]);
 
     return (
-        <div className="search-bar">
+        <div className={`searchBar ${tiny ? "tiny" : ""}`}>
 
-            <div className="search-bar__input">
-                <div className={`search-bar__input-icon ${inputFocus ? "active": ""}`}>
+            <div className="searchBar__input">
+                <div className={`searchBar__input-icon ${inputFocus ? "active": ""}`}>
                     <i className='fas fa-search' />
                 </div>
                 <input
-                    className="search-bar__input-inp"
+                    className="searchBar__input-inp"
                     placeholder="Search by name, region, or tag"
                     onFocus={() => setInputFocus(true)}
                     onBlur={() => setInputFocus(false)}
@@ -103,33 +112,41 @@ export default function SearchBar() {
                     }}
                     onKeyDown={handleKeyDown}
                 />
-                <button className="search-bar__input-submit" onClick={handleSubmit}>
+                <button
+                    className="searchBar__input-submit"
+                    onClick={handleSubmit}
+                >
                     <i className="fas fa-arrow-right" />
                 </button>
             </div>
 
-            <div className={`search-bar__results ${showResults ? "active" : ""}`}>
+            <div className={`searchBar__results ${showResults ? "active" : ""}`}>
 
-                <div className="search-bar__results-tabs">
+                <div className={`searchBar__results-tabs ${tiny ? "tiny" : ""}`}>
                     {tabs.map(tabName => {
                         return (
                             <div
-                                className={`search-bar__results-tab ${checkActive(tabName)}`}
-                                onClick={() => setActiveTab(tabName)}
+                                className={`searchBar__results-tab ${checkActive(tabName)}`}
+                                onClick={() => {
+                                    setActiveTab(tabName);
+                                }}
                                 key={`${tabName}`}
                             >
-                                {tabName} {tabMap[tabName] && `(${tabMap[tabName].length})`}
+                                {tabName} {tabMap[tabName] && !tiny && `(${tabMap[tabName].length})`}
                             </div>
                         )
                     })}
                 </div>
 
-                <div className="search-bar__results-content">
+                <div className="searchBar__results-content">
                     {tabs.map(tabName => (
-                        <div className={`search-bar__results-list ${checkActive(tabName)}`}>
-                            {tabMap[tabName] && tabMap[tabName].map(trail => (
-                                <SearchBarResult trail={trail} />
-                            ))}
+                        <div className={`searchBar__results-list ${checkActive(tabName)}`}>
+                            {tabMap[tabName] && tabMap[tabName].map(trail => {
+                                console.log(`trail`, trail);
+                                return (
+                                    <SearchResult trail={trail} tiny={tiny} />
+                                )
+                            })}
                         </div>
                     ))}
                 </div>

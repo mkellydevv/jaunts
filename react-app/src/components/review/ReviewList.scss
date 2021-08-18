@@ -1,0 +1,39 @@
+
+.reviewList {
+    &__header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e6e6e6;
+        display: grid;
+        grid-template-columns: 50% 50%;
+
+        justify-content: space-between;
+        align-items: center;
+
+        &-info {
+            display: flex;
+            flex-flow: row wrap;
+            grid-gap: .5rem;
+            flex-flow: row wrap;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        &-rating {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        &-section-2 {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        &-btn {
+            min-width: 8rem;
+            width: 80%;
+            max-width: 10rem;
+            height: 2.5rem;
+        }
+    }
+}

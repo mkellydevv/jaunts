@@ -24,30 +24,42 @@ export default function ReviewList({ trail, open }) {
     }, [dispatch]);
 
     return (
-        <div className="review-list">
-            <div className="review-list__header">
-                <div className="review-list__header-info">
-                    <h1>{trail.default_rating}</h1>
-                    <span className="review-list__rating">
+        <div className="reviewList">
+
+            <div className="reviewList__header">
+
+                <div className="reviewList__header-info">
+                    <div className="reviewList__header-rating">
+                        {trail.default_rating}
+                    </div>
+                    <div className="reviewList__header-stars">
                         {trail && <StarRating rating={trail.default_rating} fixed={true} />}
-                    </span>
-                    <span className="review-list__count">
+                    </div>
+                    <div className="reviewList__header-count">
                         {trail && `\(${trail.default_weighting}\)`} Ratings
-                    </span>
+                    </div>
                 </div>
-                <span>
-                    {trail && user && <button className={"jaunts__btn jaunts__btn-1"} onClick={() => open()}>
+
+                <div className="reviewList__header-section-2">
+                    {trail && user &&
+                    <button
+                        className={"jaunts__btn jaunts__btn-1 reviewList__header-btn"}
+                        onClick={() => open()}
+                    >
                         Write Review
                     </button>}
-                </span>
+                </div>
+
             </div>
-            <div className="review-list__container">
+
+            <div className="reviewList__container">
                 {reviews && Object.keys(reviews).reverse().map(key => {
                     return (
                         <Review review={reviews[key]} open={open} key={`Review-${key}`}/>
                     )
                 })}
             </div>
+
         </div>
     )
 }

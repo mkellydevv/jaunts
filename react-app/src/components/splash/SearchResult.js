@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
 
-import "./SearchBarResult.css";
+import "./SearchResult.css";
 
 const map = {
     Easy: "easy",
@@ -9,7 +9,7 @@ const map = {
     Hard: "hard"
 }
 
-export default function SearchBar({ trail }) {
+export default function SearchResult({ trail, tiny }) {
     const history = useHistory();
 
     const navigateToTrail = () => {
@@ -18,24 +18,25 @@ export default function SearchBar({ trail }) {
 
     return (
         <div
-            className="search-bar-result"
+            className={`searchResult ${tiny ? "tiny" : ""}`}
             onClick={navigateToTrail}
         >
 
-            <div className="search-bar-result__icon">
+            <div className="searchResult__icon">
                 <i className="fas fa-tree" />
             </div>
 
-            <div className="search-bar-result__info">
-                <div className="search-bar-result__name">
+            <div className="searchResult__info">
+                <div className="searchResult__name">
                     {trail.name}
                 </div>
-                <div className="search-bar-result__region">
+                <div className="searchResult__region">
                     {trail.region}
                 </div>
             </div>
 
-            <div className="search-bar-result__description">
+            {!tiny &&
+            <div className={`searchResult__description`}>
                 <div className={`trail-card__difficulty difficulty-${map[trail.difficulty]}`}>
                     {trail.difficulty}
                 </div>
@@ -46,6 +47,7 @@ export default function SearchBar({ trail }) {
                     E. Gain: {trail.elevation_gain} ft
                 </div>
             </div>
+            }
 
         </div>
     )

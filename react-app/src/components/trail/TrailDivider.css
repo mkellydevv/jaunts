@@ -1,0 +1,121 @@
+.trailDivider {
+  width: 3rem;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  z-index: 3;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
+  margin: .5rem 0;
+}
+
+.trailDivider::-webkit-scrollbar {
+  display: none;
+}
+
+.trailDivider.active {
+  width: 22rem;
+  overflow-y: scroll;
+  margin: 0;
+}
+
+.trailDivider.active .trailDivider__nav {
+  height: unset;
+  -ms-grid-rows: unset;
+      grid-template-rows: unset;
+  -ms-grid-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+  margin: .5rem;
+}
+
+.trailDivider.active .trailDivider__nav-btns {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.trailDivider__nav {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+  height: 100%;
+}
+
+.trailDivider__nav-btns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: .5rem;
+  grid-gap: .5rem;
+}
+
+.trailDivider__nav-btn {
+  width: 2rem !important;
+}
+
+.trailDivider__nav-end {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.trailDivider__drag {
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.trailDivider__drag-handle {
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.trailDivider__container {
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
+  overflow: hidden;
+}
+
+.trailDivider__container.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.trailDivider__container-search {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.trailDivider__container-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1rem 1rem 0 1rem;
+}
+/*# sourceMappingURL=TrailDivider.css.map */

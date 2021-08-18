@@ -1,0 +1,8 @@
+.trailPage {
+    overflow-y: hidden;
+
+    &__content {
+        display: flex;
+        height: calc(100vh - 4rem);
+    }
+}

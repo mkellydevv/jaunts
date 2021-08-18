@@ -56,6 +56,20 @@ export function reviewQuery(args={}) {
     return query;
 }
 
+export function routeQuery(args={}) {
+    const query = {
+        fromTrailId: "",
+        nw: "",
+        se: "",
+        offset: 0,
+        limit: 25,
+        getCoordinates: "",
+    };
+    for (let key in args)
+        query[key] = args[key];
+    return query;
+}
+
 export function trailQuery(args={}) {
     const query = {
         fromListId: "",
@@ -70,6 +84,7 @@ export function trailQuery(args={}) {
         getLists: "",
         getPhotos: "",
         getReviews: "",
+        getRoutes: "",
         getTags: "",
         getUser: "",
     };

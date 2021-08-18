@@ -7,6 +7,14 @@
     position: relative;
 }
 
+.splash-page__search {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 28rem;
+}
+
 .splash-page__promo {
     height: 40rem;
     width: 100%;

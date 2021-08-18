@@ -1,130 +1,185 @@
-
-.search-bar {
-    position: absolute;
-    top: 28rem;
-    width: 40rem;
-    max-width: 80%;
-    height: 4.5rem;
-    z-index: 1;
+.searchBar {
+  position: relative;
+  width: 40rem;
+  max-width: 91%;
+  height: 4.5rem;
+  z-index: 1;
 }
 
-.search-bar__input {
-    height: 100%;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    padding: 0 1rem;
-    position: relative;
-    top: 0;
-    z-index: 2;
-    transition: .1s ease-in-out;
-    background: white;
-    border-radius: 5rem;
-    box-shadow: var(--shadow-1);
+.searchBar.tiny {
+  height: 3.6rem;
 }
 
-.search-bar__input-icon {
-    height: 1rem;
-    width: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: .1s ease-in-out;
+.searchBar.tiny .searchBar__input {
+  padding: 0 .8rem;
 }
 
-.search-bar__input-icon.active {
-    opacity: 1;
+.searchBar.tiny .searchBar__input-inp {
+  font-size: 1rem;
+  padding: .8rem 0;
+  margin: 0 .8rem;
 }
 
-.search-bar__input:hover, .search-bar__input:focus-within {
-    box-shadow: var(--shadow-2);
+.searchBar.tiny .searchBar__input-submit {
+  height: 2rem;
+  width: 2rem;
+  min-width: 2rem;
 }
 
-.search-bar__input-inp {
-    border: none;
-    outline: none;
-    font-size: 1.2rem;
-    flex-grow: 1;
-    margin: 0 1rem;
-    padding: 14px 0;
+.searchBar.tiny .searchBar__results-content {
+  max-height: calc(70vh);
 }
 
-.search-bar__input-submit {
-    cursor: pointer;
-    height: 2.1rem;
-    width: 2.1rem;
-    border-radius: 5rem;
-    border: none;
-    background-color: var(--green-2);
-    color: white;
-    transition: .1s ease-in-out;
+.searchBar__input {
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 1rem;
+  position: relative;
+  top: 0;
+  z-index: 2;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
+  background: white;
+  border-radius: 5rem;
+  -webkit-box-shadow: var(--shadow-1);
+          box-shadow: var(--shadow-1);
 }
 
-.search-bar__input-submit:hover {
-    background-color: var(--green-3);
+.searchBar__input:hover, .searchBar__input:focus-within {
+  -webkit-box-shadow: var(--shadow-2);
+          box-shadow: var(--shadow-2);
 }
 
-.search-bar__results {
-    background-color: white;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    margin-top: 2.25rem;
-    padding-top: 2.25rem;
-    z-index: 0;
-    transition: .1s ease-in-out;
-    visibility: hidden;
-    opacity: 0;
-    border: 1px solid #e0e0e0;
-    box-sizing: border-box;
+.searchBar__input-icon {
+  height: 1rem;
+  width: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  opacity: 0;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
-.search-bar__results.active {
-    visibility: visible;
-    opacity: 1;
+.searchBar__input-icon.active {
+  opacity: 1;
 }
 
-.search-bar__results-tabs {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
-    grid-gap: 1rem;
-    font-size: 1.2rem;
-    padding: 1rem;
-    border-bottom: 1px solid #e0e0e0;
+.searchBar__input-inp {
+  min-width: 0;
+  border: none;
+  outline: none;
+  font-size: 1.2rem;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  margin: 0 1rem;
+  padding: 14px 0;
 }
 
-.search-bar__results-tab {
-    cursor: pointer;
-    font-size: 1.2rem;
-    font-weight: 700;
-    border-bottom: 2px solid transparent;
+.searchBar__input-submit {
+  cursor: pointer;
+  height: 2.1rem;
+  width: 2.1rem;
+  min-width: 2.1rem;
+  border-radius: 5rem;
+  border: none;
+  background-color: var(--green-2);
+  color: white;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
-.search-bar__results-tab.active {
-    color: var(--green-2);
-    border-bottom: 2px solid var(--green-2);
+.searchBar__input-submit:hover {
+  background-color: var(--green-3);
 }
 
-.search-bar__results-tab:hover {
-    color: var(--green-2);
+.searchBar__results {
+  background-color: white;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  margin-top: 2.25rem;
+  padding-top: 2.25rem;
+  z-index: 0;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
+  visibility: hidden;
+  opacity: 0;
+  border: 1px solid #e0e0e0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
-.search-bar__results-content {
-    height: 100%;
-    max-height: 36rem;
-    overflow-y: auto;
+.searchBar__results.active {
+  visibility: visible;
+  opacity: 1;
 }
 
-.search-bar__results-list {
-    display: none;
+.searchBar__results-tabs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  grid-gap: 1rem;
+  font-size: 1.2rem;
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.search-bar__results-list.active {
-    display: initial;
+.searchBar__results-tabs.tiny {
+  font-size: 1rem;
+  padding: .5rem .8rem .8rem .8rem;
 }
 
-.search-bar__results-content {
-    width: 100%;
+.searchBar__results-tab {
+  cursor: pointer;
+  font-weight: 700;
+  border-bottom: 2px solid transparent;
 }
+
+.searchBar__results-tab.active {
+  color: var(--green-2);
+  border-bottom: 2px solid var(--green-2);
+}
+
+.searchBar__results-tab:hover {
+  color: var(--green-2);
+}
+
+.searchBar__results-content {
+  height: 100%;
+  width: 100%;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.searchBar__results-list {
+  display: none;
+}
+
+.searchBar__results-list.active {
+  display: initial;
+}
+/*# sourceMappingURL=SearchBar.css.map */

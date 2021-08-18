@@ -3,6 +3,5 @@ __pycache__/
 *.py[cod]
 .venv
 .DS_Store
-selenium/states
 img/
 .vscode/settings.json
