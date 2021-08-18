@@ -11,7 +11,7 @@ import TrailCardList from "../trail-card/TrailCardList";
 
 import "./TrailDivider.css";
 
-export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth }) {
+export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth, setShowMarkers }) {
     const dispatch = useDispatch();
     const { default: users } = useSelector(state => state["users"]);
     const completedTrails = users ? new Set(Object.values(users)[0]["completed_trails"]) : new Set([]);
@@ -41,6 +41,10 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth 
         mouseDown.current = true;
         mouseStart.current = e.clientX;
     };
+
+    const handleShowMarkers = (e) => {
+        setShowMarkers(state => !state);
+    }
 
     const handleMouseMove = (e) => {
         if (!mouseDown.current ||
@@ -107,16 +111,41 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth 
                     </button>
                 </div>
 
+                <div className="trailDivider__nav-btns trailDivider__nav-end">
+                    <button
+                        className="jaunts__btn jaunts__btn-1 trailDivider__nav-btn"
+                        onClick={handleShowMarkers}
+                    >
+                        <i className="fas fa-map-marker-alt" />
+                    </button>
+                    <button
+                        className="jaunts__btn jaunts__btn-1 trailDivider__nav-btn"
+                    >
+                        <i className="fas fa-filter" />
+                    </button>
+                    <button
+                        className="jaunts__btn jaunts__btn-1 trailDivider__nav-btn"
+                    >
+                        <i className="fas fa-cubes" />
+                    </button>
+                </div>
+
             </div>
-            {active &&
-            <>
-                <div className="trailDivider__search">
+
+            <div className={`trailDivider__container ${active ? "active" : ""}`}>
+
+                <div className="trailDivider__container-search">
                     <SearchBar tiny={true} />
                 </div>
-                <h2>Nearby Trails</h2>
+
+                <div className="trailDivider__container-title">
+                    Nearby Trails
+                </div>
+
                 {trail && <TrailCardList trail={trail} tag={"nearby"} trailLimit={10} completedTrails={completedTrails} />}
-            </>
-            }
+
+            </div>
+
         </div>
     )
 }

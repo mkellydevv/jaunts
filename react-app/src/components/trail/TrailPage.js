@@ -27,6 +27,8 @@ export default function TrailPage() {
 
     // Divider
     const [leftPanelWidth, setLeftPanelWidth] = useState(null);
+    const [showMarkers, setShowMarkers] = useState(true);
+
 
     useEffect(() => {
         const _photoQuery = photoQuery({
@@ -77,10 +79,12 @@ export default function TrailPage() {
                     trail={trail}
                     leftPanelWidth={leftPanelWidth}
                     setLeftPanelWidth={setLeftPanelWidth}
+                    setShowMarkers={setShowMarkers}
                 />
 
                 <TrailMap
                     trail={trail}
+                    showMarkers={showMarkers}
                 />
 
             </div>

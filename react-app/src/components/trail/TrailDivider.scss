@@ -3,11 +3,11 @@
     width: 3rem;
     flex: 0 0 auto;
     user-select: none;
-    background-color: #e2e2e2;
     z-index: 3;
     -ms-overflow-style: none;
     scrollbar-width: none;
     transition: .1s ease-in-out;
+    margin: .5rem 0;
 
     &::-webkit-scrollbar {
         display: none;
@@ -16,12 +16,14 @@
     &.active {
         width: 22rem;
         overflow-y: scroll;
+        margin: 0;
 
         & .trailDivider {
             &__nav {
                 height: unset;
                 grid-template-rows: unset;
                 grid-template-columns: 1fr 1fr 1fr;
+                margin: .5rem;
 
                 &-btns {
                     flex-direction: row;
@@ -35,6 +37,7 @@
         grid-template-rows: 1fr 1fr 1fr;
         height: 100%;
 
+
         &-btns {
             display: flex;
             flex-direction: column;
@@ -44,6 +47,10 @@
 
         &-btn {
             width: 2rem !important;
+        }
+
+        &-end {
+            justify-content: flex-end;
         }
     }
 
@@ -60,8 +67,27 @@
         }
     }
 
-    &__search {
-        display: flex;
-        justify-content: center;
+    &__container {
+        visibility: hidden;
+        opacity: 0;
+        transition: .1s ease-in-out;
+        overflow: hidden;
+
+        &.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        &-search {
+            display: flex;
+            justify-content: center;
+        }
+
+        &-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 1rem 1rem 0 1rem;
+        }
+
     }
 }

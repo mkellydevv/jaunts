@@ -12,7 +12,7 @@ import "./TrailMap.css";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWtlbGx5ZGV2diIsImEiOiJja3BmcXZuY3YwNzg0MnFtd3Rra3M3amI4In0.h8HRrZ2xGNP-aq7EwO0YVA';
 
-export default function TrailMap({ trail, rightPanelWidth }) {
+export default function TrailMap({ trail, showMarkers }) {
     const dispatch = useDispatch();
     const history = useHistory();
     const { default: routes } = useSelector(state => state.routes);
@@ -37,12 +37,31 @@ export default function TrailMap({ trail, rightPanelWidth }) {
         }
     });
 
+    const markersLayer = {
+        'id': 'markersLayer',
+        'type': 'symbol',
+        'source': 'markersSource',
+        'layout': {
+            'icon-allow-overlap': true,
+            'icon-anchor': "bottom",
+            'icon-image': 'custom-marker',
+            'icon-size': .075,
+            'text-field': ['get', 'title'],
+            'text-font': [
+                'Open Sans Semibold',
+                'Arial Unicode MS Bold'
+            ],
+            'text-offset': [0, 1.25],
+            'text-optional': true,
+        }
+    }
+
     // Mapbox specific
     const mapContainer = useRef(null);
     const map = useRef(null);
     const [loaded, setLoaded] = useState(false);
-    const [lng, setLng] = useState(-78.2875100);
-    const [lat, setLat] = useState(38.57103000);
+    const [lng, setLng] = useState(null);
+    const [lat, setLat] = useState(null);
     const [zoom, setZoom] = useState(13);
 
     const getTrailHeads = (e) => {
@@ -59,12 +78,12 @@ export default function TrailMap({ trail, rightPanelWidth }) {
     }
 
     useEffect(() => {
-        if (map.current) return;
+        if (map.current || !route) return;
 
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/outdoors-v11',
-            center: [lng, lat],
+            center: [route.lng, route.lat],
             zoom: zoom,
         });
 
@@ -102,7 +121,6 @@ export default function TrailMap({ trail, rightPanelWidth }) {
             });
 
             map.current.on("click", "markersLayer", (e) => {
-                console.log(`e`, e.features[0]);
                 history.push(`/trails/${e.features[0].properties.id}`);
             });
 
@@ -112,28 +130,11 @@ export default function TrailMap({ trail, rightPanelWidth }) {
                     if (err) return console.error(err);
                     map.current.addImage('custom-marker', image);
 
-                    map.current.addLayer({
-                        'id': 'markersLayer',
-                        'type': 'symbol',
-                        'source': 'markersSource',
-                        'layout': {
-                            'icon-image': 'custom-marker',
-                            'icon-size': .075,
-                            'icon-anchor': "bottom",
-                            'icon-allow-overlap': true,
-                            // 'text-field': ['get', 'title'],
-                            // 'text-font': [
-                            //     'Open Sans Semibold',
-                            //     'Arial Unicode MS Bold'
-                            // ],
-                            // 'text-offset': [0, 1.25],
-                            // 'text-anchor': 'top',
-                        }
-                    });
+                    map.current.addLayer(markersLayer);
                 }
             );
         });
-    }, []);
+    }, [route]);
 
     useEffect(() => {
         if (!loaded || !route) return;
@@ -150,9 +151,6 @@ export default function TrailMap({ trail, rightPanelWidth }) {
             duration: 1500
         }, {"eased": true});
 
-
-        // FIGURE OUT SOME WAY TO GET BOUNDS AFTER MOVING
-
         return () => {};
     }, [loaded, route]);
 
@@ -167,6 +165,14 @@ export default function TrailMap({ trail, rightPanelWidth }) {
 
         return () => {};
     }, [trailHeads]);
+
+    useEffect(() => {
+        if (!loaded) return;
+        if (showMarkers)
+            map.current.addLayer(markersLayer);
+        else
+            map.current.removeLayer("markersLayer");
+    }, [showMarkers]);
 
     return (
         <div

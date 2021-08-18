@@ -1,8 +1,15 @@
-
-.card-list {
-    margin: 0 1rem;
+.cardList {
+  margin: 1rem;
 }
 
-.card-list__container > * {
-    margin-bottom: 16px;
+.cardList__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+  grid-gap: 1rem;
 }
+/*# sourceMappingURL=TrailCardList.css.map */

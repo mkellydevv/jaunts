@@ -42,6 +42,8 @@ export const unpackTrailHeads = (trailHeads) => {
             properties: {
                 "id": t.id,
                 "title": t.name,
+                "lat": t.lat,
+                "lng": t.lng,
             },
             geometry: {
                 type: 'Point',
