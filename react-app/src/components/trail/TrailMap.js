@@ -7,7 +7,7 @@ import { getRoutes } from "../../store/routes";
 import { unpackCoordinates, unpackTrailHeads } from "../../utils/helperFuncs";
 import { routeQuery } from "../../utils/queryObjects";
 
-import markerImg from "../../assets/marker.png";
+import markerImg from "../../assets/green-2.png";
 import "./TrailMap.css";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWtlbGx5ZGV2diIsImEiOiJja3BmcXZuY3YwNzg0MnFtd3Rra3M3amI4In0.h8HRrZ2xGNP-aq7EwO0YVA';
@@ -115,7 +115,7 @@ export default function TrailMap({ trail, showMarkers }) {
                     'line-cap': 'round'
                 },
                 paint: {
-                    'line-color': '#ff0000',
+                    'line-color': '#ee2222',
                     'line-width': 5
                 }
             });
@@ -145,9 +145,11 @@ export default function TrailMap({ trail, showMarkers }) {
         if (src)
             src.setData(routeSource.current.data);
 
+        setZoom(13);
+
         map.current.easeTo({
             center: routeSource.current.data.geometry.coordinates[0],
-            zoom: zoom,
+            zoom: 13,
             duration: 1500
         }, {"eased": true});
 
