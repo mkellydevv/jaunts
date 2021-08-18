@@ -45,7 +45,9 @@ export default function TrailMap({ trail, rightPanelWidth }) {
     const [lat, setLat] = useState(38.57103000);
     const [zoom, setZoom] = useState(13);
 
-    const getTrailHeads = () => {
+    const getTrailHeads = (e) => {
+        if (e && e.type === "moveend" && !e.eased) return;
+
         const bounds = map.current.getBounds();
         const nw = bounds.getNorthWest();
         const se = bounds.getSouthEast();
@@ -76,6 +78,7 @@ export default function TrailMap({ trail, rightPanelWidth }) {
 
         map.current.on("mouseup", getTrailHeads);
         map.current.on("moveend", getTrailHeads);
+        map.current.on("zoomend", getTrailHeads);
 
         map.current.on('load', () => {
             getTrailHeads();
@@ -145,7 +148,10 @@ export default function TrailMap({ trail, rightPanelWidth }) {
             center: routeSource.current.data.geometry.coordinates[0],
             zoom: zoom,
             duration: 1500
-        });
+        }, {"eased": true});
+
+
+        // FIGURE OUT SOME WAY TO GET BOUNDS AFTER MOVING
 
         return () => {};
     }, [loaded, route]);

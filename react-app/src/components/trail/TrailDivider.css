@@ -11,6 +11,8 @@
   z-index: 3;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
 .trailDivider::-webkit-scrollbar {
@@ -79,17 +81,6 @@
 .trailDivider__drag-handle {
   cursor: -webkit-grab;
   cursor: grab;
-  height: 3rem;
-  width: 3rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
 }
 
 .trailDivider__search {

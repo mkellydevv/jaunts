@@ -25,20 +25,15 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth 
     const width = useRef(active ? openWidth : closedWidth);
 
     const handleResize = (e) => {
-        if (!active)
-            width.current = 22 * 16 / 2;
-        else
-            width.current = 24;
+        width.current = active ? closedWidth : openWidth;
         setActive(state => !state);
     };
 
     const handleMaximizeLeft = (e) => {
-        e.stopPropagation();
         setLeftPanelWidth(null);
     }
 
     const handleMaximizeRight = (e) => {
-        e.stopPropagation();
         setLeftPanelWidth(0);
     }
 
@@ -48,33 +43,36 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth 
     };
 
     const handleMouseMove = (e) => {
-        if (
-            !mouseDown.current ||
+        if (!mouseDown.current ||
             Math.abs(mouseStart.current - e.clientX) < 3
         )
             return;
 
         mouseStart.current = Infinity;
 
-        // window.dispatchEvent(new Event('resize'));
-
         setLeftPanelWidth(Math.max(0, e.clientX - width.current));
     };
 
     const handleMouseUp = (e) => {
         mouseDown.current = false;
-        window.dispatchEvent(new Event('resize'));
     };
 
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+    useEffect(() => {
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mouseup", handleMouseUp);
+        document.getElementById("trailDivider")
+            .addEventListener("transitionend", () => {
+                window.dispatchEvent(new Event('resize'));
+        });
+    }, []);
 
     useEffect(() => {
         window.dispatchEvent(new Event('resize'));
-    }, [active, leftPanelWidth]);
+    }, [leftPanelWidth]);
 
     return (
         <div
+            id="trailDivider"
             className={`trailDivider ${active ? "active" : ""}`}
         >
             <div className="trailDivider__nav">
@@ -101,12 +99,12 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth 
                 </div>
 
                 <div className="trailDivider__drag">
-                    <div
-                        className="trailDivider__drag-handle"
+                    <button
+                        className="jaunts__btn jaunts__btn-1 trailDivider__nav-btn trailDivider__drag-handle"
                         onMouseDown={handleMouseDown}
                     >
-                        <i className="fas fa-grip-lines-vertical" />
-                    </div>
+                        <i className="fas fa-grip-vertical" />
+                    </button>
                 </div>
 
             </div>
