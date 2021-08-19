@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACA,AAAA,IAAI,CAAC;EACD,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,KAAK;CAChB;;AAED,AAAA,GAAG,AAAA,GAAG,CAAC;EACH,QAAQ,EAAE,QAAQ;EAClB,GAAG,EAAE,IAAI;CACZ",
+    "sources": [
+        "Terrain.scss"
+    ],
+    "names": [],
+    "file": "Terrain.css"
+}

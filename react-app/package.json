@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "dat.gui": "^0.7.7",
     "http-proxy-middleware": "^1.0.5",
     "mapbox-gl": "^2.4.0",
     "react": "^17.0.0",
@@ -15,7 +16,8 @@
     "react-scripts": "3.4.3",
     "redux": "^4.1.0",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "three": "^0.131.3"
   },
   "scripts": {
     "start": "react-scripts start",

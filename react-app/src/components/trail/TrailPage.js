@@ -11,6 +11,7 @@ import { photoQuery, routeQuery, trailQuery, userQuery } from "../../utils/query
 import TrailInfo from "./TrailInfo";
 import TrailDivider from "./TrailDivider";
 import TrailMap from "./TrailMap";
+import Terrain from "../three/Terrain";
 
 import "./TrailPage.css";
 
@@ -69,13 +70,14 @@ export default function TrailPage() {
 
             <div className="trailPage__content">
 
-                <TrailInfo
+                <Terrain />
+                {/* <TrailInfo
                     trail={trail}
                     leftPanelWidth={leftPanelWidth}
-                />
+                /> */}
 
 
-                <TrailDivider
+                {/* <TrailDivider
                     trail={trail}
                     leftPanelWidth={leftPanelWidth}
                     setLeftPanelWidth={setLeftPanelWidth}
@@ -85,7 +87,7 @@ export default function TrailPage() {
                 <TrailMap
                     trail={trail}
                     showMarkers={showMarkers}
-                />
+                /> */}
 
             </div>
 
