@@ -69,8 +69,8 @@ export default function TrailPage() {
 
             <div className="trailPage__content">
 
-                <Terrain />
-                {/* <TrailInfo
+                {/* <Terrain /> */}
+                <TrailInfo
                     trail={trail}
                     leftPanelWidth={leftPanelWidth}
                 />
@@ -86,7 +86,7 @@ export default function TrailPage() {
                 <TrailMap
                     trail={trail}
                     showMarkers={showMarkers}
-                /> */}
+                />
 
             </div>
 

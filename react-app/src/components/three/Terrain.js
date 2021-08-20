@@ -6,7 +6,7 @@ import tilebelt from "@mapbox/tilebelt";
 import * as dat from "dat.gui";
 
 import './Terrain.css';
-import heightImage from "../../assets/test2.png";
+import heightImage from "../../assets/test.png";
 import mountainImage from "../../assets/mtn.png";
 
 export default function Terrain({}){
@@ -20,8 +20,9 @@ export default function Terrain({}){
             `https://api.mapbox.com/v4/mapbox.terrain-rgb/${t[2]}/${t[0]}/${t[1]}.pngraw?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
         );
         if (res.ok) {
-            const data = await res.arrayBuffer();
-            setTile(data);
+            const data = await res.blob();
+            const url = URL.createObjectURL(data);
+            setTile(url);
         }
         else {
             console.log(`error`, res)
@@ -65,10 +66,10 @@ export default function Terrain({}){
         // Materials
         const material = new three.MeshStandardMaterial({
             color: 'white',
-            // map: mountain,
-            displacementMap: tile,
+            map: tileImage,
+            displacementMap: tileImage,
             displacementScale: 2,
-            wireframe: true,
+            // wireframe: true,
         });
 
 
@@ -92,7 +93,7 @@ export default function Terrain({}){
 
         const animate = () => {
             requestAnimationFrame( animate );
-            plane.rotation.z += 0.001;
+            // plane.rotation.z += 0.001;
             renderer.render( scene, camera );
         };
 
