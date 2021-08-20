@@ -10,7 +10,7 @@ import { routeQuery } from "../../utils/queryObjects";
 import markerImg from "../../assets/green-2.png";
 import "./TrailMap.css";
 
-mapboxgl.accessToken = 'pk.eyJ1IjoibWtlbGx5ZGV2diIsImEiOiJja3BmcXZuY3YwNzg0MnFtd3Rra3M3amI4In0.h8HRrZ2xGNP-aq7EwO0YVA';
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
 export default function TrailMap({ trail, showMarkers }) {
     const dispatch = useDispatch();

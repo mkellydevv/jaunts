@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as three from "three";
+import tilebelt from "@mapbox/tilebelt";
 import * as dat from "dat.gui";
 
 import './Terrain.css';
@@ -10,11 +11,34 @@ import mountainImage from "../../assets/mtn.png";
 
 export default function Terrain({}){
     const mountRef = useRef(null);
+    const dispatch = useDispatch();
+    const [tile, setTile] = useState(null);
+
+    const getTile = async () => {
+        const t = tilebelt.pointToTile(-78.28751, 38.57103, 13)
+        const res = await fetch(
+            `https://api.mapbox.com/v4/mapbox.terrain-rgb/${t[2]}/${t[0]}/${t[1]}.pngraw?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
+        );
+        if (res.ok) {
+            const data = await res.arrayBuffer();
+            setTile(data);
+        }
+        else {
+            console.log(`error`, res)
+        }
+    }
 
     useEffect(() => {
+        getTile();
+    }, []);
+
+
+    useEffect(() => {
+        if (!tile) return;
         const loader = new three.TextureLoader();
         const height = loader.load(heightImage);
         const mountain = loader.load(mountainImage);
+        const tileImage = loader.load(tile);
 
         const gui = new dat.GUI();
 
@@ -27,10 +51,10 @@ export default function Terrain({}){
             100
         );
 
-        camera.position.z = 5;
+        camera.position.z = 3;
 
         const renderer = new three.WebGLRenderer();
-
+        renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize(window.innerWidth, window.innerHeight);
 
         mountRef.current.appendChild( renderer.domElement );
@@ -41,18 +65,21 @@ export default function Terrain({}){
         // Materials
         const material = new three.MeshStandardMaterial({
             color: 'white',
-            map: mountain,
-            displacementMap: height,
+            // map: mountain,
+            displacementMap: tile,
             displacementScale: 2,
+            wireframe: true,
         });
+
 
         // Meshes
         const plane = new three.Mesh(geometry, material);
         plane.rotation.x = 5.5;
 
-        gui.add(plane.rotation, 'x', 0, 10, .1);
-        gui.add(plane.rotation, 'y', 0, 10, .1);
-        gui.add(plane.rotation, 'z', 0, 10, .1);
+        let obj = plane;
+        gui.add(obj['rotation'], 'x', 0, 10, .1);
+        gui.add(obj['rotation'], 'y', 0, 10, .1);
+        gui.add(obj['rotation'], 'z', 0, 10, .1);
         gui.add(camera.position, 'z', 0, 10, .1);
 
         scene.add(plane);
@@ -80,7 +107,7 @@ export default function Terrain({}){
         animate();
 
         return () => mountRef.current.removeChild( renderer.domElement );
-    }, [])
+    }, [tile])
 
     return (
         <div
