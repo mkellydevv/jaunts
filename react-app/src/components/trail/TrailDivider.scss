@@ -7,6 +7,7 @@
     scrollbar-width: none;
     transition: .1s ease-in-out;
     margin: .5rem 0;
+    // margin: 4.5rem 0;
 
     &.active {
         width: 22rem;
@@ -24,6 +25,7 @@
 
                 &-btns {
                     flex-direction: row;
+                    grid-gap: .5rem;
                 }
             }
         }
@@ -32,7 +34,8 @@
     &__nav {
         display: grid;
         grid-template-rows: 1fr 1fr 1fr;
-        height: 100%;
+        flex-flow: column nowrap;
+        height: 21rem;
 
         &-btns {
             display: flex;
@@ -44,6 +47,10 @@
         &-btn {
             width: 2rem !important;
         }
+
+        // &-start {
+
+        // }
 
         &-end {
             justify-content: flex-end;

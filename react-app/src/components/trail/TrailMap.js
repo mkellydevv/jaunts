@@ -41,11 +41,13 @@ export default function TrailMap({ trail, showMarkers }) {
     // Mapbox specific
     const mapContainer = useRef(null);
     const map = useRef(null);
+    const defaultPitch = 25;
+    const defaultZoom = 13;
     const [loaded, setLoaded] = useState(false);
     const [lng, setLng] = useState(null);
     const [lat, setLat] = useState(null);
-    const [zoom, setZoom] = useState(13);
-    const [pitch, setPitch] = useState(25);
+    const [pitch, setPitch] = useState(defaultPitch);
+    const [zoom, setZoom] = useState(defaultZoom);
 
     const markersLayer = {
         'id': 'markersLayer',
@@ -89,6 +91,26 @@ export default function TrailMap({ trail, showMarkers }) {
         interval.current = null;
     }
 
+    const handleCurrentLocation = () => {
+        map.current.easeTo({
+            center: routeSource.current.data.geometry.coordinates[0],
+            zoom: defaultZoom,
+            duration: 1500
+        }, {"eased": true});
+    }
+
+    const handleZoomIn = () => {
+        map.current.zoomIn({ duration: 1500 });
+    }
+
+    const handleZoomOut = () => {
+        map.current.zoomOut({ duration: 1500 });
+    }
+
+    const handleResetCompass = () => {
+        map.current.resetNorthPitch({ duration: 1500 });
+    }
+
     useEffect(() => {
         if (map.current || !route) return;
 
@@ -101,8 +123,6 @@ export default function TrailMap({ trail, showMarkers }) {
             pitch: pitch,
             zoom: zoom,
         });
-
-        map.current.addControl(new mapboxgl.NavigationControl(),'top-right');
 
         map.current.on('load', () => {
             setLoaded(true);
@@ -124,7 +144,6 @@ export default function TrailMap({ trail, showMarkers }) {
                     'sky-atmosphere-sun-intensity': 15
                 }
             });
-
 
             map.current.on('move', () => {
                 setLng(map.current.getCenter().lng.toFixed(4));
@@ -187,11 +206,11 @@ export default function TrailMap({ trail, showMarkers }) {
         if (src)
             src.setData(routeSource.current.data);
 
-        setZoom(13);
+        setZoom(defaultZoom);
 
         map.current.easeTo({
             center: routeSource.current.data.geometry.coordinates[0],
-            zoom: 13,
+            zoom: defaultZoom,
             duration: 1500
         }, {"eased": true});
 
@@ -224,12 +243,35 @@ export default function TrailMap({ trail, showMarkers }) {
         >
             <div className="trailMap__options">
 
+                <button className="jaunts__btn jaunts__btn-3">
+                    Difficulty
+                </button>
+
+                <button className="jaunts__btn jaunts__btn-3">
+                    Length
+                </button>
+
+                <button className="jaunts__btn jaunts__btn-3">
+                    E. Gain
+                </button>
+
+                <button className="jaunts__btn jaunts__btn-3">
+                    Route Type
+                </button>
+
+                <button className="jaunts__btn jaunts__btn-3">
+                    Rating
+                </button>
+
+                <button className="jaunts__btn jaunts__btn-3">
+                    Completed
+                </button>
 
             </div>
 
             <div className="trailMap__container">
 
-                    <div className="trailMap__info">
+                    {/* <div className="trailMap__info">
                         <div>
                             Latitude: {lat}
                         </div>
@@ -242,7 +284,38 @@ export default function TrailMap({ trail, showMarkers }) {
                         <div>
                             Zoom: {zoom}
                         </div>
-                    </div>
+                    </div> */}
+
+                    {loaded && <div className="trailMap__buttons">
+                        <button
+                            className="jaunts__btn jaunts__btn-1 trailMap__button"
+                            title="Current Location"
+                            onClick={handleCurrentLocation}
+                        >
+                            <i className="fas fa-location-arrow" />
+                        </button>
+                        <button
+                            className="jaunts__btn jaunts__btn-1 trailMap__button"
+                            title="Zoom In"
+                            onClick={handleZoomIn}
+                        >
+                            <i className="fas fa-plus" />
+                        </button>
+                        <button
+                            className="jaunts__btn jaunts__btn-1 trailMap__button"
+                            title="Zoom Out"
+                            onClick={handleZoomOut}
+                        >
+                            <i className="fas fa-minus" />
+                        </button>
+                        <button
+                            className="jaunts__btn jaunts__btn-1 trailMap__button"
+                            title="Reset Compass"
+                            onClick={handleResetCompass}
+                        >
+                            <i className="fas fa-compass" />
+                        </button>
+                    </div>}
 
                     <div
                         ref={mapContainer}

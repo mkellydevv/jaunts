@@ -41,6 +41,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  grid-gap: .5rem;
 }
 
 .trailDivider__nav {
@@ -48,7 +49,11 @@
   display: grid;
   -ms-grid-rows: 1fr 1fr 1fr;
       grid-template-rows: 1fr 1fr 1fr;
-  height: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+  height: 21rem;
 }
 
 .trailDivider__nav-btns {

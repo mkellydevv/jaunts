@@ -81,21 +81,24 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth,
         >
             <div className="trailDivider__nav">
 
-                <div className="trailDivider__nav-btns">
+                <div className="trailDivider__nav-btns trailDivider__nav-start">
                     <button
                         className="jaunts__btn jaunts__btn-1 trailDivider__nav-btn"
+                        title="Expand Sidebar"
                         onClick={handleResize}
                     >
                         <i className="fas fa-expand" />
                     </button>
                     <button
                         className="jaunts__btn jaunts__btn-1 trailDivider__nav-btn"
+                        title="Collapse Left"
                         onClick={handleMaximizeRight}
                     >
                         <i className="fas fa-angle-double-left" />
                     </button>
                     <button
                         className="jaunts__btn jaunts__btn-1 trailDivider__nav-btn"
+                        title="Collapse Right"
                         onClick={handleMaximizeLeft}
                     >
                         <i className="fas fa-angle-double-right" />
@@ -105,6 +108,7 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth,
                 <div className="trailDivider__drag">
                     <button
                         className="jaunts__btn jaunts__btn-1 trailDivider__nav-btn trailDivider__drag-handle"
+                        title="Drag Sidebar"
                         onMouseDown={handleMouseDown}
                     >
                         <i className="fas fa-grip-vertical" />
@@ -114,6 +118,7 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth,
                 <div className="trailDivider__nav-btns trailDivider__nav-end">
                     <button
                         className="jaunts__btn jaunts__btn-1 trailDivider__nav-btn"
+                        title="Show Markers"
                         onClick={handleShowMarkers}
                     >
                         <i className="fas fa-map-marker-alt" />

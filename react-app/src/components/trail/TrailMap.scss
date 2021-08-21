@@ -4,11 +4,16 @@
     width: 100%;
 
     &__options {
-        height: 3rem;
+        height: 4rem;
+        margin: 0 .5rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        grid-gap: 1rem;
     }
 
     &__container {
-        height: 100%;
+        height: calc(100% - 4rem);
         width: 100%;
         min-width: 20rem;
         position: relative;
@@ -19,12 +24,29 @@
         background-color: var(--green-1);
         color: white;
         padding: .5rem;
-        z-index: 1;
         position: absolute;
         top: 0;
         left: 0;
         margin: 1rem;
         border-radius: .25rem;
+        z-index: 1;
+    }
+
+    &__buttons {
+        display: flex;
+        flex-flow: column nowrap;
+        grid-gap: .5rem;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 1rem;
+        z-index: 1;
+    }
+
+    &__button {
+        width: 2rem;
     }
 
     &__map {
