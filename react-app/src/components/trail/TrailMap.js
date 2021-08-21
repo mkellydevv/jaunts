@@ -124,6 +124,12 @@ export default function TrailMap({ trail, showMarkers }) {
             zoom: zoom,
         });
 
+        const optionsEle = document.getElementsByClassName("trailMap__options")[0]
+        optionsEle.addEventListener("wheel", (e) => {
+            e.preventDefault();
+            optionsEle.scrollLeft += e.deltaY;
+        });
+
         map.current.on('load', () => {
             setLoaded(true);
 
@@ -241,32 +247,44 @@ export default function TrailMap({ trail, showMarkers }) {
         <div
             className="trailMap"
         >
-            <div className="trailMap__options">
+            <div className="trailMap__nav">
 
-                <button className="jaunts__btn jaunts__btn-3">
-                    Difficulty
-                </button>
+                <div className="trailMap__options">
 
-                <button className="jaunts__btn jaunts__btn-3">
-                    Length
-                </button>
+                    <button className="jaunts__btn jaunts__btn-3">
+                        Difficulty
+                    </button>
 
-                <button className="jaunts__btn jaunts__btn-3">
-                    E. Gain
-                </button>
+                    <button className="jaunts__btn jaunts__btn-3">
+                        Length
+                    </button>
 
-                <button className="jaunts__btn jaunts__btn-3">
-                    Route Type
-                </button>
+                    <button className="jaunts__btn jaunts__btn-3">
+                        E. Gain
+                    </button>
 
-                <button className="jaunts__btn jaunts__btn-3">
-                    Rating
-                </button>
+                    <button className="jaunts__btn jaunts__btn-3">
+                        Route Type
+                    </button>
 
-                <button className="jaunts__btn jaunts__btn-3">
-                    Completed
-                </button>
+                    <button className="jaunts__btn jaunts__btn-3">
+                        Rating
+                    </button>
 
+                    <button className="jaunts__btn jaunts__btn-3">
+                        Completed
+                    </button>
+
+                </div>
+
+                <div className="trailMap__help">
+                    <button
+                        className="jaunts__btn jaunts__btn-3 trailMap__button"
+                        title={`Map Controls:\nLeft Mouse - Drag Map \nRight Mouse - Pitch / Bearing \nScroll Wheel - Zoom In / Out \n`}
+                    >
+                        <i className="fas fa-question" />
+                    </button>
+                </div>
             </div>
 
             <div className="trailMap__container">
@@ -286,7 +304,9 @@ export default function TrailMap({ trail, showMarkers }) {
                         </div>
                     </div> */}
 
-                    {loaded && <div className="trailMap__buttons">
+
+                    {loaded &&
+                    <div className="trailMap__buttons">
                         <button
                             className="jaunts__btn jaunts__btn-1 trailMap__button"
                             title="Current Location"

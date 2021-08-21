@@ -3,13 +3,34 @@
     overflow: hidden;
     width: 100%;
 
-    &__options {
+    &__nav {
         height: 4rem;
-        margin: 0 .5rem;
+        min-width: 20rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+    }
+
+    &__options {
+        height: 100%;
+        padding: .5rem;
         display: flex;
         align-items: center;
         justify-content: flex-start;
         grid-gap: 1rem;
+        overflow-x: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+    }
+
+    &__help {
+        margin: 1rem;
     }
 
     &__container {
