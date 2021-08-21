@@ -130,7 +130,7 @@ export default function SearchBar({ tiny }) {
                                 onClick={() => {
                                     setActiveTab(tabName);
                                 }}
-                                key={`${tabName}`}
+                                key={`SearchBar-tab-${tabName}`}
                             >
                                 {tabName} {tabMap[tabName] && !tiny && `(${tabMap[tabName].length})`}
                             </div>
@@ -140,11 +140,17 @@ export default function SearchBar({ tiny }) {
 
                 <div className="searchBar__results-content">
                     {tabs.map(tabName => (
-                        <div className={`searchBar__results-list ${checkActive(tabName)}`}>
+                        <div
+                            key={`SearchBar-result-${tabName}`}
+                            className={`searchBar__results-list ${checkActive(tabName)}`}
+                        >
                             {tabMap[tabName] && tabMap[tabName].map(trail => {
-                                console.log(`trail`, trail);
                                 return (
-                                    <SearchResult trail={trail} tiny={tiny} />
+                                    <SearchResult
+                                        key={`SearchResult-${trail.id}`}
+                                        trail={trail}
+                                        tiny={tiny}
+                                    />
                                 )
                             })}
                         </div>

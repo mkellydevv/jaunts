@@ -8,21 +8,23 @@
       -ms-user-select: none;
           user-select: none;
   z-index: 3;
-  -ms-overflow-style: none;
   scrollbar-width: none;
   -webkit-transition: .1s ease-in-out;
   transition: .1s ease-in-out;
   margin: .5rem 0;
 }
 
-.trailDivider::-webkit-scrollbar {
-  display: none;
-}
-
 .trailDivider.active {
   width: 22rem;
-  overflow-y: scroll;
+  overflow: hidden;
   margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
 }
 
 .trailDivider.active .trailDivider__nav {
@@ -102,6 +104,14 @@
 .trailDivider__container.active {
   visibility: visible;
   opacity: 1;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
 }
 
 .trailDivider__container-search {
@@ -116,6 +126,6 @@
 .trailDivider__container-title {
   font-size: 1.5rem;
   font-weight: 700;
-  margin: 1rem 1rem 0 1rem;
+  margin: 1rem 1rem .5rem 1rem;
 }
 /*# sourceMappingURL=TrailDivider.css.map */

@@ -20,6 +20,7 @@
 #navbar.active {
     background-color: white;
     border-bottom: #CCCCCC 1px solid;
+    box-shadow: var(--shadow-1);
 }
 
 #navbar > * {

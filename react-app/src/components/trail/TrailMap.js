@@ -27,7 +27,6 @@ export default function TrailMap({ trail, showMarkers }) {
             }
         }
     });
-
     const { trailHeads } = useSelector(state => state.routes);
     const markers = useRef({
         type: 'geojson',
@@ -36,6 +35,17 @@ export default function TrailMap({ trail, showMarkers }) {
             features: []
         }
     });
+    const interval = useRef(null);
+
+
+    // Mapbox specific
+    const mapContainer = useRef(null);
+    const map = useRef(null);
+    const [loaded, setLoaded] = useState(false);
+    const [lng, setLng] = useState(null);
+    const [lat, setLat] = useState(null);
+    const [zoom, setZoom] = useState(13);
+    const [pitch, setPitch] = useState(25);
 
     const markersLayer = {
         'id': 'markersLayer',
@@ -56,17 +66,8 @@ export default function TrailMap({ trail, showMarkers }) {
         }
     }
 
-    // Mapbox specific
-    const mapContainer = useRef(null);
-    const map = useRef(null);
-    const [loaded, setLoaded] = useState(false);
-    const [lng, setLng] = useState(null);
-    const [lat, setLat] = useState(null);
-    const [zoom, setZoom] = useState(13);
-
     const getTrailHeads = (e) => {
         if (e && e.type === "moveend" && !e.eased) return;
-
         const bounds = map.current.getBounds();
         const nw = bounds.getNorthWest();
         const se = bounds.getSouthEast();
@@ -77,31 +78,67 @@ export default function TrailMap({ trail, showMarkers }) {
         dispatch(getRoutes(query, "trailHeads"));
     }
 
+    const handleInterval = (e) => {
+        if (interval.current) return;
+        interval.current = setInterval(getTrailHeads, 500);
+    }
+
+    const handleIntervalEnd = (e) => {
+        if (!interval.current) return;
+        clearInterval(interval.current);
+        interval.current = null;
+    }
+
     useEffect(() => {
         if (map.current || !route) return;
 
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/outdoors-v11',
+            // style: 'mapbox://styles/mapbox/dark-v10',
+            // style: 'mapbox://styles/mapbox/satellite-v9',
             center: [route.lng, route.lat],
+            pitch: pitch,
             zoom: zoom,
         });
 
         map.current.addControl(new mapboxgl.NavigationControl(),'top-right');
 
-        map.current.on('move', () => {
-            setLng(map.current.getCenter().lng.toFixed(4));
-            setLat(map.current.getCenter().lat.toFixed(4));
-            setZoom(map.current.getZoom().toFixed(2));
-        });
-
-        map.current.on("mouseup", getTrailHeads);
-        map.current.on("moveend", getTrailHeads);
-        map.current.on("zoomend", getTrailHeads);
-
         map.current.on('load', () => {
-            getTrailHeads();
             setLoaded(true);
+
+            map.current.addSource('mapbox-dem', {
+                'type': 'raster-dem',
+                'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+            });
+            map.current.setTerrain({
+                'source': 'mapbox-dem',
+                'exaggeration': 1.75,
+            });
+            map.current.addLayer({
+                'id': 'sky',
+                'type': 'sky',
+                'paint': {
+                    'sky-type': 'atmosphere',
+                    'sky-atmosphere-sun': [0.0, 0.0],
+                    'sky-atmosphere-sun-intensity': 15
+                }
+            });
+
+
+            map.current.on('move', () => {
+                setLng(map.current.getCenter().lng.toFixed(4));
+                setLat(map.current.getCenter().lat.toFixed(4));
+                setPitch(map.current.getPitch().toFixed(1));
+                setZoom(map.current.getZoom().toFixed(2));
+            });
+            map.current.on("moveend", getTrailHeads);
+            map.current.on("mouseup", getTrailHeads);
+            map.current.on("zoomend", getTrailHeads);
+            map.current.on("drag", handleInterval);
+            map.current.on("dragend", handleIntervalEnd);
+            map.current.on("pitch", handleInterval);
+            map.current.on("pitchend", handleIntervalEnd);
 
             map.current.addSource('markersSource', markers.current);
             map.current.addSource('routeSource', routeSource.current);
@@ -134,6 +171,11 @@ export default function TrailMap({ trail, showMarkers }) {
                 }
             );
         });
+
+        return () => {
+            if (interval.current)
+                clearInterval(interval.current);
+        }
     }, [route]);
 
     useEffect(() => {
@@ -183,7 +225,6 @@ export default function TrailMap({ trail, showMarkers }) {
             <div className="trailMap__options">
 
 
-
             </div>
 
             <div className="trailMap__container">
@@ -194,6 +235,9 @@ export default function TrailMap({ trail, showMarkers }) {
                         </div>
                         <div>
                             Longitude: {lng}
+                        </div>
+                        <div>
+                            Pitch: {pitch}
                         </div>
                         <div>
                             Zoom: {zoom}

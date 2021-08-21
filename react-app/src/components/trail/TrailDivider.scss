@@ -4,19 +4,16 @@
     flex: 0 0 auto;
     user-select: none;
     z-index: 3;
-    -ms-overflow-style: none;
     scrollbar-width: none;
     transition: .1s ease-in-out;
     margin: .5rem 0;
 
-    &::-webkit-scrollbar {
-        display: none;
-    }
-
     &.active {
         width: 22rem;
-        overflow-y: scroll;
+        overflow: hidden;
         margin: 0;
+        display: flex;
+        flex-flow: column nowrap;
 
         & .trailDivider {
             &__nav {
@@ -36,7 +33,6 @@
         display: grid;
         grid-template-rows: 1fr 1fr 1fr;
         height: 100%;
-
 
         &-btns {
             display: flex;
@@ -76,6 +72,9 @@
         &.active {
             visibility: visible;
             opacity: 1;
+            height: 100%;
+            display: flex;
+            flex-flow: column nowrap;
         }
 
         &-search {
@@ -86,7 +85,7 @@
         &-title {
             font-size: 1.5rem;
             font-weight: 700;
-            margin: 1rem 1rem 0 1rem;
+            margin: 1rem 1rem .5rem 1rem;
         }
 
     }
