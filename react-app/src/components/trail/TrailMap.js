@@ -27,7 +27,6 @@ export default function TrailMap({ trail, showMarkers }) {
             }
         }
     });
-
     const { trailHeads } = useSelector(state => state.routes);
     const markers = useRef({
         type: 'geojson',
@@ -36,6 +35,17 @@ export default function TrailMap({ trail, showMarkers }) {
             features: []
         }
     });
+    const interval = useRef(null);
+
+
+    // Mapbox specific
+    const mapContainer = useRef(null);
+    const map = useRef(null);
+    const [loaded, setLoaded] = useState(false);
+    const [lng, setLng] = useState(null);
+    const [lat, setLat] = useState(null);
+    const [zoom, setZoom] = useState(13);
+    const [pitch, setPitch] = useState(25);
 
     const markersLayer = {
         'id': 'markersLayer',
@@ -56,18 +66,8 @@ export default function TrailMap({ trail, showMarkers }) {
         }
     }
 
-    // Mapbox specific
-    const mapContainer = useRef(null);
-    const map = useRef(null);
-    const [loaded, setLoaded] = useState(false);
-    const [lng, setLng] = useState(null);
-    const [lat, setLat] = useState(null);
-    const [zoom, setZoom] = useState(13);
-    const [pitch, setPitch] = useState(25);
-
     const getTrailHeads = (e) => {
         if (e && e.type === "moveend" && !e.eased) return;
-
         const bounds = map.current.getBounds();
         const nw = bounds.getNorthWest();
         const se = bounds.getSouthEast();
@@ -76,6 +76,17 @@ export default function TrailMap({ trail, showMarkers }) {
             se: [se.lat, se.lng],
         });
         dispatch(getRoutes(query, "trailHeads"));
+    }
+
+    const handleInterval = (e) => {
+        if (interval.current) return;
+        interval.current = setInterval(getTrailHeads, 500);
+    }
+
+    const handleIntervalEnd = (e) => {
+        if (!interval.current) return;
+        clearInterval(interval.current);
+        interval.current = null;
     }
 
     useEffect(() => {
@@ -94,24 +105,11 @@ export default function TrailMap({ trail, showMarkers }) {
         map.current.addControl(new mapboxgl.NavigationControl(),'top-right');
 
         map.current.on('load', () => {
-            getTrailHeads();
             setLoaded(true);
-
-            map.current.on('move', () => {
-                setLng(map.current.getCenter().lng.toFixed(4));
-                setLat(map.current.getCenter().lat.toFixed(4));
-                setPitch(map.current.getPitch().toFixed(1));
-                setZoom(map.current.getZoom().toFixed(2));
-            });
-
-            map.current.on("mouseup", getTrailHeads);
-            map.current.on("moveend", getTrailHeads);
-            map.current.on("zoomend", getTrailHeads);
 
             map.current.addSource('mapbox-dem', {
                 'type': 'raster-dem',
                 'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-                'tileSize': 512,
             });
             map.current.setTerrain({
                 'source': 'mapbox-dem',
@@ -126,6 +124,21 @@ export default function TrailMap({ trail, showMarkers }) {
                     'sky-atmosphere-sun-intensity': 15
                 }
             });
+
+
+            map.current.on('move', () => {
+                setLng(map.current.getCenter().lng.toFixed(4));
+                setLat(map.current.getCenter().lat.toFixed(4));
+                setPitch(map.current.getPitch().toFixed(1));
+                setZoom(map.current.getZoom().toFixed(2));
+            });
+            map.current.on("moveend", getTrailHeads);
+            map.current.on("mouseup", getTrailHeads);
+            map.current.on("zoomend", getTrailHeads);
+            map.current.on("drag", handleInterval);
+            map.current.on("dragend", handleIntervalEnd);
+            map.current.on("pitch", handleInterval);
+            map.current.on("pitchend", handleIntervalEnd);
 
             map.current.addSource('markersSource', markers.current);
             map.current.addSource('routeSource', routeSource.current);
@@ -158,6 +171,11 @@ export default function TrailMap({ trail, showMarkers }) {
                 }
             );
         });
+
+        return () => {
+            if (interval.current)
+                clearInterval(interval.current);
+        }
     }, [route]);
 
     useEffect(() => {
