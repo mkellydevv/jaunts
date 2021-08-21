@@ -35,36 +35,69 @@ export default function NavBar() {
 
 	return (
 		<nav id="navbar" className={active ? "active" : ""}>
+
 			<div className="navbar__lists">
 				{user &&
 					<NavLink to="/lists" exact={true} activeClassName="active">
-						<button className="jaunts__btn jaunts__btn-1">Lists</button>
+						<button
+							className="jaunts__btn jaunts__btn-1"
+							title="Lists"
+						>
+							Lists
+						</button>
 					</NavLink>
 				}
 			</div>
-				<NavLink className="navbar__home-link" to="/" exact={true} activeClassName="active">
-					<div className="navbar__home">
-						<div className="navbar__home-icon">
-							<i className="fas fa-hiking" />
-						</div>
-						<div className="navbar__home-text">
-							Jaunts
-						</div>
+
+			<NavLink className="navbar__home-link" to="/" exact={true} activeClassName="active">
+				<div
+					className="navbar__home"
+					title="Home"
+				>
+					<div className="navbar__home-icon">
+						<i className="fas fa-hiking" />
 					</div>
-				</NavLink>
+					<div className="navbar__home-text">
+						Jaunts
+					</div>
+				</div>
+			</NavLink>
+
 			<div className="navbar__auth">
+				<div className="navbar__github">
+					<a
+						className="jaunts__btn jaunts__btn-2"
+						title="Github"
+						href="https://github.com/mkellydevv/jaunts"
+						target="_blank"
+					>
+						<i className="fab fa-github" />
+					</a>
+				</div>
 				{!user &&
 					<>
 						<NavLink to="/login" exact={true} activeClassName="active">
-							<button className="jaunts__btn jaunts__btn-1">Login</button>
+							<button
+								className="jaunts__btn jaunts__btn-1"
+								title="Login"
+							>
+								Login
+							</button>
 						</NavLink>
 						<NavLink to="/sign-up" exact={true} activeClassName="active">
-							<button className="jaunts__btn jaunts__btn-2">Sign Up</button>
+							<button
+								className="jaunts__btn jaunts__btn-2"
+								title="Sign Up"
+							>
+								Sign Up
+							</button>
 						</NavLink>
 					</>
 				}
 				{user && <LogoutButton />}
+
 			</div>
+
 		</nav>
 	);
 }

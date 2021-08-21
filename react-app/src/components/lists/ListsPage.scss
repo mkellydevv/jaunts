@@ -1,0 +1,18 @@
+.listsPage {
+
+    &__container {
+        padding: 1rem;
+    }
+
+    &__create-list {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+
+        & button {
+            width: 10rem;
+            height: 2.5rem;
+        }
+    }
+}

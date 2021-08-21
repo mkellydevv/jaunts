@@ -1,91 +1,156 @@
-
 #navbar {
-    width: 100%;
-    height: 4rem;
-
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-    margin: 0;
-    position: fixed;
-    box-sizing: border-box;
-    transition: .2s ease-in-out;
-    background-color: transparent;
-    color: white;
-    z-index: 10;
+  width: 100%;
+  height: 4rem;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  list-style: none;
+  margin: 0;
+  position: fixed;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: .2s ease-in-out;
+  transition: .2s ease-in-out;
+  background-color: transparent;
+  color: white;
+  z-index: 10;
 }
 
 #navbar.active {
-    background-color: white;
-    border-bottom: #CCCCCC 1px solid;
-    box-shadow: var(--shadow-1);
+  background-color: white;
+  border-bottom: #CCCCCC 1px solid;
+  -webkit-box-shadow: var(--shadow-1);
+          box-shadow: var(--shadow-1);
 }
 
 #navbar > * {
-    box-sizing:border-box;
-    padding: 0 16px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0 16px;
 }
 
 .navbar__lists {
-    height: 100%;
-    align-items: center;
-    display: flex;
-    justify-content: flex-start;
+  height: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
 }
 
 .navbar__lists > a, .navbar__auth > a {
-    text-decoration: none;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #414141;
-    border-bottom: solid transparent 3px;
-    transition: .1s ease-in-out;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #414141;
+  border-bottom: solid transparent 3px;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
 .navbar__home-link {
-    text-decoration: none;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  text-decoration: none;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .navbar__home {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    text-shadow: var(--shadow-2);
-    color: white;
-    font-size: 2.25rem !important;
-    font-weight: 900 !important;
-    transition: .1s ease-in-out;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-decoration: none;
+  text-shadow: var(--shadow-2);
+  color: white;
+  font-size: 2.25rem !important;
+  font-weight: 900 !important;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
 .navbar__home:hover {
-    transform: scale(1.02);
+  -webkit-transform: scale(1.02);
+          transform: scale(1.02);
 }
 
 .navbar__home-icon {
-    color: var(--green-2) !important;
-    margin-right: .8rem;
+  color: var(--green-2) !important;
+  margin-right: .8rem;
 }
 
 #navbar.active > .navbar__home-link > .navbar__home {
-    color:#808080;
-    text-shadow: var(--shadow-1);
+  color: #808080;
+  text-shadow: var(--shadow-1);
 }
 
 .navbar__auth {
-    height:100%;
-    align-items: center;
-    display: flex;
-    justify-content: flex-end;
+  height: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
 
 .navbar__auth > * {
-    margin-left: 16px;
-    box-sizing: border-box;
+  margin-left: 16px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
+
+.navbar__github {
+  width: 2rem;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.navbar__github a {
+  width: 100%;
+  text-decoration: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+/*# sourceMappingURL=NavBar.css.map */

@@ -40,23 +40,35 @@ export default function ListsPage() {
 
     return (
         <>
-            <div className="lists-page">
-                <div className="dummy-nav" />
-                <div className="lists-page__create-list">
-                    {user &&
-                        <button
-                            className="jaunts__btn jaunts__btn-1"
-                            onClick={() => openListModal()}
-                        >
-                            Create List
-                        </button>
-                    }
+            <div className="dummy-nav" />
+
+            <div className="listsPage">
+
+                <div className="listsPage__container">
+
+                    <div className="listsPage__create-list">
+                        {user &&
+                            <button
+                                className="jaunts__btn jaunts__btn-1"
+                                onClick={() => openListModal()}
+                            >
+                                Create List
+                            </button>
+                        }
+                    </div>
+
+                    { lists && Object.values(lists).map(lst => {
+                        return (
+                            <ListsRow
+                                list={lst}
+                                open={openListModal}
+                                key={`List-Row-${lst.id}`}
+                            />
+                        )
+                    })}
+
                 </div>
-                { lists && Object.values(lists).map(lst => {
-                    return (
-                        <ListsRow list={lst} open={openListModal} key={`List-Row-${lst.id}`} />
-                    )
-                })}
+
             </div>
             {showListModal &&
                 <Modal close={closeListModal}>

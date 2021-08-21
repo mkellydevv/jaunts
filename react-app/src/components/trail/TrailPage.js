@@ -16,6 +16,7 @@ import "./TrailPage.css";
 
 export default function TrailPage() {
     const history = useHistory();
+    const { state } = useLocation();
     const dispatch = useDispatch();
     const { id } = useParams();
 
@@ -26,7 +27,7 @@ export default function TrailPage() {
     const trail = trailsArr.length ? trailsArr[0] : null;
 
     // Divider
-    const [leftPanelWidth, setLeftPanelWidth] = useState(null);
+    const [leftPanelWidth, setLeftPanelWidth] = useState(state ? 0 : null);
     const [showMarkers, setShowMarkers] = useState(true);
 
 
@@ -73,7 +74,6 @@ export default function TrailPage() {
                     trail={trail}
                     leftPanelWidth={leftPanelWidth}
                 />
-
 
                 <TrailDivider
                     trail={trail}

@@ -1,62 +1,72 @@
-
-.lists-row {
-    display: grid;
-    grid-template-columns: 1fr 7fr 1fr 1fr;
-    grid-gap: 1rem;
-    border-radius: .5rem;
-    border: 1px solid #e6e6e6;
-    margin: 1rem;
-    padding: 1rem;
-    font-size: 1.2rem;
-    line-height: 1.44;
-    color: #414141;
-    background-color: white;
-    box-sizing: border-box;
-    box-shadow: var(--shadow-1);
-    transition: .1s ease-in-out;
+.listsRow {
+  margin: 1rem;
 }
 
-.lists-row:hover {
-    transform: scale(1.02);
+.listsRow__container {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 7fr 1fr 1fr;
+      grid-template-columns: 1fr 7fr 1fr 1fr;
+  grid-gap: 1rem;
+  border-radius: .5rem;
+  border: 1px solid #e6e6e6;
+  padding: 1rem;
+  font-size: 1.2rem;
+  line-height: 1.44;
+  color: #414141;
+  background-color: white;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-box-shadow: var(--shadow-1);
+          box-shadow: var(--shadow-1);
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
-.lists-row__img-container {
-    height: 10rem;
-    width: 100%;
-    min-width: 10rem;
-    cursor: pointer;
+.listsRow__container:hover {
+  -webkit-transform: scale(1.02);
+          transform: scale(1.02);
 }
 
-.lists-row__img-container > img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
+.listsRow__img-container {
+  height: 10rem;
+  width: 100%;
+  min-width: 10rem;
+  cursor: pointer;
 }
 
-.lists-row__info {
-    cursor: pointer;
+.listsRow__img-container > img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
-.lists-row__img-container img {
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
+.listsRow__info {
+  cursor: pointer;
 }
 
-.lists-row__name, .lists-row__stats {
-    font-weight: 700;
-    font-size: 18px;
+.listsRow__name {
+  font-weight: 700;
+  font-size: 1.2rem;
 }
 
-.lists-row__blurb {
-
+.listsRow__stats {
+  font-weight: 700;
+  font-size: 1.2rem;
 }
 
-.lists-row__buttons {
-    display: flex;
-    flex-flow: column nowrap;
+.listsRow__buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
 }
 
-.lists-row__buttons > button:first-child {
-    margin-bottom: 1rem;
+.listsRow__buttons > button:first-child {
+  margin-bottom: 1rem;
 }
+/*# sourceMappingURL=ListsRow.css.map */

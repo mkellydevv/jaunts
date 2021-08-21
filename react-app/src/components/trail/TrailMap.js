@@ -70,14 +70,20 @@ export default function TrailMap({ trail, showMarkers }) {
 
     const getTrailHeads = (e) => {
         if (e && e.type === "moveend" && !e.eased) return;
-        const bounds = map.current.getBounds();
-        const nw = bounds.getNorthWest();
-        const se = bounds.getSouthEast();
-        const query = routeQuery({
-            nw: [nw.lat, nw.lng],
-            se: [se.lat, se.lng],
-        });
-        dispatch(getRoutes(query, "trailHeads"));
+
+        try {
+            const bounds = map.current.getBounds();
+            const nw = bounds.getNorthWest();
+            const se = bounds.getSouthEast();
+            const query = routeQuery({
+                nw: [nw.lat, nw.lng],
+                se: [se.lat, se.lng],
+            });
+            dispatch(getRoutes(query, "trailHeads"));
+        }
+        catch (e) {
+
+        }
     }
 
     const handleInterval = (e) => {

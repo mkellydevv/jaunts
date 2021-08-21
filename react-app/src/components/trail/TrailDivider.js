@@ -19,7 +19,7 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth,
     const mouseDown = useRef(false);
     const mouseStart = useRef(null);
 
-    const [active, setActive] = useState(false);
+    const [active, setActive] = useState(true);
     const openWidth = 22 * 16 / 2;
     const closedWidth = 3 * 16 / 2;
     const width = useRef(active ? openWidth : closedWidth);

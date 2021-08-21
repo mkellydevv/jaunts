@@ -73,7 +73,10 @@ export default function ListsModal({ trail }) {
             <div className="lists-modal__content">
                 {lists && Object.values(lists).map(list => {
                     return (
-                        <div className="lists-modal__row">
+                        <div
+                            className="lists-modal__row"
+                            key={`lists-modal__row-${list.id}`}
+                        >
 
                             <div className="lists-modal__row-details">
                                 <div

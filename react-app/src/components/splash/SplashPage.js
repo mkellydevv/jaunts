@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { getUser } from "../../store/users";
 import { userQuery } from "../../utils/queryObjects";
@@ -12,10 +13,18 @@ import "./SplashPage.css";
 
 export default function SplashPage() {
     const dispatch = useDispatch();
+    const history = useHistory();
     const { user } = useSelector(state => state["session"]);
     const { default: users } = useSelector(state => state["users"]);
     const completedTrails = users ? new Set(Object.values(users)[0]["completed_trails"]) : new Set([]);
     const trailLimit = 4;
+
+    const handleExplore = () => {
+        history.push({
+            pathname: `/trails/1`,
+            state: { fromSplash: true}
+        });
+    }
 
     useEffect(() => {
         if (!user) return;
@@ -99,11 +108,15 @@ export default function SplashPage() {
                         <div>
                             Find out exactly what you are in for on a trail by viewing
                             it in 3D. This map viewer utilizes the Mapbox API to
-                            fetch global elevation data as raster images and renders the data as voxels using
-                            the Three.js graphics library.
+                            fetch global elevation data as raster images. These height maps
+                            are decoded and applied to the map mesh to produce a real
+                            representation of the terrain.
                         </div>
                         <div className="splash-page__promo-btn">
-                            <button className="jaunts__btn jaunts__btn-2">
+                            <button
+                                className="jaunts__btn jaunts__btn-2"
+                                onClick={handleExplore}
+                            >
                                 Explore
                             </button>
                         </div>
@@ -152,9 +165,7 @@ export default function SplashPage() {
             </div>
 
             <div className="splash-page__footer">
-                <a href="https://github.com/mkellydevv" target="_blank">
-                    <i className="fab fa-github" /> Github
-                </a>
+
             </div>
 
         </div>

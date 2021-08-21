@@ -64,29 +64,48 @@ export default function ListsRow({ list, open }) {
     }, [trails])
 
     return (
-        <div className="lists-row">
-            <div
-                className="lists-row__img-container"
-                onClick={handleClick}
-            >
-                <img src={imgSrc} />
+        <div className="listsRow">
+
+            <div className="listsRow__container">
+
+                <div
+                    className="listsRow__img-container"
+                    onClick={handleClick}
+                >
+                    <img src={imgSrc} />
+                </div>
+
+                <div
+                    className="listsRow__info"
+                    onClick={handleClick}
+                >
+                    <div className="listsRow__name">{list.name}</div>
+                    <div>{user && user.username}</div>
+                    <div className="listsRow__blurb">{list.blurb}</div>
+                </div>
+
+                <div>
+                    <div className="listsRow__stats">Stats:</div>
+                    <div>Trails: {jauntsArr.length}</div>
+                </div>
+
+                <div className="listsRow__buttons">
+                    <button
+                        className="listsRow__edit jaunts__btn jaunts__btn-1"
+                        onClick={handleEdit}
+                    >
+                        Edit
+                    </button>
+                    <button
+                        className="listsRow__delete jaunts__btn jaunts__btn-3"
+                        onClick={handleDelete}
+                    >
+                        Delete
+                    </button>
+                </div>
+
             </div>
-            <div
-                className="lists-row__info"
-                onClick={handleClick}
-            >
-                <div className="lists-row__name">{list.name}</div>
-                <div>{user && user.username}</div>
-                <div className="lists-row__blurb">{list.blurb}</div>
-            </div>
-            <div>
-                <div className="lists-row__stats">Stats:</div>
-                <div>Trails: {jauntsArr.length}</div>
-            </div>
-            <div className="lists-row__buttons">
-                <button className="lists-row__edit jaunts__btn jaunts__btn-1" onClick={handleEdit}>Edit</button>
-                <button className="lists-row__delete jaunts__btn jaunts__btn-3" onClick={handleDelete}>Delete</button>
-            </div>
+
         </div>
     )
 }

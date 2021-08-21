@@ -38,6 +38,7 @@
 
 .searchResult__icon {
   font-size: 1.8rem;
+  width: 2rem;
   color: var(--green-2);
 }
 
@@ -47,14 +48,17 @@
 }
 
 .searchResult__name {
-  display: inline-block;
   font-weight: 700;
   border-bottom: 2px solid transparent;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
 }
 
 .searchResult__region {
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
 }
 
 .searchResult__description {
@@ -65,7 +69,8 @@
   -webkit-box-direction: normal;
       -ms-flex-flow: column nowrap;
           flex-flow: column nowrap;
-  width: 10.5rem;
+  width: 9rem;
+  min-width: 9rem;
   white-space: nowrap;
 }
 /*# sourceMappingURL=SearchResult.css.map */
