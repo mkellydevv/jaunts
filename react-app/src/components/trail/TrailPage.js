@@ -16,7 +16,7 @@ import "./TrailPage.css";
 
 export default function TrailPage() {
     const history = useHistory();
-    const { state } = useLocation();
+    const { query, options={} } = useLocation();
     const dispatch = useDispatch();
     const { id } = useParams();
 
@@ -27,11 +27,13 @@ export default function TrailPage() {
     const trail = trailsArr.length ? trailsArr[0] : null;
 
     // Divider
-    const [leftPanelWidth, setLeftPanelWidth] = useState(state ? 0 : null);
+    const [leftPanelWidth, setLeftPanelWidth] = useState(id ? null : 0);
     const [showMarkers, setShowMarkers] = useState(true);
 
 
     useEffect(() => {
+        if (!id) return;
+
         const _photoQuery = photoQuery({
             fromTrailId: id,
         });
@@ -54,7 +56,7 @@ export default function TrailPage() {
             dispatch(clearTrails());
             dispatch(clearRoutes());
         }
-    }, [dispatch, history.location])
+    }, [dispatch, history.location]);
 
     useEffect(() => {
         if (!user) return;
@@ -83,8 +85,9 @@ export default function TrailPage() {
                 />
 
                 <TrailMap
-                    trail={trail}
+                    trailId={id}
                     showMarkers={showMarkers}
+                    options={options}
                 />
 
             </div>

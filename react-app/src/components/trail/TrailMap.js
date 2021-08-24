@@ -4,17 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
 import { getRoutes } from "../../store/routes";
+import { getTrails } from "../../store/trails";
 import { unpackCoordinates, unpackTrailHeads } from "../../utils/helperFuncs";
-import { routeQuery } from "../../utils/queryObjects";
+import { routeQuery, trailQuery } from "../../utils/queryObjects";
 
 import markerImg from "../../assets/green-2.png";
 import "./TrailMap.css";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWtlbGx5ZGV2diIsImEiOiJja3BmcXZuY3YwNzg0MnFtd3Rra3M3amI4In0.h8HRrZ2xGNP-aq7EwO0YVA';
 
-export default function TrailMap({ trail, showMarkers }) {
+export default function TrailMap({ trailId, showMarkers, options }) {
     const dispatch = useDispatch();
     const history = useHistory();
+    const debug = true;
     const { default: routes } = useSelector(state => state.routes);
     const route = routes ? Object.values(routes)[0] : null;
     const routeSource = useRef({
@@ -37,17 +39,17 @@ export default function TrailMap({ trail, showMarkers }) {
     });
     const interval = useRef(null);
 
-
     // Mapbox specific
     const mapContainer = useRef(null);
     const map = useRef(null);
     const defaultPitch = 25;
-    const defaultZoom = 13;
+    const defaultZoomRoute = 13;
+    const defaultZoomMap = 6.5;
     const [loaded, setLoaded] = useState(false);
-    const [lng, setLng] = useState(null);
-    const [lat, setLat] = useState(null);
+    const [lng, setLng] = useState(-78.5);
+    const [lat, setLat] = useState(37);
     const [pitch, setPitch] = useState(defaultPitch);
-    const [zoom, setZoom] = useState(defaultZoom);
+    const [zoom, setZoom] = useState(trailId ? defaultZoomRoute : defaultZoomMap);
 
     const markersLayer = {
         'id': 'markersLayer',
@@ -75,11 +77,17 @@ export default function TrailMap({ trail, showMarkers }) {
             const bounds = map.current.getBounds();
             const nw = bounds.getNorthWest();
             const se = bounds.getSouthEast();
-            const query = routeQuery({
+            const _routeQuery = routeQuery({
                 nw: [nw.lat, nw.lng],
                 se: [se.lat, se.lng],
             });
-            dispatch(getRoutes(query, "trailHeads"));
+            dispatch(getRoutes(_routeQuery, "trailHeads"));
+
+            const _trailQuery = trailQuery({
+                nw: [nw.lat, nw.lng],
+                se: [se.lat, se.lng],
+            });
+            dispatch(getTrails(_trailQuery, "trailHeads"));
         }
         catch (e) {
 
@@ -100,7 +108,7 @@ export default function TrailMap({ trail, showMarkers }) {
     const handleCurrentLocation = () => {
         map.current.easeTo({
             center: routeSource.current.data.geometry.coordinates[0],
-            zoom: defaultZoom,
+            zoom: defaultZoomRoute,
             duration: 1500
         }, {"eased": true});
     }
@@ -118,14 +126,19 @@ export default function TrailMap({ trail, showMarkers }) {
     }
 
     useEffect(() => {
-        if (map.current || !route) return;
+        if (map.current) return;
+
+        if (route) {
+            setLng(route.lng);
+            setLat(route.lat);
+        }
 
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/outdoors-v11',
             // style: 'mapbox://styles/mapbox/dark-v10',
             // style: 'mapbox://styles/mapbox/satellite-v9',
-            center: [route.lng, route.lat],
+            center: [lng, lat],
             pitch: pitch,
             zoom: zoom,
         });
@@ -138,6 +151,7 @@ export default function TrailMap({ trail, showMarkers }) {
 
         map.current.on('load', () => {
             setLoaded(true);
+            getTrailHeads();
 
             map.current.addSource('mapbox-dem', {
                 'type': 'raster-dem',
@@ -189,7 +203,10 @@ export default function TrailMap({ trail, showMarkers }) {
             });
 
             map.current.on("click", "markersLayer", (e) => {
-                history.push(`/trails/${e.features[0].properties.id}`);
+                history.push({
+                    pathname: `/trails/${e.features[0].properties.id}`,
+                    options: {}
+                });
             });
 
             map.current.loadImage(
@@ -218,11 +235,11 @@ export default function TrailMap({ trail, showMarkers }) {
         if (src)
             src.setData(routeSource.current.data);
 
-        setZoom(defaultZoom);
+        setZoom(defaultZoomRoute);
 
         map.current.easeTo({
             center: routeSource.current.data.geometry.coordinates[0],
-            zoom: defaultZoom,
+            zoom: defaultZoomRoute,
             duration: 1500
         }, {"eased": true});
 
@@ -295,7 +312,9 @@ export default function TrailMap({ trail, showMarkers }) {
 
             <div className="trailMap__container">
 
-                    {/* <div className="trailMap__info">
+
+                    {debug &&
+                    <div className="trailMap__info">
                         <div>
                             Latitude: {lat}
                         </div>
@@ -308,8 +327,7 @@ export default function TrailMap({ trail, showMarkers }) {
                         <div>
                             Zoom: {zoom}
                         </div>
-                    </div> */}
-
+                    </div>}
 
                     {loaded &&
                     <div className="trailMap__buttons">

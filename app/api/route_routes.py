@@ -31,6 +31,4 @@ def get_routes():
 
     routes = query.all()
 
-
-
     return { "routes": [route.to_dict(joins) for route in routes] }

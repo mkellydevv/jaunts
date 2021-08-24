@@ -80,7 +80,10 @@ export default function JauntRow({ list, jaunt, jauntsLength, trail, user }) {
 
     const handleTrailLinkClick = () => {
         dispatch(clearTrails());
-        history.push(`/trails/${trail.id}`);
+        history.push({
+            pathname: `/trails/${trail.id}`,
+            options: {}
+        });
     }
 
     // Jaunt order handlers

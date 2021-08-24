@@ -77,6 +77,8 @@ export function trailQuery(args={}) {
         searchRegion: "",
         searchTags: [],
         searchDifficulty: "",
+        nw: "",
+        se: "",
         offset: 0,
         limit: 25,
         getCompletedUsers: "",

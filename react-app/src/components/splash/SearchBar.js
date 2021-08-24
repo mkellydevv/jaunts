@@ -45,7 +45,10 @@ export default function SearchBar({ tiny }) {
             id = tagResultsArr[0]["id"];
 
         if (id !== null) {
-            history.push(`/trails/${id}`);
+            history.push({
+                pathname: `/trails/${id}`,
+                options: {}
+            });
         }
     }
 

@@ -54,6 +54,9 @@ function App() {
         <Route path="/sign-up" exact={true}>
           <SignUpForm />
         </Route>
+        <Route path="/trails" exact={true}>
+          <TrailPage />
+        </Route>
         <Route path="/trails/:id" exact={true}>
           <TrailPage />
         </Route>

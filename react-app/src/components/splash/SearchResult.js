@@ -13,7 +13,10 @@ export default function SearchResult({ trail, tiny }) {
     const history = useHistory();
 
     const navigateToTrail = () => {
-        history.push(`/trails/${trail.id}`);
+        history.push({
+            pathname: `/trails/${trail.id}`,
+            options: {}
+        });
     }
 
     return (

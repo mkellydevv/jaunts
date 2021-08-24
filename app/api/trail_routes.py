@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
 from sqlalchemy import or_
-from app.models import db, Trail, tags_trails, Tag, List, Jaunt
+from app.models import db, Trail, tags_trails, Tag, List, Jaunt, Route
 from app.forms import TrailForm
 from .utils import validation_errors_to_error_messages, extractJoins
 
@@ -30,6 +30,17 @@ def get_trails():
     searchTags = args['searchTags'].split(",") if args['searchTags'] else []
     for tag in searchTags:
         query = query.filter(Trail.tags.any(Tag.name.ilike(f"%{tag}%")))
+
+    if args["nw"] != "" and args["se"] != "":
+        print("                    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        bounds = args["nw"].split(",")
+        nw = [float(bounds[0]), float(bounds[1])]
+        bounds = args["se"].split(",")
+        se = [float(bounds[0]), float(bounds[1])]
+
+        # Note: This does not handle crossing the equator or prime meridian
+        query = query.filter(nw[0] > Trail.routes[0].lat).filter(se[0] < Trail.routes[0].lat)
+        query = query.filter(nw[1] < Trail.routes[0].lng).filter(se[1] > Trail.routes[0].lng)
 
     query = query.offset(int(args['offset']) * int(args['limit']))
     query = query.limit(int(args['limit']))

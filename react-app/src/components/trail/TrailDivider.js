@@ -106,13 +106,14 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth,
                 </div>
 
                 <div className="trailDivider__drag">
+                    {trail &&
                     <button
                         className="jaunts__btn jaunts__btn-1 trailDivider__nav-btn trailDivider__drag-handle"
                         title="Drag Sidebar"
                         onMouseDown={handleMouseDown}
                     >
                         <i className="fas fa-grip-vertical" />
-                    </button>
+                    </button>}
                 </div>
 
                 <div className="trailDivider__nav-btns trailDivider__nav-end">
@@ -147,7 +148,13 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth,
                     Nearby Trails
                 </div>
 
-                {trail && <TrailCardList trail={trail} tag={"nearby"} trailLimit={10} completedTrails={completedTrails} />}
+                {trail &&
+                <TrailCardList
+                    trail={trail}
+                    tag={"nearby"}
+                    trailLimit={10}
+                    completedTrails={completedTrails}
+                />}
 
             </div>
 

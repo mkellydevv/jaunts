@@ -25,7 +25,10 @@ export default function TrailCard({ trail, tag, active, completed=false, setLoad
     };
 
     const navigateToTrail = () => {
-        history.push(`/trails/${trail.id}`);
+        history.push({
+            pathname: `/trails/${trail.id}`,
+            options: {}
+        });
     }
 
     return (
