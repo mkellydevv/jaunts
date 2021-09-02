@@ -31,7 +31,9 @@ export default function SearchResult({ trail, tiny }) {
 
             <div className="searchResult__info">
                 <div className="searchResult__name">
-                    {trail.name}
+                    <div className="searchResult__name-inner">
+                        {trail.name}
+                    </div>
                 </div>
                 <div className="searchResult__region">
                     {trail.region}

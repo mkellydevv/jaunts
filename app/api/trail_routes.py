@@ -32,15 +32,16 @@ def get_trails():
         query = query.filter(Trail.tags.any(Tag.name.ilike(f"%{tag}%")))
 
     if args["nw"] != "" and args["se"] != "":
-        print("                    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        bounds = args["nw"].split(",")
-        nw = [float(bounds[0]), float(bounds[1])]
-        bounds = args["se"].split(",")
-        se = [float(bounds[0]), float(bounds[1])]
+        nw_bounds = args["nw"].split(",")
+        nw = [float(nw_bounds[0]), float(nw_bounds[1])]
+        se_bounds = args["se"].split(",")
+        se = [float(se_bounds[0]), float(se_bounds[1])]
+
+        query = query.join(Route)
 
         # Note: This does not handle crossing the equator or prime meridian
-        query = query.filter(nw[0] > Trail.routes[0].lat).filter(se[0] < Trail.routes[0].lat)
-        query = query.filter(nw[1] < Trail.routes[0].lng).filter(se[1] > Trail.routes[0].lng)
+        query = query.filter(nw[0] > Route.lat).filter(se[0] < Route.lat)
+        query = query.filter(nw[1] < Route.lng).filter(se[1] > Route.lng)
 
     query = query.offset(int(args['offset']) * int(args['limit']))
     query = query.limit(int(args['limit']))

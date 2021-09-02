@@ -43,11 +43,16 @@
     }
 
     &__name {
-        font-weight: 700;
-        border-bottom: 2px solid transparent;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow-x: hidden;
+        display: inline-block;
+        max-width: 100%;
+
+        &-inner {
+            font-weight: 700;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow-x: hidden;
+        }
     }
 
     &__region {

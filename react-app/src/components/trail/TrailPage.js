@@ -22,9 +22,8 @@ export default function TrailPage() {
 
     const { user } = useSelector(state => state["session"]);
 
-    const { default: trails } = useSelector(state => state.trails);
-    const trailsArr = trails ? Object.values(trails) : [];
-    const trail = trailsArr.length ? trailsArr[0] : null;
+    const { activeTrails } = useSelector(state => state["trails"]);
+    const trail = activeTrails ? Object.values(activeTrails)[0] : null;
 
     // Divider
     const [leftPanelWidth, setLeftPanelWidth] = useState(id ? null : 0);
@@ -49,11 +48,11 @@ export default function TrailPage() {
 
         dispatch(getPhotos(_photoQuery));
         dispatch(getRoutes(_routeQuery));
-        dispatch(getTrail(id, _trailQuery));
+        dispatch(getTrail(id, _trailQuery, "activeTrails"));
 
         return () => {
             dispatch(clearPhotos());
-            dispatch(clearTrails());
+            dispatch(clearTrails("activeTrails"));
             dispatch(clearRoutes());
         }
     }, [dispatch, history.location]);
@@ -79,6 +78,7 @@ export default function TrailPage() {
 
                 <TrailDivider
                     trail={trail}
+                    trailId={id}
                     leftPanelWidth={leftPanelWidth}
                     setLeftPanelWidth={setLeftPanelWidth}
                     setShowMarkers={setShowMarkers}

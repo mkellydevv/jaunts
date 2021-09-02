@@ -8,7 +8,8 @@ import { getTrails } from "../../store/trails";
 import { unpackCoordinates, unpackTrailHeads } from "../../utils/helperFuncs";
 import { routeQuery, trailQuery } from "../../utils/queryObjects";
 
-import markerImg from "../../assets/green-2.png";
+import markerImgGreen from "../../assets/green-2.png";
+import markerImgBlue from "../../assets/blue-2.png";
 import "./TrailMap.css";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWtlbGx5ZGV2diIsImEiOiJja3BmcXZuY3YwNzg0MnFtd3Rra3M3amI4In0.h8HRrZ2xGNP-aq7EwO0YVA';
@@ -58,7 +59,7 @@ export default function TrailMap({ trailId, showMarkers, options }) {
         'layout': {
             'icon-allow-overlap': true,
             'icon-anchor': "bottom",
-            'icon-image': 'custom-marker',
+            'icon-image': 'marker-green',
             'icon-size': .075,
             'text-field': ['get', 'title'],
             'text-font': [
@@ -70,7 +71,7 @@ export default function TrailMap({ trailId, showMarkers, options }) {
         }
     }
 
-    const getTrailHeads = (e) => {
+    const dispatchGetRoutes = (e) => {
         if (e && e.type === "moveend" && !e.eased) return;
 
         try {
@@ -80,23 +81,40 @@ export default function TrailMap({ trailId, showMarkers, options }) {
             const _routeQuery = routeQuery({
                 nw: [nw.lat, nw.lng],
                 se: [se.lat, se.lng],
+                limit: 10,
             });
             dispatch(getRoutes(_routeQuery, "trailHeads"));
-
-            const _trailQuery = trailQuery({
-                nw: [nw.lat, nw.lng],
-                se: [se.lat, se.lng],
-            });
-            dispatch(getTrails(_trailQuery, "trailHeads"));
         }
         catch (e) {
 
         }
     }
 
+    const dispatchGetTrails = (e) => {
+        if (e && e.type === "moveend" && !e.eased) return;
+
+        const bounds = map.current.getBounds();
+        const nw = bounds.getNorthWest();
+        const se = bounds.getSouthEast();
+        console.log(`nw, se`, nw, se)
+        const _trailQuery = trailQuery({
+            nw: [nw.lat, nw.lng],
+            se: [se.lat, se.lng],
+            limit: 10,
+            getPhotos: 1,
+        });
+        dispatch(getTrails(_trailQuery, "trailHeads"));
+    }
+
+    const dispatchGetRoutesTrails = (e) => {
+        dispatchGetRoutes(e);
+        dispatchGetTrails(e);
+        console.log('dispatch')
+    }
+
     const handleInterval = (e) => {
         if (interval.current) return;
-        interval.current = setInterval(getTrailHeads, 500);
+        interval.current = setInterval(dispatchGetRoutes, 500);
     }
 
     const handleIntervalEnd = (e) => {
@@ -149,9 +167,9 @@ export default function TrailMap({ trailId, showMarkers, options }) {
             optionsEle.scrollLeft += e.deltaY;
         });
 
-        map.current.on('load', () => {
+        map.current.on('load', (e) => {
             setLoaded(true);
-            getTrailHeads();
+            dispatchGetRoutesTrails(e);
 
             map.current.addSource('mapbox-dem', {
                 'type': 'raster-dem',
@@ -177,9 +195,9 @@ export default function TrailMap({ trailId, showMarkers, options }) {
                 setPitch(map.current.getPitch().toFixed(1));
                 setZoom(map.current.getZoom().toFixed(2));
             });
-            map.current.on("moveend", getTrailHeads);
-            map.current.on("mouseup", getTrailHeads);
-            map.current.on("zoomend", getTrailHeads);
+            map.current.on("moveend", dispatchGetRoutesTrails);
+            map.current.on("mouseup", dispatchGetRoutesTrails);
+            map.current.on("zoomend", dispatchGetRoutesTrails);
             map.current.on("drag", handleInterval);
             map.current.on("dragend", handleIntervalEnd);
             map.current.on("pitch", handleInterval);
@@ -210,10 +228,20 @@ export default function TrailMap({ trailId, showMarkers, options }) {
             });
 
             map.current.loadImage(
-                markerImg,
+                markerImgGreen,
                 (err, image) => {
                     if (err) return console.error(err);
-                    map.current.addImage('custom-marker', image);
+                    map.current.addImage('marker-green', image);
+
+                    map.current.addLayer(markersLayer);
+                }
+            );
+
+            map.current.loadImage(
+                markerImgBlue,
+                (err, image) => {
+                    if (err) return console.error(err);
+                    map.current.addImage('marker-blue', image);
 
                     map.current.addLayer(markersLayer);
                 }

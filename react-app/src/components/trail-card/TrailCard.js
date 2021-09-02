@@ -12,17 +12,14 @@ const map = {
     Hard: "hard"
 }
 
-export default function TrailCard({ trail, tag, active, completed=false, setLoadedChildren }) {
+export default function TrailCard({ trail, completed=false, active=false }) {
     const history = useHistory();
+    const [loaded, setLoaded] = useState(false);
 
     const handleTransitionEnd = () => {
-        const el = document.getElementById(`TrailCard__${tag}-${trail.id}`);
+        const el = document.getElementById(`TrailCard__${trail.id}`);
         el.classList.remove("animating");
     }
-
-    const setLoaded = () => {
-        setLoadedChildren(state => state + 1);
-    };
 
     const navigateToTrail = () => {
         history.push({
@@ -33,10 +30,10 @@ export default function TrailCard({ trail, tag, active, completed=false, setLoad
 
     return (
         <div
-            id={`TrailCard__${tag}-${trail.id}`}
-            className={`trail-card ${active ? "active" : ""} animating`}
+            id={`TrailCard__${trail.id}`}
+            className={`trailCard ${loaded ? "loaded": ""} ${active ? "active": ""}`}
             onClick={navigateToTrail}
-            onLoad={setLoaded}
+            onLoad={() => setLoaded(true)}
             onTransitionEnd={handleTransitionEnd}
         >
 
@@ -45,33 +42,33 @@ export default function TrailCard({ trail, tag, active, completed=false, setLoad
                 <i className="fas fa-check" />Completed
             </div>}
 
-            <div className="trail-card__img-container">
-                <img className="trail-card__img" src={Object.values(trail.photos)[0].url.replace("extra_", "")} />
+            <div className="trailCard__img-container">
+                <img className="trailCard__img" src={Object.values(trail.photos)[0].url.replace("extra_", "")} />
             </div>
 
-            <div className="trail-card__content">
+            <div className="trailCard__content">
 
-                <div className="trail-card__name ">
+                <div className="trailCard__name ">
                     {trail.name}
                 </div>
 
-                <div className=".trail-card__region">
+                <div className=".trailCard__region">
                     {trail.region}
                 </div>
 
-                <div className="trail-card__info">
-                    <span className={`trail-card__difficulty difficulty-${map[trail.difficulty]}`}>
+                <div className="trailCard__info">
+                    <span className={`trailCard__difficulty difficulty-${map[trail.difficulty]}`}>
                         {trail.difficulty}
                     </span>
-                    <span className="trail-card__rating">
+                    <span className="trailCard__rating">
                         <StarRating rating={trail.default_rating} fixed={true} />
                     </span>
-                    <span className="trail-card__count">
+                    <span className="trailCard__count">
                         {`(${trail.default_weighting})`}
                     </span>
                 </div>
 
-                <div className="trail-card__length">
+                <div className="trailCard__length">
                     <span>Length: {trail.length} mi</span>
                     <span> &#8226; </span>
                     <span>Est. {trail.duration_hours} h {trail.duration_minutes} m</span>

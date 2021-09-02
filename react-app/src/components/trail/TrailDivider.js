@@ -11,7 +11,7 @@ import TrailCardList from "../trail-card/TrailCardList";
 
 import "./TrailDivider.css";
 
-export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth, setShowMarkers }) {
+export default function TrailDivider({ trail, trailId, leftPanelWidth, setLeftPanelWidth, setShowMarkers }) {
     const dispatch = useDispatch();
     const { default: users } = useSelector(state => state["users"]);
     const completedTrails = users ? new Set(Object.values(users)[0]["completed_trails"]) : new Set([]);
@@ -106,7 +106,7 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth,
                 </div>
 
                 <div className="trailDivider__drag">
-                    {trail &&
+                    {trailId &&
                     <button
                         className="jaunts__btn jaunts__btn-1 trailDivider__nav-btn trailDivider__drag-handle"
                         title="Drag Sidebar"
@@ -148,13 +148,10 @@ export default function TrailDivider({ trail, leftPanelWidth, setLeftPanelWidth,
                     Nearby Trails
                 </div>
 
-                {trail &&
                 <TrailCardList
                     trail={trail}
-                    tag={"nearby"}
-                    trailLimit={10}
                     completedTrails={completedTrails}
-                />}
+                />
 
             </div>
 

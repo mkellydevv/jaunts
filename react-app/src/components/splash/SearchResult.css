@@ -48,6 +48,11 @@
 }
 
 .searchResult__name {
+  display: inline-block;
+  max-width: 100%;
+}
+
+.searchResult__name-inner {
   font-weight: 700;
   border-bottom: 2px solid transparent;
   white-space: nowrap;
