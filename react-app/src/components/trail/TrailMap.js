@@ -81,7 +81,7 @@ export default function TrailMap({ trailId, showMarkers, options }) {
             const _routeQuery = routeQuery({
                 nw: [nw.lat, nw.lng],
                 se: [se.lat, se.lng],
-                limit: 10,
+                limit: 100,
             });
             dispatch(getRoutes(_routeQuery, "trailHeads"));
         }
@@ -96,11 +96,12 @@ export default function TrailMap({ trailId, showMarkers, options }) {
         const bounds = map.current.getBounds();
         const nw = bounds.getNorthWest();
         const se = bounds.getSouthEast();
-        console.log(`nw, se`, nw, se)
+
         const _trailQuery = trailQuery({
             nw: [nw.lat, nw.lng],
             se: [se.lat, se.lng],
-            limit: 10,
+            difficulty: ["moderate", "hard"],
+            limit: 100,
             getPhotos: 1,
         });
         dispatch(getTrails(_trailQuery, "trailHeads"));
@@ -109,7 +110,6 @@ export default function TrailMap({ trailId, showMarkers, options }) {
     const dispatchGetRoutesTrails = (e) => {
         dispatchGetRoutes(e);
         dispatchGetTrails(e);
-        console.log('dispatch')
     }
 
     const handleInterval = (e) => {
@@ -302,9 +302,14 @@ export default function TrailMap({ trailId, showMarkers, options }) {
 
                 <div className="trailMap__options">
 
-                    <button className="jaunts__btn jaunts__btn-3">
-                        Difficulty
-                    </button>
+                    <div className="trailMap__option">
+                        <button className="jaunts__btn jaunts__btn-3">
+                            Difficulty
+                        </button>
+                        <div className="trailMap__option-popup">
+                            Hello
+                        </div>
+                    </div>
 
                     <button className="jaunts__btn jaunts__btn-3">
                         Length

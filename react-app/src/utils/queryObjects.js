@@ -76,7 +76,7 @@ export function trailQuery(args={}) {
         searchName: "",
         searchRegion: "",
         searchTags: [],
-        searchDifficulty: "",
+        difficulty: [],
         nw: "",
         se: "",
         offset: 0,

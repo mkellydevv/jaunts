@@ -15,6 +15,8 @@ export default function TrailDivider({ trail, trailId, leftPanelWidth, setLeftPa
     const dispatch = useDispatch();
     const { default: users } = useSelector(state => state["users"]);
     const completedTrails = users ? new Set(Object.values(users)[0]["completed_trails"]) : new Set([]);
+    const trailHeads = useSelector(state => state["trails"]["trailHeads"]);
+    const trailHeadCount = trailHeads ? Object.keys(trailHeads).length : null;
 
     const mouseDown = useRef(false);
     const mouseStart = useRef(null);
@@ -145,7 +147,7 @@ export default function TrailDivider({ trail, trailId, leftPanelWidth, setLeftPa
                 </div>
 
                 <div className="trailDivider__container-title">
-                    Nearby Trails
+                    Nearby Trails {trailHeadCount !== null && `(${trailHeadCount})`}
                 </div>
 
                 <TrailCardList

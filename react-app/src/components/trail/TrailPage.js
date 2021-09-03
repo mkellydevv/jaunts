@@ -29,7 +29,6 @@ export default function TrailPage() {
     const [leftPanelWidth, setLeftPanelWidth] = useState(id ? null : 0);
     const [showMarkers, setShowMarkers] = useState(true);
 
-
     useEffect(() => {
         if (!id) return;
 

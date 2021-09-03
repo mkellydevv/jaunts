@@ -29,6 +29,15 @@
 
     }
 
+    &__option {
+        position: relative;
+
+        &-popup {
+            position: relative;
+            top: 0;
+        }
+    }
+
     &__help {
         margin: 1rem;
     }

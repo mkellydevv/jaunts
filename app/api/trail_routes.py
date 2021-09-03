@@ -31,6 +31,10 @@ def get_trails():
     for tag in searchTags:
         query = query.filter(Trail.tags.any(Tag.name.ilike(f"%{tag}%")))
 
+    difficulty = args['difficulty'].split(",") if args['difficulty'] else []
+    if len(difficulty):
+        query = query.filter(Trail.difficulty.in_(difficulty))
+
     if args["nw"] != "" and args["se"] != "":
         nw_bounds = args["nw"].split(",")
         nw = [float(nw_bounds[0]), float(nw_bounds[1])]

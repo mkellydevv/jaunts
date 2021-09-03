@@ -41,6 +41,15 @@
   display: none;
 }
 
+.trailMap__option {
+  position: relative;
+}
+
+.trailMap__option-popup {
+  position: relative;
+  top: 0;
+}
+
 .trailMap__help {
   margin: 1rem;
 }
