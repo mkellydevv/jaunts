@@ -14,6 +14,8 @@ import "./TrailMap.css";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWtlbGx5ZGV2diIsImEiOiJja3BmcXZuY3YwNzg0MnFtd3Rra3M3amI4In0.h8HRrZ2xGNP-aq7EwO0YVA';
 
+const difficulties = ["Easy", "Moderate", "Hard"];
+
 export default function TrailMap({ trailId, showMarkers, options }) {
     const dispatch = useDispatch();
     const history = useHistory();
@@ -39,6 +41,7 @@ export default function TrailMap({ trailId, showMarkers, options }) {
         }
     });
     const interval = useRef(null);
+    const [optionModal, setOptionModal] = useState(null);
 
     // Mapbox specific
     const mapContainer = useRef(null);
@@ -141,6 +144,10 @@ export default function TrailMap({ trailId, showMarkers, options }) {
 
     const handleResetCompass = () => {
         map.current.resetNorthPitch({ duration: 1500 });
+    }
+
+    const handleOptionClick = (option) => {
+        setOptionModal(option);
     }
 
     useEffect(() => {
@@ -303,33 +310,95 @@ export default function TrailMap({ trailId, showMarkers, options }) {
                 <div className="trailMap__options">
 
                     <div className="trailMap__option">
-                        <button className="jaunts__btn jaunts__btn-3">
+                        <button
+                            onClick={()=>handleOptionClick("difficulty")}
+                            className="jaunts__btn jaunts__btn-3"
+                        >
                             Difficulty
                         </button>
+                        {optionModal === "difficulty" &&
                         <div className="trailMap__option-popup">
-                            Hello
-                        </div>
+                            {difficulties.map((diff) => (
+                                <div className={`trailMap__option-difficulty`}>
+                                    <input type="checkbox" id={`input-difficulty-${diff}`} name={diff} value={diff} />
+                                    <label htmlFor={`difficulty-${diff}`}>{diff}</label>
+                                </div>
+                            ))}
+
+                        </div>}
                     </div>
 
-                    <button className="jaunts__btn jaunts__btn-3">
-                        Length
-                    </button>
+                    <div className="trailMap__option">
+                        <button
+                            onClick={()=>handleOptionClick("length")}
+                            className="jaunts__btn jaunts__btn-3"
+                        >
+                            Length
+                        </button>
+                        {optionModal === "length" && <div className="trailMap__option-popup">
+                            <div className={`trailMap__option-length`}>
+                                <label for="input-length">Length: # mi</label>
+                                <input
+                                    type="range"
+                                    id="input-length"
+                                    name="length"
+                                    min="0"
+                                    max="40"
+                                />
+                            </div>
+                        </div>}
+                    </div>
 
-                    <button className="jaunts__btn jaunts__btn-3">
-                        E. Gain
-                    </button>
+                    <div className="trailMap__option">
+                        <button
+                            onClick={()=>handleOptionClick("elevation-gain")}
+                            className="jaunts__btn jaunts__btn-3"
+                        >
+                            E. Gain
+                        </button>
+                        {optionModal === "elevation-gain" && <div className="trailMap__option-popup">
+                            E. Gain
+                        </div>}
+                    </div>
 
-                    <button className="jaunts__btn jaunts__btn-3">
-                        Route Type
-                    </button>
+                    <div className="trailMap__option">
+                        <button
+                            onClick={()=>handleOptionClick("route-type")}
+                            className="jaunts__btn jaunts__btn-3"
+                        >
+                            Route Type
+                        </button>
+                        {optionModal === "route-type" && <div className="trailMap__option-popup">
+                            Route Type
+                        </div>}
+                    </div>
 
-                    <button className="jaunts__btn jaunts__btn-3">
-                        Rating
-                    </button>
+                    <div className="trailMap__option">
+                        <button
+                            onClick={()=>handleOptionClick("rating")}
+                            className="jaunts__btn jaunts__btn-3"
+                        >
+                            Rating
+                        </button>
+                        {optionModal === "rating" && <div className="trailMap__option-popup">
+                            Rating
+                        </div>}
+                    </div>
 
-                    <button className="jaunts__btn jaunts__btn-3">
-                        Completed
-                    </button>
+                    <div className="trailMap__option">
+                        <button
+                            onClick={()=>handleOptionClick("completed")}
+                            className="jaunts__btn jaunts__btn-3"
+                        >
+                            Completed
+                        </button>
+                        {optionModal === "completed" &&
+                        <div className="trailMap__option-popup trailMap__option-popup--last">
+                            <div className={`trailMap__option-completed`}>
+                                Completed
+                            </div>
+                        </div>}
+                    </div>
 
                 </div>
 
@@ -344,7 +413,6 @@ export default function TrailMap({ trailId, showMarkers, options }) {
             </div>
 
             <div className="trailMap__container">
-
 
                     {debug &&
                     <div className="trailMap__info">

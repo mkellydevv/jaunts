@@ -42,7 +42,7 @@ export default function SearchResult({ trail, tiny }) {
 
             {!tiny &&
             <div className={`searchResult__description`}>
-                <div className={`trail-card__difficulty difficulty-${map[trail.difficulty]}`}>
+                <div className={`trailCard__difficulty difficulty-${map[trail.difficulty]}`}>
                     {trail.difficulty}
                 </div>
                 <div>

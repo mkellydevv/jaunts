@@ -14,7 +14,7 @@
 
     &__options {
         height: 100%;
-        padding: .5rem;
+        padding: 10rem .5rem;
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -33,9 +33,27 @@
         position: relative;
 
         &-popup {
-            position: relative;
-            top: 0;
+            position: absolute;
+            top: 3rem;
+            border: 1px solid black;
+            background-color: white;
+            z-index: 10;
+            height: 5rem;
+            width: 10rem;
+
+            display: flex;
+            flex-flow: column nowrap;
+
+            &--last {
+                right: 0;
+            }
         }
+
+
+        &-difficulty {
+            display: flex;
+        }
+
     }
 
     &__help {
